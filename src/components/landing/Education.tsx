@@ -14,7 +14,7 @@ export function Education() {
           <Reveal delay={0.15}>
             <div className="group relative flex h-40 w-40 items-center justify-center rounded-sm border border-border bg-background p-6 transition-all hover:border-accent">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/0 transition-all group-hover:from-accent/10 group-hover:to-transparent" />
-              <img src={sbu} alt="Stony Brook University" className="relative h-full w-full object-contain brightness-0 invert opacity-90 transition-opacity group-hover:opacity-100" />
+              <img src={sbu} alt="Stony Brook University" className="relative h-full w-full object-contain opacity-95 transition-opacity group-hover:opacity-100" />
             </div>
           </Reveal>
         </div>
