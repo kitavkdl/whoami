@@ -165,31 +165,46 @@ export function Hero3D() {
       </motion.div>
 
       {/* status pill */}
-      <div className="absolute left-6 top-24 z-10 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:left-10 md:top-28">
+      <motion.div
+        initial={{ opacity: 0, x: -20, filter: "blur(8px)" }}
+        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.8, delay: 2.0, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute left-6 top-24 z-10 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:left-10 md:top-28"
+      >
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
         </span>
         Available for collaboration
-      </div>
+      </motion.div>
 
-      <div className="absolute right-6 top-24 z-10 hidden text-right text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:block md:right-10 md:top-28">
+      <motion.div
+        initial={{ opacity: 0, x: 20, filter: "blur(8px)" }}
+        animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.8, delay: 2.1, ease: [0.16, 1, 0.3, 1] }}
+        className="absolute right-6 top-24 z-10 hidden text-right text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:block md:right-10 md:top-28"
+      >
         <div>N 37.41° / E 127.51°</div>
         <div className="text-foreground/80">Gyeonggi-do, KR</div>
-      </div>
+      </motion.div>
 
       <motion.div
         style={{ y, opacity }}
         className="pointer-events-none relative z-10 px-6 text-center mix-blend-difference"
       >
-        <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground md:text-xs">
+        <motion.p
+          initial={{ opacity: 0, scaleX: 0, filter: "blur(6px)" }}
+          animate={{ opacity: 1, scaleX: 1, filter: "blur(0px)" }}
+          transition={{ duration: 0.9, delay: 2.25, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-6 inline-block origin-center font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground md:text-xs"
+        >
           ⟢ Portfolio · MMXXVI ⟢
-        </p>
+        </motion.p>
         <h1 className="font-display text-[18vw] font-extrabold uppercase leading-[0.85] tracking-tighter md:text-[14vw]">
           <motion.span
             initial={{ opacity: 0, y: 80, filter: "blur(20px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.1, delay: 2.45, ease: [0.16, 1, 0.3, 1] }}
             className="block text-white"
           >
             Jiyul
@@ -197,16 +212,16 @@ export function Hero3D() {
           <motion.span
             initial={{ opacity: 0, y: 80, filter: "blur(20px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.1, delay: 2.65, ease: [0.16, 1, 0.3, 1] }}
             className="text-outline block"
           >
             Ahn
           </motion.span>
         </h1>
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
+          initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.9, delay: 2.95, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto mt-8 max-w-md text-sm uppercase tracking-[0.35em] text-white/80 md:text-base"
         >
           Systems Developer<span className="text-accent"> · </span>Founder
@@ -216,18 +231,23 @@ export function Hero3D() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+        transition={{ duration: 0.6, delay: 3.2 }}
         className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2"
       >
         <div className="flex flex-col items-center gap-3">
           <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">Scroll</span>
-          <div className="h-16 w-px overflow-hidden bg-border">
+          <motion.div
+            initial={{ scaleY: 0 }}
+            animate={{ scaleY: 1 }}
+            transition={{ duration: 0.8, delay: 3.3, ease: [0.16, 1, 0.3, 1] }}
+            className="h-16 w-px origin-top overflow-hidden bg-border"
+          >
             <motion.div
               animate={{ y: [-64, 64] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 4.1 }}
               className="h-16 w-px bg-accent"
             />
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </section>
