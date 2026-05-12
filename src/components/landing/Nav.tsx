@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+const INTRO_BASE = 2.0; // play after preloader exit
+const ease = [0.16, 1, 0.3, 1] as const;
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
