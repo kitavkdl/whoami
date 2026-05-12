@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import portrait from "@/assets/portrait.jpg";
+import portrait from "@/assets/jiyul.jpg";
 import { Reveal } from "./Reveal";
 import { Counter } from "./Counter";
 

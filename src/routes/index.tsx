@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/landing/Nav";
-import { Hero } from "@/components/landing/Hero";
+import { Hero3D } from "@/components/landing/Hero3D";
+import { ZoomPortal } from "@/components/landing/ZoomPortal";
 import { Marquee } from "@/components/landing/Marquee";
 import { About } from "@/components/landing/About";
-import { Skills } from "@/components/landing/Skills";
+import { ExplodedSkills } from "@/components/landing/ExplodedSkills";
 import { ExperienceTimeline } from "@/components/landing/ExperienceTimeline";
+import { ProjectsHorizontal } from "@/components/landing/ProjectsHorizontal";
 import { Education } from "@/components/landing/Education";
 import { Contact } from "@/components/landing/Contact";
 import { MagneticCursor } from "@/components/landing/MagneticCursor";
@@ -36,11 +38,13 @@ function Index() {
       <GrainOverlay />
       <MagneticCursor />
       <Nav />
-      <Hero />
+      <Hero3D />
+      <ZoomPortal />
       <Marquee />
       <About />
-      <Skills />
+      <ExplodedSkills />
       <ExperienceTimeline />
+      <ProjectsHorizontal />
       <Education />
       <Contact />
     </main>
