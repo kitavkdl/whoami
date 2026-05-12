@@ -11,6 +11,9 @@ import { Education } from "@/components/landing/Education";
 import { Contact } from "@/components/landing/Contact";
 import { MagneticCursor } from "@/components/landing/MagneticCursor";
 import { GrainOverlay } from "@/components/landing/GrainOverlay";
+import { Preloader } from "@/components/landing/Preloader";
+import { MagneticBinder } from "@/components/landing/MagneticButton";
+import { AmbientAudio } from "@/components/landing/AmbientAudio";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -35,8 +38,11 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="relative bg-background text-foreground">
+      <Preloader />
       <GrainOverlay />
       <MagneticCursor />
+      <MagneticBinder />
+      <AmbientAudio />
       <Nav />
       <Hero3D />
       <ZoomPortal />
