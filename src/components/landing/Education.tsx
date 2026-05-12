@@ -12,9 +12,9 @@ export function Education() {
             </p>
           </Reveal>
           <Reveal delay={0.15}>
-            <div className="group relative flex h-40 w-40 items-center justify-center rounded-sm border border-border bg-background p-6 transition-all hover:border-accent">
+            <div className="group relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-sm border border-border bg-white transition-all hover:border-accent">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/0 transition-all group-hover:from-accent/10 group-hover:to-transparent" />
-              <img src={sbu} alt="Stony Brook University" className="relative h-full w-full object-contain opacity-95 transition-opacity group-hover:opacity-100" />
+              <img src={sbu} alt="Stony Brook University" className="relative h-full w-full object-cover opacity-95 transition-opacity group-hover:opacity-100" />
             </div>
           </Reveal>
         </div>
