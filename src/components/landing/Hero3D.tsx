@@ -1,0 +1,156 @@
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Environment, Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
+import { Suspense, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import * as THREE from "three";
+
+function Knot({ mouse }: { mouse: React.MutableRefObject<{ x: number; y: number }> }) {
+  const ref = useRef<THREE.Mesh>(null);
+  useFrame((_, delta) => {
+    if (!ref.current) return;
+    ref.current.rotation.y += delta * 0.15;
+    const tx = mouse.current.x * 0.6;
+    const ty = -mouse.current.y * 0.6;
+    ref.current.rotation.x += (ty - ref.current.rotation.x) * 0.06;
+    ref.current.rotation.z += (tx * 0.4 - ref.current.rotation.z) * 0.06;
+  });
+  return (
+    <Float speed={1.4} rotationIntensity={0.4} floatIntensity={1.2}>
+      <mesh ref={ref} scale={1.6}>
+        <torusKnotGeometry args={[1, 0.32, 220, 32]} />
+        <MeshDistortMaterial
+          color="#b061ff"
+          roughness={0.18}
+          metalness={0.85}
+          distort={0.32}
+          speed={1.6}
+          emissive="#3a0d6a"
+          emissiveIntensity={0.4}
+        />
+      </mesh>
+    </Float>
+  );
+}
+
+function Rig({ mouse }: { mouse: React.MutableRefObject<{ x: number; y: number }> }) {
+  useFrame((state) => {
+    state.camera.position.x += (mouse.current.x * 1.5 - state.camera.position.x) * 0.04;
+    state.camera.position.y += (-mouse.current.y * 1.0 - state.camera.position.y) * 0.04;
+    state.camera.lookAt(0, 0, 0);
+  });
+  return null;
+}
+
+export function Hero3D() {
+  const ref = useRef<HTMLElement>(null);
+  const mouse = useRef({ x: 0, y: 0 });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 1.6]);
+  const canvasOpacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.7, 0]);
+
+  const onMove = (e: React.MouseEvent) => {
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    mouse.current.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    mouse.current.y = ((e.clientY - r.top) / r.height) * 2 - 1;
+  };
+
+  return (
+    <section
+      ref={ref}
+      id="top"
+      onMouseMove={onMove}
+      className="relative flex h-screen min-h-[700px] items-center justify-center overflow-hidden"
+    >
+      <motion.div
+        style={{ scale: canvasScale, opacity: canvasOpacity }}
+        className="absolute inset-0"
+      >
+        <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 6], fov: 45 }}>
+          <Suspense fallback={null}>
+            <color attach="background" args={["#0a0a0a"]} />
+            <fog attach="fog" args={["#0a0a0a", 6, 14]} />
+            <ambientLight intensity={0.25} />
+            <directionalLight position={[5, 5, 5]} intensity={1.2} color="#c084fc" />
+            <pointLight position={[-5, -3, -2]} intensity={1.6} color="#7c3aed" />
+            <Knot mouse={mouse} />
+            <Sparkles count={80} scale={[10, 6, 6]} size={2} speed={0.4} color="#b061ff" />
+            <Environment preset="night" />
+            <Rig mouse={mouse} />
+          </Suspense>
+        </Canvas>
+      </motion.div>
+
+      {/* vignette */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,oklch(0.06_0_0)_85%)]" />
+
+      {/* status pill */}
+      <div className="absolute left-6 top-24 z-10 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:left-10 md:top-28">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+        </span>
+        Available for collaboration
+      </div>
+
+      <div className="absolute right-6 top-24 z-10 hidden text-right text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:block md:right-10 md:top-28">
+        <div>N 37.41° / E 127.51°</div>
+        <div className="text-foreground/80">Gyeonggi-do, KR</div>
+      </div>
+
+      <motion.div
+        style={{ y, opacity }}
+        className="pointer-events-none relative z-10 px-6 text-center mix-blend-difference"
+      >
+        <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground md:text-xs">
+          ⟢ Portfolio · MMXXVI ⟢
+        </p>
+        <h1 className="font-display text-[18vw] font-extrabold uppercase leading-[0.85] tracking-tighter md:text-[14vw]">
+          <motion.span
+            initial={{ opacity: 0, y: 80, filter: "blur(20px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="block text-white"
+          >
+            Jiyul
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 80, filter: "blur(20px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="text-outline block"
+          >
+            Ahn
+          </motion.span>
+        </h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="mx-auto mt-8 max-w-md text-sm uppercase tracking-[0.35em] text-white/80 md:text-base"
+        >
+          Systems Developer<span className="text-accent"> · </span>Founder
+        </motion.p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2 }}
+        className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2"
+      >
+        <div className="flex flex-col items-center gap-3">
+          <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">Scroll</span>
+          <div className="h-16 w-px overflow-hidden bg-border">
+            <motion.div
+              animate={{ y: [-64, 64] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="h-16 w-px bg-accent"
+            />
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}

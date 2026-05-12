@@ -1,17 +1,24 @@
 import { Reveal } from "./Reveal";
+import sbu from "@/assets/sbu.png";
 
 export function Education() {
   return (
     <section className="relative border-y border-border bg-surface/30 px-6 py-32 md:px-10">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-end gap-10 md:grid-cols-12">
-        <div className="md:col-span-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 md:grid-cols-12">
+        <div className="md:col-span-3">
           <Reveal>
-            <p className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              ⟢ 04 — Education
+            <p className="mb-8 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+              ⟢ 06 — Education
             </p>
           </Reveal>
+          <Reveal delay={0.15}>
+            <div className="group relative flex h-40 w-40 items-center justify-center rounded-sm border border-border bg-background p-6 transition-all hover:border-accent">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/0 to-accent/0 transition-all group-hover:from-accent/10 group-hover:to-transparent" />
+              <img src={sbu} alt="Stony Brook University" className="relative h-full w-full object-contain brightness-0 invert opacity-90 transition-opacity group-hover:opacity-100" />
+            </div>
+          </Reveal>
         </div>
-        <div className="md:col-span-8">
+        <div className="md:col-span-9">
           <Reveal delay={0.1}>
             <h3 className="font-display text-4xl font-extrabold tracking-tighter md:text-6xl">
               Stony Brook University
@@ -25,6 +32,11 @@ export function Education() {
               <span className="hidden h-1 w-1 rounded-full bg-accent md:block" />
               <span>Undergraduate</span>
             </div>
+          </Reveal>
+          <Reveal delay={0.3}>
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-foreground/80 md:text-lg">
+              Studying computer science at SBU — focusing on systems thinking, distributed data, and the messy bridge between code and operations.
+            </p>
           </Reveal>
         </div>
       </div>
