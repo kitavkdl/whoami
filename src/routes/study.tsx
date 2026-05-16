@@ -108,8 +108,13 @@ const ADVICE: Record<Lang, { k: string; v: string[] }[]> = {
 };
 
 function fortuneFor(subject: string, lang: Lang) {
-  // Seed stays language-independent so KR/EN show the same grade.
-  const key = `${subject.trim().toLowerCase()}::${todayKey()}`;
+  // Normalize: lowercase + strip all whitespace/punctuation so
+  // "cse113", "cse 113", "CSE-113", "Cse 113" all map to the same seed.
+  const normalized = subject
+    .toLowerCase()
+    .normalize("NFKC")
+    .replace(/[\s\p{P}\p{S}_]+/gu, "");
+  const key = `${normalized}::${todayKey()}`;
   const seed = hash(key);
   const grade = pickGrade(seed);
   const score = 40 + (seed % 61); // 40–100
