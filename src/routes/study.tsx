@@ -32,17 +32,17 @@ function todayKey(): string {
 }
 
 const GRADES = [
-  { g: "A+", weight: 4, tone: "from-emerald-300 via-teal-200 to-cyan-300" },
-  { g: "A",  weight: 8, tone: "from-emerald-200 via-green-200 to-lime-200" },
-  { g: "A-", weight: 10, tone: "from-lime-200 via-green-200 to-emerald-200" },
-  { g: "B+", weight: 14, tone: "from-amber-200 via-yellow-200 to-lime-200" },
-  { g: "B",  weight: 16, tone: "from-amber-200 via-orange-200 to-yellow-200" },
-  { g: "B-", weight: 12, tone: "from-orange-200 via-amber-300 to-yellow-300" },
-  { g: "C+", weight: 10, tone: "from-orange-300 via-rose-200 to-amber-200" },
-  { g: "C",  weight: 9,  tone: "from-rose-300 via-pink-200 to-orange-200" },
-  { g: "C-", weight: 6,  tone: "from-rose-400 via-pink-300 to-rose-200" },
-  { g: "D",  weight: 6,  tone: "from-rose-500 via-red-300 to-rose-300" },
-  { g: "F",  weight: 5,  tone: "from-zinc-500 via-rose-400 to-zinc-300" },
+  { g: "A+", weight: 12, tone: "from-emerald-300 via-teal-200 to-cyan-300" },
+  { g: "A",  weight: 16, tone: "from-emerald-200 via-green-200 to-lime-200" },
+  { g: "A-", weight: 14, tone: "from-lime-200 via-green-200 to-emerald-200" },
+  { g: "B+", weight: 10, tone: "from-amber-200 via-yellow-200 to-lime-200" },
+  { g: "B",  weight: 10, tone: "from-amber-200 via-orange-200 to-yellow-200" },
+  { g: "B-", weight: 8, tone: "from-orange-200 via-amber-300 to-yellow-300" },
+  { g: "C+", weight: 6, tone: "from-orange-300 via-rose-200 to-amber-200" },
+  { g: "C",  weight: 5,  tone: "from-rose-300 via-pink-200 to-orange-200" },
+  { g: "C-", weight: 4,  tone: "from-rose-400 via-pink-300 to-rose-200" },
+  { g: "D",  weight: 3,  tone: "from-rose-500 via-red-300 to-rose-300" },
+  { g: "F",  weight: 2,  tone: "from-zinc-500 via-rose-400 to-zinc-300" },
 ];
 
 function pickGrade(seed: number) {
