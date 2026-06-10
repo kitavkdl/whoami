@@ -142,7 +142,7 @@ export function Hero3D() {
           dpr={lite ? [1, 1] : [1, 1.5]}
           camera={{ position: [0, 0, 6], fov: 45 }}
           gl={{ antialias: !lite, alpha: false, powerPreference: "high-performance" }}
-          frameloop={lite ? "demand" : "always"}
+          frameloop="always"
         >
           <Suspense fallback={null}>
             <color attach="background" args={["#0a0a0a"]} />
