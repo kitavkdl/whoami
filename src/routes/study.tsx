@@ -32,17 +32,17 @@ function todayKey(): string {
 }
 
 const GRADES = [
-  { g: "A+", weight: 4, tone: "from-emerald-300 via-teal-200 to-cyan-300" },
-  { g: "A",  weight: 8, tone: "from-emerald-200 via-green-200 to-lime-200" },
-  { g: "A-", weight: 10, tone: "from-lime-200 via-green-200 to-emerald-200" },
-  { g: "B+", weight: 14, tone: "from-amber-200 via-yellow-200 to-lime-200" },
-  { g: "B",  weight: 16, tone: "from-amber-200 via-orange-200 to-yellow-200" },
-  { g: "B-", weight: 12, tone: "from-orange-200 via-amber-300 to-yellow-300" },
-  { g: "C+", weight: 10, tone: "from-orange-300 via-rose-200 to-amber-200" },
-  { g: "C",  weight: 9,  tone: "from-rose-300 via-pink-200 to-orange-200" },
-  { g: "C-", weight: 6,  tone: "from-rose-400 via-pink-300 to-rose-200" },
-  { g: "D",  weight: 6,  tone: "from-rose-500 via-red-300 to-rose-300" },
-  { g: "F",  weight: 5,  tone: "from-zinc-500 via-rose-400 to-zinc-300" },
+  { g: "A+", weight: 12, tone: "from-emerald-300 via-teal-200 to-cyan-300" },
+  { g: "A",  weight: 16, tone: "from-emerald-200 via-green-200 to-lime-200" },
+  { g: "A-", weight: 14, tone: "from-lime-200 via-green-200 to-emerald-200" },
+  { g: "B+", weight: 10, tone: "from-amber-200 via-yellow-200 to-lime-200" },
+  { g: "B",  weight: 10, tone: "from-amber-200 via-orange-200 to-yellow-200" },
+  { g: "B-", weight: 8, tone: "from-orange-200 via-amber-300 to-yellow-300" },
+  { g: "C+", weight: 6, tone: "from-orange-300 via-rose-200 to-amber-200" },
+  { g: "C",  weight: 5,  tone: "from-rose-300 via-pink-200 to-orange-200" },
+  { g: "C-", weight: 4,  tone: "from-rose-400 via-pink-300 to-rose-200" },
+  { g: "D",  weight: 3,  tone: "from-rose-500 via-red-300 to-rose-300" },
+  { g: "F",  weight: 2,  tone: "from-zinc-500 via-rose-400 to-zinc-300" },
 ];
 
 function pickGrade(seed: number) {
@@ -94,16 +94,112 @@ const MESSAGES: Record<Lang, string[]> = {
 
 const ADVICE: Record<Lang, { k: string; v: string[] }[]> = {
   ko: [
-    { k: "행운의 시간", v: ["오전 9–11시", "오후 2–4시", "오후 7–9시", "밤 11시–새벽 1시"] },
-    { k: "행운의 장소", v: ["도서관 3층", "학교 근처 카페", "기숙사 책상", "빈 강의실"] },
-    { k: "행운의 음료", v: ["아메리카노", "녹차 라떼", "탄산수", "꿀물"] },
-    { k: "피해야 할 것", v: ["릴스 무한 스크롤", "30분 이상의 낮잠", "넷플릭스 한 화 더", "단톡방 알림"] },
+    {
+      k: "행운의 시간",
+      v: [
+        "오전 9–11시",
+        "오후 2–4시",
+        "오후 7–9시",
+        "밤 11시–새벽 1시",
+        "오전 6–8시",
+        "오후 5–6시",
+        "자정 12–1시",
+        "오전 10시–정오",
+      ],
+    },
+    {
+      k: "행운의 장소",
+      v: [
+        "도서관 3층",
+        "학교 근처 카페",
+        "기숙사 책상",
+        "빈 강의실",
+        "학교 정원 벤치",
+        "24시간 스터디카페",
+        "지하철 2호선 창가",
+        "집 책상 앞 창가",
+      ],
+    },
+    {
+      k: "행운의 음료",
+      v: [
+        "아메리카노",
+        "녹차 라떼",
+        "탄산수",
+        "꿀물",
+        "아이스티",
+        "요거트 스무디",
+        "레몬차",
+        "쌍화차",
+      ],
+    },
+    {
+      k: "피해야 할 것",
+      v: [
+        "릴스 무한 스크롤",
+        "30분 이상의 낮잠",
+        "넷플릭스 한 화 더",
+        "단톡방 알림",
+        "배달 음식 주문하기",
+        "침대에서 공부하기",
+        "음악 + 가사 영상",
+        "오후 3시 커피",
+      ],
+    },
   ],
   en: [
-    { k: "Lucky hours", v: ["9–11 AM", "2–4 PM", "7–9 PM", "11 PM – 1 AM"] },
-    { k: "Lucky place", v: ["Library, 3rd floor", "Café near campus", "Dorm desk", "Empty classroom"] },
-    { k: "Lucky drink", v: ["Americano", "Matcha latte", "Sparkling water", "Honey water"] },
-    { k: "Avoid today", v: ["Infinite Reels scroll", "Naps over 30 min", "One more Netflix episode", "Group chat pings"] },
+    {
+      k: "Lucky hours",
+      v: [
+        "9–11 AM",
+        "2–4 PM",
+        "7–9 PM",
+        "11 PM – 1 AM",
+        "6–8 AM",
+        "5–6 PM",
+        "12–1 AM",
+        "10 AM – noon",
+      ],
+    },
+    {
+      k: "Lucky place",
+      v: [
+        "Library, 3rd floor",
+        "Café near campus",
+        "Dorm desk",
+        "Empty classroom",
+        "Garden bench",
+        "24h study café",
+        "Train window seat",
+        "Desk by home window",
+      ],
+    },
+    {
+      k: "Lucky drink",
+      v: [
+        "Americano",
+        "Matcha latte",
+        "Sparkling water",
+        "Honey water",
+        "Iced tea",
+        "Yogurt smoothie",
+        "Lemon tea",
+        "Ssanghwacha",
+      ],
+    },
+    {
+      k: "Avoid today",
+      v: [
+        "Infinite Reels scroll",
+        "Naps over 30 min",
+        "One more Netflix episode",
+        "Group chat pings",
+        "Ordering delivery food",
+        "Studying in bed",
+        "Music with lyrics",
+        "3 PM coffee",
+      ],
+    },
   ],
 };
 
