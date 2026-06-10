@@ -4,6 +4,18 @@ import { Reveal } from "./Reveal";
 
 const roles = [
   {
+    date: "Mar 2026 — Jun 2026",
+    role: "Short-term Development Researcher",
+    company: "KOPRI (Korea Polar Research Institute)",
+    location: "Incheon, KR",
+    bullets: [
+      "Developed and maintained internal research data management tools and web interfaces for polar science operations.",
+      "Collaborated with research teams to digitize field data pipelines and streamline analytical workflows.",
+      "Contributed to software architecture decisions supporting large-scale geospatial and environmental datasets.",
+    ],
+    tags: ["Research", "Data", "Web"],
+  },
+  {
     date: "Jun 2025 — Present",
     role: "Odoo Partner Project Manager",
     company: "DX Tech Company",
