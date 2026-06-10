@@ -1,12 +1,12 @@
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
-import { EffectComposer, Bloom, ChromaticAberration, Noise, Vignette } from "@react-three/postprocessing";
-import { BlendFunction } from "postprocessing";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { Suspense, useEffect, useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as THREE from "three";
+import { useLowPower } from "@/hooks/use-low-power";
 
-function Knot({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: number }> }) {
+function Knot({ pointer, lite }: { pointer: React.MutableRefObject<{ x: number; y: number }>; lite: boolean }) {
   const ref = useRef<THREE.Mesh>(null);
   useFrame((_, delta) => {
     if (!ref.current) return;
@@ -19,13 +19,13 @@ function Knot({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: num
   return (
     <Float speed={1.4} rotationIntensity={0.4} floatIntensity={1.2}>
       <mesh ref={ref} scale={1.6}>
-        <torusKnotGeometry args={[1, 0.32, 220, 32]} />
+        <torusKnotGeometry args={[1, 0.32, lite ? 80 : 220, lite ? 16 : 32]} />
         <MeshDistortMaterial
           color="#b061ff"
           roughness={0.18}
           metalness={0.85}
           distort={0.32}
-          speed={1.6}
+          speed={lite ? 0.8 : 1.6}
           emissive="#3a0d6a"
           emissiveIntensity={0.6}
         />
@@ -35,9 +35,9 @@ function Knot({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: num
 }
 
 /** Interactive particle field that subtly chases the pointer. */
-function ParticleField({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: number }> }) {
+function ParticleField({ pointer, count }: { pointer: React.MutableRefObject<{ x: number; y: number }>; count: number }) {
   const ref = useRef<THREE.Points>(null);
-  const count = 1400;
+  // count is passed in (low-power devices use fewer points)
   const { positions, originals } = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -49,7 +49,7 @@ function ParticleField({ pointer }: { pointer: React.MutableRefObject<{ x: numbe
       pos[i * 3 + 2] = r * Math.cos(phi) - 2;
     }
     return { positions: pos, originals: pos.slice() };
-  }, []);
+  }, [count]);
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -90,17 +90,19 @@ function Rig({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: numb
   return null;
 }
 
-function ResizeFix() {
+function ResizeFix({ lite }: { lite: boolean }) {
   const { gl, size } = useThree();
   useEffect(() => {
-    gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  }, [gl, size]);
+    const cap = lite ? 1 : 1.5;
+    gl.setPixelRatio(Math.min(window.devicePixelRatio, cap));
+  }, [gl, size, lite]);
   return null;
 }
 
 export function Hero3D() {
   const ref = useRef<HTMLElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
+  const lite = useLowPower();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
@@ -136,30 +138,30 @@ export function Hero3D() {
         style={{ scale: canvasScale, opacity: canvasOpacity }}
         className="absolute inset-0"
       >
-        <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 6], fov: 45 }} gl={{ antialias: true, alpha: false }}>
+        <Canvas
+          dpr={lite ? [1, 1] : [1, 1.5]}
+          camera={{ position: [0, 0, 6], fov: 45 }}
+          gl={{ antialias: !lite, alpha: false, powerPreference: "high-performance" }}
+          frameloop="always"
+        >
           <Suspense fallback={null}>
             <color attach="background" args={["#0a0a0a"]} />
             <fog attach="fog" args={["#0a0a0a", 6, 16]} />
             <ambientLight intensity={0.35} />
             <directionalLight position={[5, 5, 5]} intensity={1.4} color="#c084fc" />
-            <pointLight position={[-5, -3, -2]} intensity={2.2} color="#7c3aed" />
-            <pointLight position={[3, -2, 4]} intensity={1.4} color="#ff5fb5" />
-            <Knot pointer={pointer} />
-            <ParticleField pointer={pointer} />
-            <Sparkles count={60} scale={[10, 6, 6]} size={2} speed={0.4} color="#b061ff" />
+            {!lite && <pointLight position={[-5, -3, -2]} intensity={2.2} color="#7c3aed" />}
+            {!lite && <pointLight position={[3, -2, 4]} intensity={1.4} color="#ff5fb5" />}
+            <Knot pointer={pointer} lite={lite} />
+            <ParticleField pointer={pointer} count={lite ? 400 : 1400} />
+            {!lite && <Sparkles count={60} scale={[10, 6, 6]} size={2} speed={0.4} color="#b061ff" />}
             <Rig pointer={pointer} />
-            <ResizeFix />
-            <EffectComposer multisampling={0}>
-              <Bloom intensity={0.9} luminanceThreshold={0.18} luminanceSmoothing={0.2} mipmapBlur />
-              <ChromaticAberration
-                offset={new THREE.Vector2(0.0012, 0.0012)}
-                radialModulation={false}
-                modulationOffset={0}
-                blendFunction={BlendFunction.NORMAL}
-              />
-              <Noise opacity={0.06} premultiply blendFunction={BlendFunction.SOFT_LIGHT} />
-              <Vignette eskil={false} offset={0.2} darkness={0.85} />
-            </EffectComposer>
+            <ResizeFix lite={lite} />
+            {!lite && (
+              <EffectComposer multisampling={0}>
+                <Bloom intensity={0.9} luminanceThreshold={0.18} luminanceSmoothing={0.2} mipmapBlur />
+                <Vignette eskil={false} offset={0.2} darkness={0.85} />
+              </EffectComposer>
+            )}
           </Suspense>
         </Canvas>
       </motion.div>
@@ -185,7 +187,7 @@ export function Hero3D() {
         className="absolute right-6 top-24 z-10 hidden text-right text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:block md:right-10 md:top-28"
       >
         <div>N 37.41° / E 127.51°</div>
-        <div className="text-foreground/80">Gyeonggi-do, KR</div>
+        <div className="text-foreground/80">Songdo, Incheon, KR</div>
       </motion.div>
 
       <motion.div

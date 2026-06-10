@@ -59,7 +59,7 @@ export function About() {
             <Reveal delay={0.1}>
               <div>
                 <div className="font-display text-4xl font-extrabold tracking-tighter md:text-5xl">
-                  <Counter to={3} suffix="+" />
+                  <Counter to={5} suffix="+" />
                 </div>
                 <p className="mt-2 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                   Years building
@@ -79,7 +79,7 @@ export function About() {
             <Reveal delay={0.3}>
               <div>
                 <div className="font-display text-4xl font-extrabold tracking-tighter md:text-5xl">
-                  <Counter to={2} suffix="+" />
+                  <Counter to={7} suffix="+" />
                 </div>
                 <p className="mt-2 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
                   Cities operating

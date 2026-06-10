@@ -1,5 +1,21 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useRef } from "react";
+import { useLowPower } from "@/hooks/use-low-power";
+
+function Ring({ progress, i, opacity, rotate }: {
+  progress: MotionValue<number>;
+  i: number;
+  opacity: MotionValue<number>;
+  rotate: MotionValue<number>;
+}) {
+  const scale = useTransform(progress, [0, 1], [0.2 + i * 0.15, 6 + i * 2]);
+  return (
+    <motion.div
+      style={{ scale, opacity, rotate }}
+      className="absolute h-[40vmin] w-[40vmin] rounded-full border border-accent/40 will-change-transform"
+    />
+  );
+}
 
 /**
  * Scroll-pinned zoom-in transition — gives the feeling of being pulled
@@ -7,6 +23,7 @@ import { useRef } from "react";
  */
 export function ZoomPortal() {
   const ref = useRef<HTMLElement>(null);
+  const lite = useLowPower();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.4, 8, 24]);
@@ -16,26 +33,19 @@ export function ZoomPortal() {
   const text1Opacity = useTransform(scrollYProgress, [0.0, 0.2, 0.45], [0, 1, 0]);
   const text2Opacity = useTransform(scrollYProgress, [0.45, 0.6, 0.85], [0, 1, 0]);
 
+  const ringIndices = lite ? [0, 2] : [0, 1, 2, 3];
+
   return (
-    <section ref={ref} className="relative h-[220vh]">
+    <section ref={ref} className={lite ? "relative h-[160vh]" : "relative h-[220vh]"}>
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden bg-background">
-        {/* expanding rings */}
-        {[0, 1, 2, 3].map((i) => (
-          <motion.div
-            key={i}
-            style={{
-              scale: useTransform(scrollYProgress, [0, 1], [0.2 + i * 0.15, 6 + i * 2]),
-              opacity: ringOpacity,
-              rotate,
-            }}
-            className="absolute h-[40vmin] w-[40vmin] rounded-full border border-accent/40"
-          />
+        {ringIndices.map((i) => (
+          <Ring key={i} i={i} progress={scrollYProgress} opacity={ringOpacity} rotate={rotate} />
         ))}
 
         {/* portal core */}
         <motion.div
           style={{ scale, rotate }}
-          className="relative h-[40vmin] w-[40vmin] rounded-full bg-gradient-to-br from-accent via-accent/40 to-background shadow-[0_0_120px_60px_oklch(0.62_0.31_312_/_0.45)]"
+          className="relative h-[40vmin] w-[40vmin] rounded-full bg-gradient-to-br from-accent via-accent/40 to-background shadow-[0_0_120px_60px_oklch(0.62_0.31_312_/_0.45)] will-change-transform"
         >
           <motion.div
             style={{ opacity: innerOpacity }}
@@ -48,7 +58,7 @@ export function ZoomPortal() {
           style={{ opacity: text1Opacity }}
           className="absolute z-10 font-display text-5xl font-extrabold uppercase tracking-tighter md:text-8xl"
         >
-          Enter the system
+          Enter
         </motion.p>
         <motion.p
           style={{ opacity: text2Opacity }}

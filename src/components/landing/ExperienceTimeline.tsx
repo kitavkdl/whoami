@@ -5,7 +5,7 @@ import { Reveal } from "./Reveal";
 const roles = [
   {
     date: "Jun 2025 — Present",
-    role: "Odoo Project Manager",
+    role: "Odoo Partner Project Manager",
     company: "DX Tech Company",
     location: "Incheon, KR",
     bullets: [
