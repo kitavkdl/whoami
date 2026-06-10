@@ -37,7 +37,7 @@ export function Hero() {
       {/* meta corners */}
       <div className="absolute right-6 top-24 z-10 hidden text-right text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:block md:right-10 md:top-28">
         <div>N 37.41° / E 127.51°</div>
-        <div className="text-foreground/80">Gyeonggi-do, KR</div>
+        <div className="text-foreground/80">Songdo, Incheon, KR</div>
       </div>
 
       <motion.div style={{ y, opacity }} className="relative z-10 px-6 text-center">

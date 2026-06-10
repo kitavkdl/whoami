@@ -48,7 +48,7 @@ export function ZoomPortal() {
           style={{ opacity: text1Opacity }}
           className="absolute z-10 font-display text-5xl font-extrabold uppercase tracking-tighter md:text-8xl"
         >
-          Enter the system
+          Enter
         </motion.p>
         <motion.p
           style={{ opacity: text2Opacity }}

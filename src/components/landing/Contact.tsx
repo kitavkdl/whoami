@@ -57,7 +57,7 @@ export function Contact() {
         <Reveal delay={0.2}>
           <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Location</p>
           <p className="mt-3 font-display text-xl font-bold tracking-tight md:text-2xl">
-            Gyeonggi-do<br />South Korea
+            Songdo, Incheon<br />South Korea
           </p>
         </Reveal>
       </div>
