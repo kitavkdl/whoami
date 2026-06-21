@@ -46,18 +46,22 @@ export function Preloader() {
           className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
         >
           {/* huge rotating display ring */}
-          <motion.div
-            initial={{ rotate: 0 }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            className="absolute h-[80vmin] w-[80vmin] rounded-full border border-accent/15"
-          />
-          <motion.div
-            initial={{ rotate: 0 }}
-            animate={{ rotate: -360 }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-            className="absolute h-[60vmin] w-[60vmin] rounded-full border border-accent/25"
-          />
+          {!lite && (
+            <>
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[80vmin] w-[80vmin] rounded-full border border-accent/15 will-change-transform"
+              />
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: -360 }}
+                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[60vmin] w-[60vmin] rounded-full border border-accent/25 will-change-transform"
+              />
+            </>
+          )}
 
           {/* central seed — same shape that morphs into hero core */}
           <motion.div
