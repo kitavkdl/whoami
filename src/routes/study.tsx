@@ -32,17 +32,17 @@ function todayKey(): string {
 }
 
 const GRADES = [
-  { g: "A+", weight: 12, tone: "from-emerald-300 via-teal-200 to-cyan-300" },
-  { g: "A",  weight: 16, tone: "from-emerald-200 via-green-200 to-lime-200" },
-  { g: "A-", weight: 14, tone: "from-lime-200 via-green-200 to-emerald-200" },
-  { g: "B+", weight: 10, tone: "from-amber-200 via-yellow-200 to-lime-200" },
-  { g: "B",  weight: 10, tone: "from-amber-200 via-orange-200 to-yellow-200" },
-  { g: "B-", weight: 8, tone: "from-orange-200 via-amber-300 to-yellow-300" },
-  { g: "C+", weight: 6, tone: "from-orange-300 via-rose-200 to-amber-200" },
-  { g: "C",  weight: 5,  tone: "from-rose-300 via-pink-200 to-orange-200" },
-  { g: "C-", weight: 4,  tone: "from-rose-400 via-pink-300 to-rose-200" },
-  { g: "D",  weight: 3,  tone: "from-rose-500 via-red-300 to-rose-300" },
-  { g: "F",  weight: 2,  tone: "from-zinc-500 via-rose-400 to-zinc-300" },
+  { g: "A+", weight: 12 },
+  { g: "A",  weight: 16 },
+  { g: "A-", weight: 14 },
+  { g: "B+", weight: 10 },
+  { g: "B",  weight: 10 },
+  { g: "B-", weight: 8 },
+  { g: "C+", weight: 6 },
+  { g: "C",  weight: 5 },
+  { g: "C-", weight: 4 },
+  { g: "D",  weight: 3 },
+  { g: "F",  weight: 2 },
 ];
 
 function pickGrade(seed: number) {
@@ -97,115 +97,53 @@ const ADVICE: Record<Lang, { k: string; v: string[] }[]> = {
     {
       k: "행운의 시간",
       v: [
-        "오전 9–11시",
-        "오후 2–4시",
-        "오후 7–9시",
-        "밤 11시–새벽 1시",
-        "오전 6–8시",
-        "오후 5–6시",
-        "자정 12–1시",
-        "오전 10시–정오",
+        "오전 9–11시","오후 2–4시","오후 7–9시","밤 11시–새벽 1시",
+        "오전 6–8시","오후 5–6시","자정 12–1시","오전 10시–정오",
       ],
     },
     {
       k: "행운의 장소",
       v: [
-        "도서관 3층",
-        "학교 근처 카페",
-        "기숙사 책상",
-        "빈 강의실",
-        "학교 정원 벤치",
-        "24시간 스터디카페",
-        "지하철 2호선 창가",
-        "집 책상 앞 창가",
+        "도서관 3층","학교 근처 카페","기숙사 책상","빈 강의실",
+        "학교 정원 벤치","24시간 스터디카페","지하철 2호선 창가","집 책상 앞 창가",
       ],
     },
     {
       k: "행운의 음료",
       v: [
-        "아메리카노",
-        "녹차 라떼",
-        "탄산수",
-        "꿀물",
-        "아이스티",
-        "요거트 스무디",
-        "레몬차",
-        "쌍화차",
+        "아메리카노","녹차 라떼","탄산수","꿀물",
+        "아이스티","요거트 스무디","레몬차","쌍화차",
       ],
     },
     {
       k: "피해야 할 것",
       v: [
-        "릴스 무한 스크롤",
-        "30분 이상의 낮잠",
-        "넷플릭스 한 화 더",
-        "단톡방 알림",
-        "배달 음식 주문하기",
-        "침대에서 공부하기",
-        "음악 + 가사 영상",
-        "오후 3시 커피",
+        "릴스 무한 스크롤","30분 이상의 낮잠","넷플릭스 한 화 더","단톡방 알림",
+        "배달 음식 주문하기","침대에서 공부하기","음악 + 가사 영상","오후 3시 커피",
       ],
     },
   ],
   en: [
     {
       k: "Lucky hours",
-      v: [
-        "9–11 AM",
-        "2–4 PM",
-        "7–9 PM",
-        "11 PM – 1 AM",
-        "6–8 AM",
-        "5–6 PM",
-        "12–1 AM",
-        "10 AM – noon",
-      ],
+      v: ["9–11 AM","2–4 PM","7–9 PM","11 PM – 1 AM","6–8 AM","5–6 PM","12–1 AM","10 AM – noon"],
     },
     {
       k: "Lucky place",
-      v: [
-        "Library, 3rd floor",
-        "Café near campus",
-        "Dorm desk",
-        "Empty classroom",
-        "Garden bench",
-        "24h study café",
-        "Train window seat",
-        "Desk by home window",
-      ],
+      v: ["Library, 3rd floor","Café near campus","Dorm desk","Empty classroom","Garden bench","24h study café","Train window seat","Desk by home window"],
     },
     {
       k: "Lucky drink",
-      v: [
-        "Americano",
-        "Matcha latte",
-        "Sparkling water",
-        "Honey water",
-        "Iced tea",
-        "Yogurt smoothie",
-        "Lemon tea",
-        "Ssanghwacha",
-      ],
+      v: ["Americano","Matcha latte","Sparkling water","Honey water","Iced tea","Yogurt smoothie","Lemon tea","Ssanghwacha"],
     },
     {
       k: "Avoid today",
-      v: [
-        "Infinite Reels scroll",
-        "Naps over 30 min",
-        "One more Netflix episode",
-        "Group chat pings",
-        "Ordering delivery food",
-        "Studying in bed",
-        "Music with lyrics",
-        "3 PM coffee",
-      ],
+      v: ["Infinite Reels scroll","Naps over 30 min","One more Netflix episode","Group chat pings","Ordering delivery food","Studying in bed","Music with lyrics","3 PM coffee"],
     },
   ],
 };
 
 function fortuneFor(subject: string, lang: Lang) {
-  // Normalize: lowercase + strip all whitespace/punctuation so
-  // "cse113", "cse 113", "CSE-113", "Cse 113" all map to the same seed.
   const normalized = subject
     .toLowerCase()
     .normalize("NFKC")
@@ -221,7 +159,7 @@ function fortuneFor(subject: string, lang: Lang) {
     k: a.k,
     v: a.v[(seed >> (i * 3)) % a.v.length],
   }));
-  return { grade, score, msg, luck };
+  return { grade, score, msg, luck, seed };
 }
 
 const LINKS: Record<Lang, { label: string; sub: string; href: string }[]> = {
@@ -241,7 +179,7 @@ const T = {
   ko: {
     back: "← 뒤로",
     daily: "오늘 · 하루 한 번",
-    eyebrow: "today's academic fortune",
+    eyebrow: "today's academic fortune / 학점 점성술",
     title1: "오늘의",
     titleEm: "학점",
     title2: "운세",
@@ -254,11 +192,15 @@ const T = {
     luckScore: "행운 지수",
     disclaimer: "* 결과는 과목 이름과 오늘 날짜를 기반으로 결정되며, 자정까지 동일하게 유지됩니다.",
     footer: "ideantoe · study",
+    ticket: "ADMIT ONE · 학점 운세권",
+    serial: "발권번호",
+    issued: "발행",
+    valid: "유효기간 · 오늘 자정까지",
   },
   en: {
     back: "← back",
     daily: "daily · once a day",
-    eyebrow: "today's academic fortune",
+    eyebrow: "today's academic fortune / oracle of grades",
     title1: "Today's",
     titleEm: "Grade",
     title2: "Fortune",
@@ -271,8 +213,21 @@ const T = {
     luckScore: "luck score",
     disclaimer: "* The result is derived from the subject name and today's date, and stays the same until midnight.",
     footer: "ideantoe · study",
+    ticket: "ADMIT ONE · GRADE FORTUNE",
+    serial: "serial",
+    issued: "issued",
+    valid: "valid until midnight",
   },
 } as const;
+
+const TICKER_KO = [
+  "오늘의 학점 운세","STUDY FORTUNE","하루 한 번","SUBJECT × DATE","결과는 자정까지 고정",
+  "ASK THE ORACLE","행운은 노트 위에","CAFFEINE OPTIONAL","집중 +∞","NO REFUNDS",
+];
+const TICKER_EN = [
+  "TODAY'S GRADE FORTUNE","ONCE A DAY","SUBJECT × DATE","LOCKED UNTIL MIDNIGHT",
+  "ASK THE ORACLE","LUCK ON PAPER","CAFFEINE OPTIONAL","FOCUS +∞","NO REFUNDS","STUDY FORTUNE",
+];
 
 function StudyPage() {
   const [lang, setLang] = useState<Lang>("ko");
@@ -283,219 +238,332 @@ function StudyPage() {
     () => (submitted ? fortuneFor(submitted, lang) : null),
     [submitted, lang],
   );
+  const tickerItems = lang === "ko" ? TICKER_KO : TICKER_EN;
+  const serial = fortune
+    ? fortune.seed.toString(36).toUpperCase().padStart(7, "0").slice(0, 7)
+    : "·······";
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#0a0a0c] text-white">
-      {/* Ambient gradient */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-32 top-[-10%] h-[60vh] w-[60vh] rounded-full bg-fuchsia-500/20 blur-[120px]" />
-        <div className="absolute -right-32 top-[20%] h-[55vh] w-[55vh] rounded-full bg-indigo-500/20 blur-[120px]" />
-        <div className="absolute left-1/3 bottom-[-10%] h-[55vh] w-[55vh] rounded-full bg-cyan-400/15 blur-[120px]" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,transparent_55%,rgba(0,0,0,0.7)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06] [background-image:linear-gradient(rgba(255,255,255,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.6)_1px,transparent_1px)] [background-size:48px_48px]" />
+    <main className="relative min-h-screen overflow-x-hidden bg-[#f1ede4] text-[#0b0b0b]">
+      {/* Paper texture + halftone */}
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 opacity-[0.07] mix-blend-multiply"
+        style={{
+          backgroundImage:
+            "radial-gradient(#000 1px, transparent 1.2px)",
+          backgroundSize: "6px 6px",
+        }}
+      />
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
 
-      <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-6 py-16 md:px-10 md:py-20">
-        {/* Header */}
+      {/* Top ticker */}
+      <div className="border-y-2 border-[#0b0b0b] bg-[#0b0b0b] text-[#d6ff3a] overflow-hidden">
+        <div className="flex whitespace-nowrap animate-marquee py-2 font-mono text-[11px] uppercase tracking-[0.35em]">
+          {[...tickerItems, ...tickerItems, ...tickerItems].map((x, i) => (
+            <span key={i} className="mx-6 flex items-center gap-6">
+              <span>{x}</span>
+              <span aria-hidden className="text-[#d6ff3a]/70">✦</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-[1300px] px-5 md:px-10 pb-24">
+        {/* Header bar */}
         <motion.header
-          initial={{ opacity: 0, y: -12 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="flex items-center justify-between gap-4"
+          transition={{ duration: 0.5 }}
+          className="flex items-center justify-between gap-4 py-5 border-b border-[#0b0b0b]/20"
         >
-          <a href="/" className="text-xs uppercase tracking-[0.3em] text-white/60 hover:text-white">
+          <a href="/" className="font-mono text-[11px] uppercase tracking-[0.35em] hover:text-[#0b0b0b]/60">
             {t.back}
           </a>
-          <div className="flex items-center gap-4">
-            {/* Language toggle */}
-            <div
-              role="group"
-              aria-label="Language"
-              className="relative inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1 backdrop-blur-xl"
-            >
-              <motion.span
-                layout
-                transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                className="absolute inset-y-1 w-[calc(50%-0.25rem)] rounded-full bg-white"
-                style={{ left: lang === "ko" ? "0.25rem" : "calc(50%)" }}
-              />
-              {(["ko", "en"] as const).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className={`relative z-10 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.3em] transition-colors ${
-                    lang === l ? "text-black" : "text-white/60 hover:text-white"
-                  }`}
-                  aria-pressed={lang === l}
-                >
-                  {l === "ko" ? "KR" : "EN"}
-                </button>
-              ))}
-            </div>
-            <span className="hidden text-[10px] uppercase tracking-[0.35em] text-white/40 sm:inline">
-              {todayKey()} · {t.daily}
-            </span>
+          <div className="hidden md:flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
+            <span>FILE №{todayKey()}</span>
+            <span>·</span>
+            <span>EDITION 001</span>
+            <span>·</span>
+            <span>{t.daily}</span>
+          </div>
+          <div
+            role="group"
+            aria-label="Language"
+            className="relative inline-flex items-center border-2 border-[#0b0b0b] bg-[#f1ede4]"
+          >
+            <motion.span
+              layout
+              transition={{ type: "spring", stiffness: 420, damping: 32 }}
+              className="absolute inset-y-0 w-1/2 bg-[#0b0b0b]"
+              style={{ left: lang === "ko" ? 0 : "50%" }}
+            />
+            {(["ko", "en"] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`relative z-10 px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.3em] transition-colors ${
+                  lang === l ? "text-[#d6ff3a]" : "text-[#0b0b0b]"
+                }`}
+                aria-pressed={lang === l}
+              >
+                {l === "ko" ? "KR" : "EN"}
+              </button>
+            ))}
           </div>
         </motion.header>
 
-        {/* Hero */}
-        <section className="mt-16 md:mt-24">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-mono text-[11px] uppercase tracking-[0.4em] text-white/50"
-          >
-            {t.eyebrow}
-          </motion.p>
-          <motion.h1
-            key={lang}
-            initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-4 font-serif text-5xl leading-[0.95] tracking-tight md:text-7xl"
-            style={{ fontFamily: "'Syne', serif" }}
-          >
-            {t.title1} <em className="italic text-white/70">{t.titleEm}</em> {t.title2}
-          </motion.h1>
-          <motion.p
-            key={lang + "-lede"}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-5 max-w-xl text-sm leading-relaxed text-white/60 md:text-base"
-          >
-            {t.lede}
-          </motion.p>
+        {/* HERO — asymmetric editorial grid */}
+        <section className="mt-10 md:mt-16 grid grid-cols-12 gap-x-4 gap-y-8">
+          <div className="col-span-12 md:col-span-8">
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="font-mono text-[10px] uppercase tracking-[0.45em] text-[#0b0b0b]/60"
+            >
+              ✦ {t.eyebrow}
+            </motion.p>
+            <motion.h1
+              key={lang}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-5 font-serif leading-[0.86] tracking-[-0.03em] text-[16vw] md:text-[10.5rem]"
+              style={{ fontFamily: "'Syne', serif" }}
+            >
+              <span className="block">{t.title1}</span>
+              <span className="block relative">
+                <em className="italic relative inline-block">
+                  <span className="relative z-10">{t.titleEm}</span>
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-[-4%] bottom-[12%] h-[34%] -z-0 bg-[#d6ff3a] -rotate-[1.5deg]"
+                  />
+                </em>{" "}
+                <span className="text-[#0b0b0b]/30">{t.title2}</span>
+              </span>
+            </motion.h1>
+          </div>
+
+          <aside className="col-span-12 md:col-span-4 md:pl-6 md:border-l-2 md:border-[#0b0b0b] flex flex-col justify-end">
+            <div className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/60">
+              ISSUE / {todayKey()}
+            </div>
+            <p className="mt-3 text-[15px] leading-relaxed md:text-base">
+              {t.lede}
+            </p>
+            <div className="mt-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.35em]">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#0b0b0b] animate-blink" />
+              <span>LIVE · {t.daily}</span>
+            </div>
+          </aside>
         </section>
 
-        {/* Input */}
+        {/* INPUT — brutal stamp form */}
         <motion.form
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           onSubmit={(e) => {
             e.preventDefault();
             const s = subject.trim();
             if (s) setSubmitted(s);
           }}
-          className="mt-10 flex flex-col gap-3 sm:flex-row"
+          className="mt-12 md:mt-16 grid grid-cols-12 gap-3"
         >
-          <div className="relative flex-1">
+          <div className="col-span-12 md:col-span-9 relative">
+            <span className="absolute -top-3 left-4 bg-[#f1ede4] px-2 font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/70">
+              ✎ {t.inputBadge}
+            </span>
             <input
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder={t.placeholder}
-              className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-base text-white placeholder:text-white/30 outline-none backdrop-blur-xl transition focus:border-white/40 focus:bg-white/[0.06]"
+              className="w-full border-2 border-[#0b0b0b] bg-[#f6f3eb] px-5 py-5 text-lg md:text-xl outline-none placeholder:text-[#0b0b0b]/30 focus:bg-white"
             />
-            <span className="pointer-events-none absolute inset-y-0 right-5 flex items-center font-mono text-[10px] uppercase tracking-[0.3em] text-white/30">
-              {t.inputBadge}
-            </span>
           </div>
           <button
             type="submit"
-            className="group relative overflow-hidden rounded-2xl border border-white/20 bg-white px-7 py-4 text-sm font-medium uppercase tracking-[0.25em] text-black transition hover:bg-white/90"
+            className="col-span-12 md:col-span-3 group relative border-2 border-[#0b0b0b] bg-[#0b0b0b] px-7 py-5 font-mono text-sm font-bold uppercase tracking-[0.3em] text-[#d6ff3a] transition hover:bg-[#d6ff3a] hover:text-[#0b0b0b]"
           >
-            <span className="relative z-10">{t.submit}</span>
+            <span className="relative z-10">→ {t.submit}</span>
           </button>
         </motion.form>
 
-        {/* Result */}
+        {/* RESULT — ticket stub */}
         <AnimatePresence mode="wait">
           {fortune && submitted && (
             <motion.section
               key={submitted + todayKey() + lang}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-14"
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-14 md:mt-20"
             >
-              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-2xl md:p-12">
+              <div
+                className="relative border-2 border-[#0b0b0b] bg-[#f6f3eb]"
+                style={{
+                  boxShadow: "10px 10px 0 0 #0b0b0b",
+                }}
+              >
+                {/* perforation */}
                 <div
-                  className={`pointer-events-none absolute -inset-32 -z-10 bg-gradient-to-br ${fortune.grade.tone} opacity-[0.18] blur-3xl`}
+                  aria-hidden
+                  className="pointer-events-none absolute left-0 right-0 hidden md:block"
+                  style={{
+                    top: "auto",
+                    bottom: "30%",
+                    height: 0,
+                    borderTop: "2px dashed #0b0b0b",
+                  }}
                 />
-                <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-                  <div className="min-w-0">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/50">
+                {/* notch holes */}
+                <span aria-hidden className="hidden md:block absolute -left-[11px] top-[30%] h-5 w-5 rounded-full bg-[#f1ede4] border-2 border-[#0b0b0b]" />
+                <span aria-hidden className="hidden md:block absolute -right-[11px] top-[30%] h-5 w-5 rounded-full bg-[#f1ede4] border-2 border-[#0b0b0b]" />
+
+                {/* header strip */}
+                <div className="flex items-center justify-between border-b-2 border-[#0b0b0b] bg-[#0b0b0b] px-5 py-2 font-mono text-[10px] uppercase tracking-[0.4em] text-[#d6ff3a]">
+                  <span>✦ {t.ticket}</span>
+                  <span className="hidden sm:inline">{t.serial} · {serial}</span>
+                  <span>{t.valid}</span>
+                </div>
+
+                <div className="grid grid-cols-12 gap-0">
+                  {/* Left — subject + message */}
+                  <div className="col-span-12 md:col-span-7 p-6 md:p-10 md:border-r-2 md:border-[#0b0b0b]">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
                       {t.resultSubject}
                     </p>
-                    <h2 className="mt-2 truncate text-2xl font-medium md:text-3xl">{submitted}</h2>
-                    <p className="mt-8 max-w-md text-base leading-relaxed text-white/80 md:text-lg">
-                      “{fortune.msg}”
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-start md:items-end">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/50">
-                      {t.resultGrade}
-                    </p>
-                    <motion.div
-                      initial={{ scale: 0.6, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                      className={`mt-3 bg-gradient-to-br ${fortune.grade.tone} bg-clip-text font-serif text-[7rem] leading-none tracking-tight text-transparent md:text-[10rem]`}
+                    <h2
+                      className="mt-2 font-serif text-3xl md:text-5xl tracking-tight break-words"
                       style={{ fontFamily: "'Syne', serif" }}
                     >
-                      {fortune.grade.g}
-                    </motion.div>
-                    <div className="mt-2 font-mono text-xs text-white/50">
-                      {t.luckScore} · {fortune.score}/100
+                      {submitted}
+                    </h2>
+
+                    <div className="mt-8 border-l-4 border-[#d6ff3a] pl-4">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
+                        ORACLE SAYS
+                      </p>
+                      <p className="mt-2 text-lg md:text-xl leading-snug">
+                        “{fortune.msg}”
+                      </p>
+                    </div>
+
+                    <div className="mt-8 flex items-center gap-6 font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/70">
+                      <span>{t.issued} · {todayKey()}</span>
+                      <span className="hidden sm:inline">№ {serial}</span>
+                    </div>
+                  </div>
+
+                  {/* Right — giant grade stub */}
+                  <div className="col-span-12 md:col-span-5 relative p-6 md:p-10 bg-[#d6ff3a]">
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 opacity-[0.18] mix-blend-multiply"
+                      style={{
+                        backgroundImage: "radial-gradient(#000 1px, transparent 1.4px)",
+                        backgroundSize: "5px 5px",
+                      }}
+                    />
+                    <div className="relative">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/70">
+                        {t.resultGrade}
+                      </p>
+                      <motion.div
+                        initial={{ scale: 0.7, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                        className="mt-2 font-serif leading-[0.82] tracking-[-0.04em] text-[#0b0b0b] text-[10rem] md:text-[14rem]"
+                        style={{ fontFamily: "'Syne', serif" }}
+                      >
+                        {fortune.grade.g}
+                      </motion.div>
+                      <div className="mt-2 flex items-end justify-between">
+                        <div className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/80">
+                          {t.luckScore}
+                        </div>
+                        <div className="font-mono text-xl tracking-tight text-[#0b0b0b]">
+                          {fortune.score}<span className="text-[#0b0b0b]/50">/100</span>
+                        </div>
+                      </div>
+                      {/* luck bar */}
+                      <div className="mt-2 h-2 w-full border border-[#0b0b0b] bg-[#f6f3eb]">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${fortune.score}%` }}
+                          transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                          className="h-full bg-[#0b0b0b]"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Luck grid */}
-                <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-4">
-                  {fortune.luck.map((l) => (
-                    <div key={l.k} className="bg-[#0a0a0c] px-5 py-5">
-                      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">
-                        {l.k}
+                <div className="grid grid-cols-2 md:grid-cols-4 border-t-2 border-[#0b0b0b]">
+                  {fortune.luck.map((l, i) => (
+                    <div
+                      key={l.k}
+                      className={`p-5 md:p-6 ${i < (fortune.luck.length - 1) ? "border-r-2 border-[#0b0b0b]" : ""} ${i < 2 ? "border-b-2 md:border-b-0 border-[#0b0b0b]" : ""}`}
+                    >
+                      <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/60">
+                        0{i + 1} / {l.k}
                       </p>
-                      <p className="mt-2 text-sm text-white/90">{l.v}</p>
+                      <p className="mt-2 text-lg leading-snug">{l.v}</p>
                     </div>
                   ))}
                 </div>
 
-                <p className="mt-6 text-[11px] text-white/40">{t.disclaimer}</p>
+                <p className="border-t-2 border-[#0b0b0b] bg-[#f1ede4] px-5 py-3 font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/60">
+                  {t.disclaimer}
+                </p>
               </div>
             </motion.section>
           )}
         </AnimatePresence>
 
-        <div className="flex-1" />
-
-        {/* Bottom redirect buttons */}
+        {/* Links — index card row */}
         <motion.nav
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20 grid grid-cols-1 gap-3 sm:grid-cols-3"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-20 grid grid-cols-1 gap-3 md:grid-cols-3"
         >
-          {LINKS[lang].map((l) => (
+          {LINKS[lang].map((l, i) => (
             <a
               key={l.href}
               href={l.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.06]"
+              className="group relative border-2 border-[#0b0b0b] bg-[#f6f3eb] p-6 transition hover:bg-[#d6ff3a] hover:-translate-y-1 hover:[box-shadow:6px_6px_0_0_#0b0b0b]"
             >
-              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-white/0 via-white/0 to-white/0 opacity-0 transition group-hover:from-fuchsia-500/10 group-hover:to-cyan-400/10 group-hover:opacity-100" />
-              <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/40">
-                {l.sub}
+              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
+                0{i + 1} / {l.sub}
               </p>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="text-lg font-medium tracking-tight">{l.label}</span>
-                <span className="text-white/40 transition group-hover:translate-x-1 group-hover:text-white">
-                  ↗
+              <div className="mt-4 flex items-end justify-between">
+                <span className="font-serif text-2xl tracking-tight" style={{ fontFamily: "'Syne', serif" }}>
+                  {l.label}
                 </span>
+                <span className="font-mono text-lg transition group-hover:translate-x-1">↗</span>
               </div>
             </a>
           ))}
         </motion.nav>
 
-        <p className="mt-10 text-center font-mono text-[10px] uppercase tracking-[0.4em] text-white/30">
-          {t.footer}
-        </p>
+        {/* Footer mark */}
+        <div className="mt-16 flex items-center justify-between border-t-2 border-[#0b0b0b] pt-4 font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
+          <span>{t.footer}</span>
+          <span>© {new Date().getFullYear()} · oracle of grades</span>
+          <span>{todayKey()}</span>
+        </div>
       </div>
     </main>
   );
