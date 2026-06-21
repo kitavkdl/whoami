@@ -3,6 +3,7 @@ import { useRef } from "react";
 import portrait from "@/assets/jiyul.png";
 import { Reveal } from "./Reveal";
 import { Counter } from "./Counter";
+import { GlitchText } from "./GlitchText";
 
 export function About() {
   const ref = useRef<HTMLElement>(null);
@@ -36,7 +37,7 @@ export function About() {
         <div className="lg:col-span-7 lg:pl-8">
           <Reveal>
             <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              ⟢ 01 — About
+              <GlitchText text="⟢ 01 — About" />
             </p>
           </Reveal>
           <Reveal delay={0.1}>

@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { GlitchText } from "./GlitchText";
 
 export function Preloader() {
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
+  const lite =
+    typeof window !== "undefined" &&
+    (window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      window.matchMedia("(max-width: 768px)").matches);
 
   useEffect(() => {
     let raf = 0;
@@ -41,18 +46,22 @@ export function Preloader() {
           className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
         >
           {/* huge rotating display ring */}
-          <motion.div
-            initial={{ rotate: 0 }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            className="absolute h-[80vmin] w-[80vmin] rounded-full border border-accent/15"
-          />
-          <motion.div
-            initial={{ rotate: 0 }}
-            animate={{ rotate: -360 }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-            className="absolute h-[60vmin] w-[60vmin] rounded-full border border-accent/25"
-          />
+          {!lite && (
+            <>
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[80vmin] w-[80vmin] rounded-full border border-accent/15 will-change-transform"
+              />
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: -360 }}
+                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[60vmin] w-[60vmin] rounded-full border border-accent/25 will-change-transform"
+              />
+            </>
+          )}
 
           {/* central seed — same shape that morphs into hero core */}
           <motion.div
@@ -68,8 +77,18 @@ export function Preloader() {
 
             {/* counter */}
             <div className="flex items-baseline gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              <span className="text-accent">{progress.toString().padStart(3, "0")}</span>
-              <span>/ 100 — initializing</span>
+              <GlitchText
+                text={progress.toString().padStart(3, "0")}
+                mode="interval"
+                intervalMs={1200}
+                density={0.35}
+                className="text-accent"
+              />
+              <GlitchText
+                text="/ 100 — initializing"
+                mode="typewriter"
+                duration={900}
+              />
             </div>
 
             {/* progress bar */}

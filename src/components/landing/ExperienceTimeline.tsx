@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { GlitchText } from "./GlitchText";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -114,7 +115,7 @@ export function ExperienceTimeline() {
             data-exp-anim
             className="mb-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground"
           >
-            ⟢ 03 — Experience
+            <GlitchText text="⟢ 03 — Experience" />
           </p>
           <h2
             data-exp-anim
