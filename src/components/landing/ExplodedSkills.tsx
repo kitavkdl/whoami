@@ -166,14 +166,19 @@ export function ExplodedSkills() {
             <div
               key={p.label}
               className="absolute left-1/2 top-1/2"
-              style={{ transform: `translate(${gridX}px, ${gridY}px)` }}
+              style={{
+                marginLeft: `${gridX - 65}px`,
+                marginTop: `${gridY - 65}px`,
+                width: 0,
+                height: 0,
+              }}
             >
               <div
                 data-part
                 data-x={p.x}
                 data-y={p.y}
                 data-rot={p.rot}
-                className="-translate-x-1/2 -translate-y-1/2 will-change-transform"
+                className="will-change-transform"
               >
                 <div className="group relative h-[110px] w-[110px] overflow-hidden border border-accent/40 bg-surface/80 p-3 backdrop-blur shadow-[0_0_30px_-10px_oklch(0.62_0.31_312_/_0.6)] md:h-[130px] md:w-[130px]">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-transparent" />
