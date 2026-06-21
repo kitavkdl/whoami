@@ -2,6 +2,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLayoutEffect, useRef } from "react";
+import { GlitchText } from "./GlitchText";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -169,7 +170,7 @@ export function ProjectsHorizontal() {
 
         <div className="relative z-20 flex items-center justify-between px-6 pt-8 md:px-12">
           <p className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-            ⟢ 05 — Selected projects
+            <GlitchText text="⟢ 05 — Selected projects" />
           </p>
           <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-accent">
             ◀ scroll ▶

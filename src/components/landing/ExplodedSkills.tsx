@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { GlitchText } from "./GlitchText";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -126,7 +127,7 @@ export function ExplodedSkills() {
           className="absolute left-1/2 top-16 -translate-x-1/2 text-center md:top-24 opacity-0"
         >
           <p className="mb-3 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-            ⟢ 03 — Stack assembly
+            <GlitchText text="⟢ 03 — Stack assembly" />
           </p>
           <h2 className="font-display text-3xl font-extrabold tracking-tighter md:text-5xl">
             Scroll to <span className="text-outline-accent">assemble</span>

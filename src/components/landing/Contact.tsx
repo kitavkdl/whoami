@@ -2,6 +2,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Reveal } from "./Reveal";
+import { GlitchText } from "./GlitchText";
+import { Terminal } from "./Terminal";
 
 function useKstClock() {
   const [time, setTime] = useState(() => formatKst(new Date()));
