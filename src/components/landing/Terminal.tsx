@@ -20,13 +20,13 @@ const ABOUT =
 
 const HELP = [
   "available commands:",
-  "  whoami           identity",
-  "  ls projects      list selected works",
-  "  cat about.txt    about summary",
-  "  cat skills.txt   stack",
-  "  contact          email & phone",
-  "  clear            reset output",
-  "  help             this menu",
+  "  whoami           //identity",
+  "  ls projects      //list selected works",
+  "  cat about.txt    //about summary",
+  "  cat skills.txt   //stack",
+  "  contact          //email & phone",
+  "  clear            //reset output",
+  "  help             //this menu",
 ];
 
 function run(cmd: string): Line[] {
