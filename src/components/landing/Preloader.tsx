@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { GlitchText } from "./GlitchText";
 
 export function Preloader() {
   const [progress, setProgress] = useState(0);
@@ -68,8 +69,18 @@ export function Preloader() {
 
             {/* counter */}
             <div className="flex items-baseline gap-3 font-mono text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              <span className="text-accent">{progress.toString().padStart(3, "0")}</span>
-              <span>/ 100 — initializing</span>
+              <GlitchText
+                text={progress.toString().padStart(3, "0")}
+                mode="interval"
+                intervalMs={1200}
+                density={0.35}
+                className="text-accent"
+              />
+              <GlitchText
+                text="/ 100 — initializing"
+                mode="typewriter"
+                duration={900}
+              />
             </div>
 
             {/* progress bar */}
