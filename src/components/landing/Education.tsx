@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import { GlitchText } from "./GlitchText";
 import sbu from "@/assets/sbu.png";
 
 export function Education() {
@@ -8,7 +9,7 @@ export function Education() {
         <div className="md:col-span-3">
           <Reveal>
             <p className="mb-8 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              ⟢ 06 — Education
+              <GlitchText text="⟢ 06 — Education" />
             </p>
           </Reveal>
           <Reveal delay={0.15}>

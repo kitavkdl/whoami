@@ -58,7 +58,7 @@ export function Contact() {
       <div className="relative z-10 max-w-3xl">
         <Reveal>
           <p className="mb-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-            ⟢ 05 — Contact
+            <GlitchText text="⟢ 05 — Contact" />
           </p>
         </Reveal>
         <Reveal delay={0.1}>
@@ -107,6 +107,15 @@ export function Contact() {
           </p>
         </Reveal>
       </div>
+
+      {/* interactive terminal widget */}
+      <div className="relative z-10 mt-16 max-w-2xl">
+        <p className="mb-3 text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+          <GlitchText text="⟢ ja-term" />
+        </p>
+        <Terminal />
+      </div>
+
 
       <div className="relative z-10 mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:flex-row md:items-center">
         <span>© 2026 Jiyul Ahn — All rights reserved</span>
