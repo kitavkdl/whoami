@@ -1,23 +1,50 @@
-import { animate, useInView, useMotionValue, useTransform } from "framer-motion";
-import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 export function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.floor(v).toString().padStart(2, "0"));
+  const [val, setVal] = useState(0);
+  const played = useRef(false);
 
   useEffect(() => {
-    if (inView) {
-      const ctrl = animate(count, to, { duration: 1.6, ease: [0.16, 1, 0.3, 1] });
-      return () => ctrl.stop();
+    const el = ref.current;
+    if (!el) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setVal(to);
+      return;
     }
-  }, [inView, count, to]);
+
+    const obj = { v: 0 };
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        if (played.current) return;
+        played.current = true;
+        gsap.to(obj, {
+          v: to,
+          duration: 1.6,
+          ease: "power3.out",
+          onUpdate: () => setVal(Math.floor(obj.v)),
+          onComplete: () => setVal(to),
+        });
+      },
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, [to]);
 
   return (
     <span ref={ref} className="inline-flex items-baseline">
-      <motion.span>{rounded}</motion.span>
+      <span>{String(val).padStart(2, "0")}</span>
       <span className="text-accent">{suffix}</span>
     </span>
   );

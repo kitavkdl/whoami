@@ -1,6 +1,8 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { Reveal } from "./Reveal";
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 const roles = [
   {
@@ -54,82 +56,131 @@ const roles = [
 
 export function ExperienceTimeline() {
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const lineH = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const lineRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      // vertical line draws on scroll
+      if (lineRef.current) {
+        gsap.fromTo(
+          lineRef.current,
+          { scaleY: 0, transformOrigin: "top center" },
+          {
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 70%",
+              end: "bottom 80%",
+              scrub: true,
+            },
+          },
+        );
+      }
+
+      // stagger cards
+      const items = section.querySelectorAll<HTMLElement>("[data-exp-item]");
+      items.forEach((item) => {
+        gsap.fromTo(
+          item.querySelectorAll<HTMLElement>("[data-exp-anim]"),
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: item,
+              start: "top 85%",
+              once: true,
+            },
+          },
+        );
+      });
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section ref={ref} id="work" className="relative px-6 py-32 md:px-10 md:py-40">
       <div className="mx-auto max-w-7xl">
         <div className="mb-20">
-          <Reveal>
-            <p className="mb-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              ⟢ 03 — Experience
-            </p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="font-display text-5xl font-extrabold leading-[0.95] tracking-tighter md:text-7xl">
-              A track record of <br className="hidden md:block" />
-              <span className="italic">shipping</span><span className="text-accent">.</span>
-            </h2>
-          </Reveal>
+          <p
+            data-exp-anim
+            className="mb-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground"
+          >
+            ⟢ 03 — Experience
+          </p>
+          <h2
+            data-exp-anim
+            className="font-display text-5xl font-extrabold leading-[0.95] tracking-tighter md:text-7xl"
+          >
+            A track record of <br className="hidden md:block" />
+            <span className="italic">shipping</span>
+            <span className="text-accent">.</span>
+          </h2>
         </div>
 
         <div className="relative grid grid-cols-1 gap-y-24 lg:grid-cols-12 lg:gap-12">
           {/* progress line */}
           <div className="absolute left-[7px] top-0 hidden h-full w-px bg-border lg:left-[calc(33.333%+24px)] lg:block">
-            <motion.div style={{ height: lineH }} className="w-px bg-accent" />
+            <div ref={lineRef} className="h-full w-px bg-accent" />
           </div>
 
           {roles.map((r, i) => (
-            <div key={i} className="contents">
+            <div key={i} data-exp-item className="contents">
               <div className="lg:col-span-4">
                 <div className="lg:sticky lg:top-32">
-                  <Reveal>
-                    <div className="flex items-start gap-4">
-                      <div className="relative mt-2 hidden h-4 w-4 lg:block">
-                        <div className="absolute inset-0 rounded-full bg-accent" />
-                        <div className="absolute inset-0 animate-ping rounded-full bg-accent/60" />
-                      </div>
-                      <div>
-                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-                          {r.date}
-                        </p>
-                        <h3 className="mt-3 font-display text-3xl font-bold tracking-tight md:text-4xl">
-                          {r.role}
-                        </h3>
-                        <p className="mt-2 text-sm text-muted-foreground">
-                          {r.company} · {r.location}
-                        </p>
-                      </div>
+                  <div data-exp-anim className="flex items-start gap-4">
+                    <div className="relative mt-2 hidden h-4 w-4 lg:block">
+                      <div className="absolute inset-0 rounded-full bg-accent" />
+                      <div className="absolute inset-0 animate-ping rounded-full bg-accent/60" />
                     </div>
-                  </Reveal>
+                    <div>
+                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+                        {r.date}
+                      </p>
+                      <h3 className="mt-3 font-display text-3xl font-bold tracking-tight md:text-4xl">
+                        {r.role}
+                      </h3>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {r.company} · {r.location}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div className="lg:col-span-8">
-                <Reveal delay={0.1}>
-                  <ul className="space-y-4 border-l border-border pl-6 lg:border-l-0 lg:pl-0">
-                    {r.bullets.map((b, j) => (
-                      <li
-                        key={j}
-                        className="relative pl-6 text-base leading-relaxed text-foreground/85 md:text-lg"
-                      >
-                        <span className="absolute left-0 top-[10px] h-px w-3 bg-accent" />
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {r.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-border px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </Reveal>
+                <ul
+                  data-exp-anim
+                  className="space-y-4 border-l border-border pl-6 lg:border-l-0 lg:pl-0"
+                >
+                  {r.bullets.map((b, j) => (
+                    <li
+                      key={j}
+                      className="relative pl-6 text-base leading-relaxed text-foreground/85 md:text-lg"
+                    >
+                      <span className="absolute left-0 top-[10px] h-px w-3 bg-accent" />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+                <div data-exp-anim className="mt-6 flex flex-wrap gap-2">
+                  {r.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-border px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
