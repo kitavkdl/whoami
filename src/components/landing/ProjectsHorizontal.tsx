@@ -172,7 +172,7 @@ export function ProjectsHorizontal() {
   const labelRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-85%"]);
   const bgX = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
   const titleX = useTransform(scrollYProgress, [0, 1], ["0%", "-120%"]);
 
@@ -188,7 +188,7 @@ export function ProjectsHorizontal() {
         start: "top top",
         end: "bottom bottom",
         snap: {
-          snapTo: [0, 1 / 3, 2 / 3, 1],
+          snapTo: [0, 0.25, 0.5, 0.75, 1],
           duration: { min: 0.2, max: 0.6 },
           ease: "power2.inOut",
           delay: 0.08,
