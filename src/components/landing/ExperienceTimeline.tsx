@@ -7,6 +7,18 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 const roles = [
   {
+    date: "Jul 2025 — Present",
+    role: "Founder & Lead Developer",
+    company: "SeekOnce",
+    location: "Incheon, KR",
+    bullets: [
+      "Built and shipped an academic management platform for SUNY Korea, gated by @stonybrook.edu, reaching 100 users within 20 days of launch.",
+      "Architected a 20+ table PostgreSQL schema spanning users, clubs, transcripts, courses, evaluations, and geolocation modules.",
+      "Continuously improved architecture decisions — replaced polling with Supabase Realtime and refactored curriculum-path animations with Framer Motion across 15+ releases.",
+    ],
+    tags: ["React", "Supabase", "PostgreSQL", "Realtime"],
+  },
+  {
     date: "Mar 2026 — Jun 2026",
     role: "Short-term Development Researcher",
     company: "KOPRI (Korea Polar Research Institute)",

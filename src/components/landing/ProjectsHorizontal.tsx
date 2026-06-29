@@ -6,30 +6,51 @@ import { GlitchText } from "./GlitchText";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
-const PROJECTS = [
+type Project = {
+  n: string;
+  title: string;
+  tag: string;
+  desc: string;
+  color: string;
+  metrics?: string[];
+  tags?: string[];
+  link?: string;
+};
+
+const PROJECTS: Project[] = [
   {
     n: "P/01",
+    title: "SeekOnce",
+    tag: "Founder & Lead Developer · 2025–Present · seek-once.com",
+    desc: "Academic management platform for SUNY Korea — gated by @stonybrook.edu. 100 users in 20 days of launch. Currently v3.7.1, actively shipped.\n\nGPA simulation, curriculum path mapping, friend schedule overlay, anonymous course evaluations, and campus café geolocation (Outstanding partnership). Transcript-based auto-ingestion across all features.",
+    color: "from-emerald-500/30 to-teal-500/10",
+    metrics: ["100 users — 20 days", "v3.7.1 — 15+ releases", "20+ table schema", "10+ DAU"],
+    tags: ["React", "Supabase", "PostgreSQL", "Framer Motion", "React Query", "Supabase Realtime"],
+    link: "https://www.seek-once.com/",
+  },
+  {
+    n: "P/02",
     title: "B2B Export Infra",
     tag: "Founder · 2025",
     desc: "Hybrid SQL + NoSQL pipeline connecting Korean sellers with overseas buyers — automating customs, logistics, and settlement.",
     color: "from-purple-500/30 to-fuchsia-500/10",
   },
   {
-    n: "P/02",
+    n: "P/03",
     title: "Odoo Operations",
     tag: "PM · DX Tech",
     desc: "Multi-project orchestration: scoping, resourcing, and KPI instrumentation for Odoo-based enterprise rollouts.",
     color: "from-violet-500/30 to-indigo-500/10",
   },
   {
-    n: "P/03",
+    n: "P/04",
     title: "BADA Admissions",
     tag: "Developer · 2023–24",
     desc: "Digitized an offline student pipeline into a cross-platform site — PHP / JS, server config, and full deployment on Cafe24.",
     color: "from-pink-500/30 to-rose-500/10",
   },
   {
-    n: "P/04",
+    n: "P/05",
     title: "Internal Tools",
     tag: "Always shipping",
     desc: "A trail of small, sharp tools — admin dashboards, dataset cleaners, automation hooks. Boring on purpose, fast by design.",
@@ -95,12 +116,47 @@ function ProjectCard({
             <h3 className="font-display text-4xl font-extrabold leading-[0.95] tracking-tighter md:text-6xl">
               {p.title}
             </h3>
-            <p className="mt-6 max-w-md text-sm leading-relaxed text-foreground/80 md:text-base">
+            <p className="mt-6 max-w-md whitespace-pre-line text-sm leading-relaxed text-foreground/80 md:text-base">
               {p.desc}
             </p>
-            <div className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-[11px] uppercase tracking-[0.3em] text-accent">
-              Case study <span>↗</span>
-            </div>
+            {p.metrics && (
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                {p.metrics.map((m) => (
+                  <div
+                    key={m}
+                    className="border border-border/60 bg-background/40 px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-foreground/80 backdrop-blur-sm"
+                  >
+                    {m}
+                  </div>
+                ))}
+              </div>
+            )}
+            {p.tags && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-border px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.15em] text-muted-foreground"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            {p.link ? (
+              <a
+                href={p.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-[11px] uppercase tracking-[0.3em] text-accent transition-colors hover:text-foreground"
+              >
+                Case study <span>↗</span>
+              </a>
+            ) : (
+              <div className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-[11px] uppercase tracking-[0.3em] text-accent">
+                Case study <span>↗</span>
+              </div>
+            )}
           </div>
           <div className="absolute bottom-4 right-4 font-mono text-[80px] font-black text-foreground/5 md:text-[140px]">
             0{i + 1}
@@ -116,7 +172,7 @@ export function ProjectsHorizontal() {
   const labelRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-85%"]);
   const bgX = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
   const titleX = useTransform(scrollYProgress, [0, 1], ["0%", "-120%"]);
 
@@ -132,7 +188,7 @@ export function ProjectsHorizontal() {
         start: "top top",
         end: "bottom bottom",
         snap: {
-          snapTo: [0, 1 / 3, 2 / 3, 1],
+          snapTo: [0, 0.25, 0.5, 0.75, 1],
           duration: { min: 0.2, max: 0.6 },
           ease: "power2.inOut",
           delay: 0.08,
