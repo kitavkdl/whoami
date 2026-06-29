@@ -104,12 +104,47 @@ function ProjectCard({
             <h3 className="font-display text-4xl font-extrabold leading-[0.95] tracking-tighter md:text-6xl">
               {p.title}
             </h3>
-            <p className="mt-6 max-w-md text-sm leading-relaxed text-foreground/80 md:text-base">
+            <p className="mt-6 max-w-md whitespace-pre-line text-sm leading-relaxed text-foreground/80 md:text-base">
               {p.desc}
             </p>
-            <div className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-[11px] uppercase tracking-[0.3em] text-accent">
-              Case study <span>↗</span>
-            </div>
+            {p.metrics && (
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                {p.metrics.map((m) => (
+                  <div
+                    key={m}
+                    className="border border-border/60 bg-background/40 px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-foreground/80 backdrop-blur-sm"
+                  >
+                    {m}
+                  </div>
+                ))}
+              </div>
+            )}
+            {p.tags && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-border px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.15em] text-muted-foreground"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            {p.link ? (
+              <a
+                href={p.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-[11px] uppercase tracking-[0.3em] text-accent transition-colors hover:text-foreground"
+              >
+                Case study <span>↗</span>
+              </a>
+            ) : (
+              <div className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-[11px] uppercase tracking-[0.3em] text-accent">
+                Case study <span>↗</span>
+              </div>
+            )}
           </div>
           <div className="absolute bottom-4 right-4 font-mono text-[80px] font-black text-foreground/5 md:text-[140px]">
             0{i + 1}
