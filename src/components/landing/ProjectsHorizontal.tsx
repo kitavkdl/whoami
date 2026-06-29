@@ -6,7 +6,18 @@ import { GlitchText } from "./GlitchText";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
-const PROJECTS = [
+type Project = {
+  n: string;
+  title: string;
+  tag: string;
+  desc: string;
+  color: string;
+  metrics?: string[];
+  tags?: string[];
+  link?: string;
+};
+
+const PROJECTS: Project[] = [
   {
     n: "P/01",
     title: "SeekOnce",
@@ -15,6 +26,7 @@ const PROJECTS = [
     color: "from-emerald-500/30 to-teal-500/10",
     metrics: ["100 users — 20 days", "v3.7.1 — 15+ releases", "20+ table schema", "10+ DAU"],
     tags: ["React", "Supabase", "PostgreSQL", "Framer Motion", "React Query", "Supabase Realtime"],
+    link: "https://www.seek-once.com/",
   },
   {
     n: "P/02",
