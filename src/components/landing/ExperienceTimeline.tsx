@@ -139,21 +139,20 @@ export function ExperienceTimeline() {
           </h2>
         </div>
 
-        <div className="relative grid grid-cols-1 gap-y-24 lg:grid-cols-12 lg:gap-12">
-          {/* progress line */}
-          <div className="absolute left-[7px] top-0 hidden h-full w-px bg-border lg:left-[calc(33.333%+24px)] lg:block">
+        <div className="relative grid grid-cols-1 gap-y-24 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-32">
+          {/* progress line — sits in the gap between col-4 and col-8 */}
+          <div
+            className="pointer-events-none absolute top-0 hidden h-full w-px bg-border lg:block"
+            style={{ left: "calc((100% - 15 * 1rem) / 12 * 4 + 8 * 1rem)" }}
+          >
             <div ref={lineRef} className="h-full w-px bg-accent" />
           </div>
 
           {roles.map((r, i) => (
             <div key={i} data-exp-item className="contents">
               <div className="lg:col-span-4">
-                <div className="lg:sticky lg:top-32">
+                <div className="lg:sticky lg:top-32 lg:pr-8">
                   <div data-exp-anim className="flex items-start gap-4">
-                    <div className="relative mt-2 hidden h-4 w-4 lg:block">
-                      <div className="absolute inset-0 rounded-full bg-accent" />
-                      <div className="absolute inset-0 animate-ping rounded-full bg-accent/60" />
-                    </div>
                     <div>
                       <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
                         {r.date}
@@ -169,7 +168,7 @@ export function ExperienceTimeline() {
                 </div>
               </div>
 
-              <div className="lg:col-span-8">
+              <div className="lg:col-span-8 lg:pl-8">
                 <ul
                   data-exp-anim
                   className="space-y-4 border-l border-border pl-6 lg:border-l-0 lg:pl-0"
