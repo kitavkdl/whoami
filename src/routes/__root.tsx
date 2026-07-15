@@ -83,8 +83,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Jiyul Ahn_Developer & Systems Architect" },
       { name: "twitter:description", content: "Personal portfolio" },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b2bcbbee-807b-4ce9-938a-3d28181925ef/id-preview-6301cc62--093b68c5-c897-4491-89cb-ce8063db32b1.lovable.app-1778599749129.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b2bcbbee-807b-4ce9-938a-3d28181925ef/id-preview-6301cc62--093b68c5-c897-4491-89cb-ce8063db32b1.lovable.app-1778599749129.png" },
+      // TODO: add a self-hosted /public/og-image.png (real screenshot, not the Lovable
+      // preview capture) and re-add og:image / twitter:image once it exists.
     ],
     links: [
       { rel: "stylesheet", href: appCss },

@@ -73,7 +73,8 @@ function ProjectCard({
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
-    onShowLabel(e.clientX, e.clientY);
+    if (p.link) onShowLabel(e.clientX, e.clientY);
+    else onHideLabel();
     const el = tiltRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
@@ -153,8 +154,8 @@ function ProjectCard({
                 Case study <span>↗</span>
               </a>
             ) : (
-              <div className="mt-8 inline-flex items-center gap-2 border-b border-accent pb-1 text-[11px] uppercase tracking-[0.3em] text-accent">
-                Case study <span>↗</span>
+              <div className="mt-8 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+                Details on request
               </div>
             )}
           </div>
