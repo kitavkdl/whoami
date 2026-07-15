@@ -20,15 +20,14 @@ const roles = [
   },
   {
     date: "Mar 2026 — Jun 2026",
-    role: "Short-term Development Researcher",
-    company: "KOPRI (Korea Polar Research Institute)",
+    role: "Research Intern (Paid Contract)",
+    company: "KOPRI (Korea Polar Research Institute) · Life Sciences Research Division",
     location: "Incheon, KR",
     bullets: [
-      "Developed and maintained internal research data management tools and web interfaces for polar science operations.",
-      "Collaborated with research teams to digitize field data pipelines and streamline analytical workflows.",
-      "Contributed to software architecture decisions supporting large-scale geospatial and environmental datasets.",
+      "Built an offline software program for internal use under a paid development contract.",
+      "Engagement is governed by a signed non-disclosure agreement — scope and details are confidential.",
     ],
-    tags: ["Research", "Data", "Web"],
+    tags: ["Paid Contract", "NDA", "Government Institute"],
   },
   {
     date: "Jun 2025 — Present",
