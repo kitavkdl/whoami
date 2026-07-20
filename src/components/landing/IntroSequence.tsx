@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 /**
- * Cinematic intro: a lone silhouette walks toward the camera down a
- * receding perspective corridor, then the camera zooms through them and
- * the site is revealed. Inspired by the Razorpay Sprint 26 opener.
- *
- * Plays once per session (sessionStorage flag). Sits above the Preloader
- * and hands off to the site with a fast whiteout/blur.
+ * Scroll-driven cinematic intro. No walking figure — the camera dives
+ * through a violet aperture / tunnel of concentric rings while type
+ * shatters into place. User scrolls (wheel / touch / space / arrow) to
+ * push progress 0 → 1; at 1 we hand off to the site with a whiteout.
+ * Plays once per session.
  */
-const KEY = "ja-intro-played-v1";
+const KEY = "ja-intro-played-v2";
 
 export function IntroSequence() {
   const [phase, setPhase] = useState<"idle" | "playing" | "done">("idle");
+  const progress = useMotionValue(0);
+  const targetRef = useRef(0);
+  const rafRef = useRef(0);
 
+  // gate
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (sessionStorage.getItem(KEY)) {
@@ -26,31 +29,122 @@ export function IntroSequence() {
       setPhase("done");
       return;
     }
-    // Preloader is ~2s; start just before it exits so the handoff is seamless.
     const t = setTimeout(() => setPhase("playing"), 1800);
     return () => clearTimeout(t);
   }, []);
 
-  // total duration ~5.4s
+  // input → progress
   useEffect(() => {
     if (phase !== "playing") return;
-    // lock scroll during the intro
-    const prev = document.body.style.overflow;
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const t = setTimeout(() => {
-      sessionStorage.setItem(KEY, "1");
-      setPhase("done");
-    }, 5400);
-    return () => {
-      clearTimeout(t);
-      document.body.style.overflow = prev;
+    // start at 0
+    progress.set(0);
+    targetRef.current = 0;
+
+    let finishing = false;
+
+    const finish = () => {
+      if (finishing) return;
+      finishing = true;
+      animate(progress, 1, {
+        duration: 0.55,
+        ease: [0.7, 0, 0.3, 1],
+        onComplete: () => {
+          sessionStorage.setItem(KEY, "1");
+          setPhase("done");
+        },
+      });
     };
-  }, [phase]);
+
+    const bump = (delta: number) => {
+      if (finishing) return;
+      targetRef.current = Math.max(0, Math.min(1.0001, targetRef.current + delta));
+      if (targetRef.current >= 1) finish();
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      bump(e.deltaY * 0.0009);
+    };
+    let touchY: number | null = null;
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0]?.clientY ?? null;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (touchY == null) return;
+      e.preventDefault();
+      const y = e.touches[0]?.clientY ?? touchY;
+      bump((touchY - y) * 0.0035);
+      touchY = y;
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (["ArrowDown", "PageDown", "Space", " "].includes(e.key)) bump(0.08);
+      if (e.key === "Enter") finish();
+      if (e.key === "Escape") finish();
+    };
+    const onClick = () => bump(0.14);
+
+    // smooth ease-toward target
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = Math.min(64, now - last) / 1000;
+      last = now;
+      const cur = progress.get();
+      const next = cur + (targetRef.current - cur) * Math.min(1, dt * 6);
+      progress.set(next);
+      if (!finishing && next >= 0.985) finish();
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("click", onClick);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("click", onClick);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [phase, progress]);
 
   const skip = () => {
     sessionStorage.setItem(KEY, "1");
     setPhase("done");
   };
+
+  // derived transforms
+  const tunnelScale = useTransform(progress, [0, 1], [1, 22]);
+  const tunnelRotate = useTransform(progress, [0, 1], [0, 120]);
+  const apertureScale = useTransform(progress, [0, 0.85, 1], [1, 6, 40]);
+  const apertureOpacity = useTransform(progress, [0, 0.8, 1], [1, 1, 0]);
+  const vignetteOpacity = useTransform(progress, [0, 1], [0.9, 0]);
+  const whiteout = useTransform(progress, [0.88, 1], [0, 1]);
+  const gridOpacity = useTransform(progress, [0, 0.2, 0.9, 1], [0, 0.55, 0.3, 0]);
+  const wordmarkY = useTransform(progress, [0, 1], [0, -60]);
+  const wordmarkBlur = useTransform(progress, [0, 0.6, 1], ["0px", "0px", "24px"]);
+  const wordmarkOpacity = useTransform(progress, [0, 0.55, 1], [1, 1, 0]);
+  const wordmarkLetter = useTransform(progress, [0, 1], [0, 40]);
+  const wordmarkLetterSpacing = useTransform(wordmarkLetter, (v) => `${v}px`);
+  const subOpacity = useTransform(progress, [0, 0.15, 0.55], [0, 1, 0]);
+  const enterOpacity = useTransform(progress, [0, 0.02, 0.7, 0.85], [0, 1, 1, 0]);
+  const chromaX = useTransform(progress, [0, 1], [0, 8]);
+  const chromaShadow = useTransform(
+    chromaX,
+    (v) => `${-v}px 0 0 oklch(0.65 0.28 20 / 0.6), ${v}px 0 0 oklch(0.7 0.25 220 / 0.6)`,
+  );
+  const barHeight = useTransform(progress, [0, 0.8, 1], ["14vh", "6vh", "0vh"]);
+  const meterWidth = useTransform(progress, (v) => `${Math.round(v * 100)}%`);
+  const meterLabel = useTransform(progress, (v) =>
+    `${Math.min(100, Math.round(v * 100)).toString().padStart(3, "0")}`,
+  );
 
   return (
     <AnimatePresence>
@@ -58,128 +152,205 @@ export function IntroSequence() {
         <motion.div
           key="intro"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, filter: "blur(24px)", scale: 1.08 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[95] overflow-hidden bg-black"
-          style={{ perspective: "1200px" }}
-          onClick={skip}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[95] overflow-hidden bg-black select-none"
+          style={{ perspective: "1400px", cursor: "ns-resize" }}
         >
-          {/* radial vignette / horizon glow */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 60% 45% at 50% 55%, oklch(0.22 0.08 312 / 0.55), transparent 70%), radial-gradient(ellipse 90% 60% at 50% 100%, oklch(0.62 0.31 312 / 0.15), transparent 65%)",
-            }}
-          />
-
-          {/* perspective floor grid pulled toward camera */}
+          {/* deep vignette */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.55 }}
-            transition={{ duration: 0.8 }}
-            className="absolute left-1/2 top-[62%] h-[220vh] w-[260vw] -translate-x-1/2 origin-top will-change-transform"
-            style={{
-              transform: "translateX(-50%) rotateX(72deg)",
-              backgroundImage:
-                "linear-gradient(to right, oklch(0.62 0.31 312 / 0.55) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.62 0.31 312 / 0.55) 1px, transparent 1px)",
-              backgroundSize: "6vw 6vw",
-              maskImage:
-                "linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%)",
-              WebkitMaskImage:
-                "linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%)",
-            }}
+            style={{ opacity: vignetteOpacity }}
+            className="absolute inset-0"
           >
-            <motion.div
-              animate={{ backgroundPositionY: ["0px", "600px"] }}
-              transition={{ duration: 3.2, ease: "linear", repeat: Infinity }}
-              className="h-full w-full"
+            <div
+              className="absolute inset-0"
               style={{
-                backgroundImage:
-                  "linear-gradient(to right, oklch(0.62 0.31 312 / 0.6) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.62 0.31 312 / 0.9) 1px, transparent 1px)",
-                backgroundSize: "6vw 6vw",
+                background:
+                  "radial-gradient(ellipse 55% 45% at 50% 50%, oklch(0.24 0.11 312 / 0.55), transparent 65%), radial-gradient(circle at 50% 50%, transparent 40%, black 78%)",
               }}
             />
           </motion.div>
 
-          {/* horizon rule + sun disk */}
-          <div className="absolute left-0 right-0 top-[62%] h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
-          <motion.div
-            initial={{ opacity: 0.2, scale: 0.6 }}
-            animate={{ opacity: [0.2, 0.5, 0.15], scale: [0.6, 1.4, 0.9] }}
-            transition={{ duration: 5.4, ease: "easeInOut" }}
-            className="absolute left-1/2 top-[54%] h-40 w-40 -translate-x-1/2 rounded-full bg-accent/40 blur-3xl"
-          />
-
-          {/* walking silhouette — scales from tiny to huge, subtle bob & sway */}
-          <motion.div
-            initial={{ scale: 0.05, y: 0, opacity: 0 }}
-            animate={{
-              scale: [0.05, 0.18, 0.55, 1.6, 5.5],
-              y: [0, -2, -4, -6, -10],
-              opacity: [0, 1, 1, 1, 0],
-            }}
-            transition={{
-              duration: 5.2,
-              times: [0, 0.2, 0.55, 0.85, 1],
-              ease: [0.5, 0, 0.75, 0],
-            }}
-            className="absolute left-1/2 top-[62%] -translate-x-1/2 will-change-transform"
-          >
+          {/* concentric aperture rings — the "portal" */}
+          <div className="absolute inset-0 grid place-items-center">
             <motion.div
-              animate={{ x: [-2, 2, -2], rotate: [-0.6, 0.6, -0.6] }}
-              transition={{ duration: 0.55, repeat: Infinity, ease: "easeInOut" }}
+              style={{ scale: apertureScale, opacity: apertureOpacity }}
+              className="relative h-[70vmin] w-[70vmin] will-change-transform"
             >
-              <svg
-                width="120"
-                height="220"
-                viewBox="0 0 120 220"
-                fill="black"
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <motion.div
+                  key={i}
+                  className="absolute inset-0 rounded-full border"
+                  style={{
+                    borderColor: `oklch(0.62 0.31 312 / ${0.08 + i * 0.06})`,
+                    scale: 1 - i * 0.09,
+                    borderWidth: i === 0 ? 2 : 1,
+                    boxShadow:
+                      i === 0
+                        ? "0 0 80px 12px oklch(0.62 0.31 312 / 0.35), inset 0 0 60px oklch(0.62 0.31 312 / 0.25)"
+                        : undefined,
+                  }}
+                  animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
+                  transition={{ duration: 30 + i * 4, ease: "linear", repeat: Infinity }}
+                />
+              ))}
+              {/* iris blades */}
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div
+                  key={`b${i}`}
+                  className="absolute left-1/2 top-1/2 h-[46%] w-px origin-bottom"
+                  style={{
+                    transform: `translate(-50%, -100%) rotate(${(i * 360) / 12}deg)`,
+                    background:
+                      "linear-gradient(to top, oklch(0.62 0.31 312 / 0.7), transparent)",
+                  }}
+                />
+              ))}
+              {/* hot core */}
+              <div
+                className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"
                 style={{
-                  filter:
-                    "drop-shadow(0 0 22px oklch(0.62 0.31 312 / 0.9)) drop-shadow(0 20px 30px rgba(0,0,0,0.9))",
+                  boxShadow:
+                    "0 0 120px 40px oklch(0.62 0.31 312 / 0.9), 0 0 240px 80px oklch(0.62 0.31 312 / 0.4)",
                 }}
-              >
-                {/* head */}
-                <circle cx="60" cy="30" r="18" />
-                {/* torso */}
-                <path d="M42 50 Q60 46 78 50 L82 130 Q60 138 38 130 Z" />
-                {/* arms swinging */}
-                <path d="M40 60 Q28 100 34 140 L44 138 Q40 100 50 66 Z" />
-                <path d="M80 60 Q92 100 86 140 L76 138 Q80 100 70 66 Z" />
-                {/* legs */}
-                <path d="M46 128 Q42 170 46 210 L58 210 Q60 172 58 128 Z" />
-                <path d="M74 128 Q78 170 74 210 L62 210 Q60 172 62 128 Z" />
-              </svg>
+              />
             </motion.div>
-          </motion.div>
-
-          {/* layered kinetic captions */}
-          <Caption at={0} out={0.9} text="2026." align="center" small />
-          <Caption at={1.0} out={2.1} text="JIYUL AHN" align="center" />
-          <Caption at={2.2} out={3.5} text="// systems, shipped." align="center" small />
-          <Caption at={3.6} out={4.9} text="ENTER →" align="center" />
-
-          {/* corner HUD */}
-          <div className="pointer-events-none absolute inset-6 grid grid-cols-2 grid-rows-2 font-mono text-[10px] uppercase tracking-[0.35em] text-accent/70 md:inset-10">
-            <div>◤ rec 00:00</div>
-            <div className="text-right">seq_01 / walk_in</div>
-            <div className="self-end">jiyul.ahn</div>
-            <div className="self-end text-right">skip ▸ click</div>
           </div>
 
-          {/* letterbox bars */}
+          {/* tunnel grid rushing forward */}
           <motion.div
-            initial={{ height: "18vh" }}
-            animate={{ height: ["18vh", "10vh", "0vh"] }}
-            transition={{ duration: 5.2, times: [0, 0.6, 1], ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-x-0 top-0 bg-black"
+            style={{
+              opacity: gridOpacity,
+              scale: tunnelScale,
+              rotate: tunnelRotate,
+            }}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[140vmin] w-[140vmin] -translate-x-1/2 -translate-y-1/2 will-change-transform"
+          >
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                backgroundImage:
+                  "repeating-radial-gradient(circle at center, transparent 0 44px, oklch(0.62 0.31 312 / 0.55) 44px 45px)",
+                maskImage:
+                  "radial-gradient(circle at center, black 20%, transparent 75%)",
+                WebkitMaskImage:
+                  "radial-gradient(circle at center, black 20%, transparent 75%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0 12deg, oklch(0.62 0.31 312 / 0.25) 12deg 14deg, transparent 14deg 30deg, oklch(0.62 0.31 312 / 0.15) 30deg 31deg, transparent 31deg 60deg)",
+                maskImage:
+                  "radial-gradient(circle at center, transparent 12%, black 30%, transparent 70%)",
+                WebkitMaskImage:
+                  "radial-gradient(circle at center, transparent 12%, black 30%, transparent 70%)",
+              }}
+            />
+          </motion.div>
+
+          {/* streaking light shards */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            {Array.from({ length: 18 }).map((_, i) => {
+              const angle = (i * 360) / 18;
+              return (
+                <motion.div
+                  key={`s${i}`}
+                  className="absolute left-1/2 top-1/2 h-px w-[90vmax] origin-left"
+                  style={{
+                    transform: `rotate(${angle}deg)`,
+                    background:
+                      "linear-gradient(to right, transparent 0%, transparent 35%, oklch(0.85 0.2 312 / 0.9) 60%, transparent 100%)",
+                    opacity: useTransform(progress, [0, 0.3, 1], [0, 0.7, 0]) as unknown as number,
+                  }}
+                  animate={{ x: ["0%", "20%"] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: "linear", delay: i * 0.03 }}
+                />
+              );
+            })}
+          </div>
+
+          {/* wordmark */}
+          <motion.div
+            style={{
+              y: wordmarkY,
+              filter: useTransform(wordmarkBlur, (b) => `blur(${b})`) as unknown as string,
+              opacity: wordmarkOpacity,
+            }}
+            className="pointer-events-none absolute inset-0 grid place-items-center"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <motion.span
+                style={{
+                  letterSpacing: wordmarkLetterSpacing,
+                  textShadow: chromaShadow,
+                }}
+                className="font-display text-6xl font-black uppercase leading-none text-white md:text-[9rem]"
+              >
+                JIYUL·AHN
+              </motion.span>
+              <motion.span
+                style={{ opacity: subOpacity }}
+                className="font-mono text-[10px] uppercase tracking-[0.6em] text-accent"
+              >
+                ── entering the system ──
+              </motion.span>
+            </div>
+          </motion.div>
+
+          {/* HUD */}
+          <div className="pointer-events-none absolute inset-6 grid grid-cols-2 grid-rows-2 font-mono text-[10px] uppercase tracking-[0.35em] text-accent/80 md:inset-10">
+            <div>◤ seq_00 · portal</div>
+            <div className="text-right">
+              <motion.span>{meterLabel}</motion.span>
+              <span className="text-accent/40"> / 100</span>
+            </div>
+            <div className="self-end">jiyul.ahn</div>
+            <div className="self-end text-right">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  skip();
+                }}
+                className="pointer-events-auto border border-accent/30 px-2 py-1 hover:border-accent hover:bg-accent/10"
+              >
+                skip ▸
+              </button>
+            </div>
+          </div>
+
+          {/* scroll cue */}
+          <motion.div
+            style={{ opacity: enterOpacity }}
+            className="pointer-events-none absolute bottom-[14vh] left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-white/80">
+              scroll to enter
+            </span>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+              className="h-8 w-px bg-gradient-to-b from-accent to-transparent"
+            />
+          </motion.div>
+
+          {/* progress meter */}
+          <div className="pointer-events-none absolute bottom-[6vh] left-1/2 h-px w-[42vw] max-w-md -translate-x-1/2 overflow-hidden bg-white/10">
+            <motion.div
+              style={{ width: meterWidth }}
+              className="h-full bg-accent shadow-[0_0_12px_var(--color-accent)]"
+            />
+          </div>
+
+          {/* letterbox */}
+          <motion.div
+            style={{ height: barHeight }}
+            className="pointer-events-none absolute inset-x-0 top-0 bg-black"
           />
           <motion.div
-            initial={{ height: "18vh" }}
-            animate={{ height: ["18vh", "10vh", "0vh"] }}
-            transition={{ duration: 5.2, times: [0, 0.6, 1], ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-x-0 bottom-0 bg-black"
+            style={{ height: barHeight }}
+            className="pointer-events-none absolute inset-x-0 bottom-0 bg-black"
           />
 
           {/* grain */}
@@ -191,63 +362,13 @@ export function IntroSequence() {
             }}
           />
 
-          {/* final flash whiteout */}
+          {/* whiteout on entry */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 0, 1] }}
-            transition={{ duration: 5.4, times: [0, 0.94, 1], ease: "easeIn" }}
+            style={{ opacity: whiteout }}
             className="pointer-events-none absolute inset-0 bg-white"
           />
         </motion.div>
       )}
     </AnimatePresence>
-  );
-}
-
-function Caption({
-  at,
-  out,
-  text,
-  align = "center",
-  small = false,
-}: {
-  at: number;
-  out: number;
-  text: string;
-  align?: "center" | "left";
-  small?: boolean;
-}) {
-  const duration = 5.4;
-  const inT = at / duration;
-  const holdT = Math.min(1, (at + 0.25) / duration);
-  const outStart = Math.max(holdT, (out - 0.3) / duration);
-  const outEnd = Math.min(1, out / duration);
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20, filter: "blur(16px)" }}
-      animate={{
-        opacity: [0, 1, 1, 0],
-        y: [20, 0, 0, -10],
-        filter: ["blur(16px)", "blur(0px)", "blur(0px)", "blur(12px)"],
-      }}
-      transition={{
-        duration,
-        times: [inT, holdT, outStart, outEnd],
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className={`pointer-events-none absolute inset-x-0 top-[18%] flex ${
-        align === "center" ? "justify-center" : "justify-start pl-10"
-      }`}
-    >
-      <span
-        className={
-          small
-            ? "font-mono text-xs uppercase tracking-[0.5em] text-accent"
-            : "font-display text-5xl font-extrabold uppercase tracking-tighter text-foreground md:text-7xl"
-        }
-      >
-        {text}
-      </span>
-    </motion.div>
   );
 }
