@@ -13,6 +13,7 @@ import { MagneticCursor } from "@/components/landing/MagneticCursor";
 import { GrainOverlay } from "@/components/landing/GrainOverlay";
 import { Scanlines } from "@/components/landing/Scanlines";
 import { Preloader } from "@/components/landing/Preloader";
+import { IntroSequence } from "@/components/landing/IntroSequence";
 import { MagneticBinder } from "@/components/landing/MagneticButton";
 import { AmbientAudio } from "@/components/landing/AmbientAudio";
 import { Toaster } from "@/components/ui/sonner";
@@ -41,6 +42,7 @@ function Index() {
   return (
     <main className="relative bg-background text-foreground">
       <Preloader />
+      <IntroSequence />
       <GrainOverlay />
       <Scanlines />
       <MagneticCursor />
