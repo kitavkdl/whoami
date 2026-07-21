@@ -6,9 +6,11 @@ import { GlitchText } from "./GlitchText";
 import { Terminal } from "./Terminal";
 
 function useKstClock() {
-  const [time, setTime] = useState(() => formatKst(new Date()));
+  const [time, setTime] = useState("--:--:--");
   useEffect(() => {
-    const id = setInterval(() => setTime(formatKst(new Date())), 1000);
+    const update = () => setTime(formatKst(new Date()));
+    update();
+    const id = setInterval(update, 1000);
     return () => clearInterval(id);
   }, []);
   return time;

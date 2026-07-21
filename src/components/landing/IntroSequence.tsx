@@ -130,6 +130,7 @@ export function IntroSequence() {
   const gridOpacity = useTransform(progress, [0, 0.2, 0.9, 1], [0, 0.55, 0.3, 0]);
   const wordmarkY = useTransform(progress, [0, 1], [0, -60]);
   const wordmarkBlur = useTransform(progress, [0, 0.6, 1], ["0px", "0px", "24px"]);
+  const wordmarkFilter = useTransform(wordmarkBlur, (b) => `blur(${b})`);
   const wordmarkOpacity = useTransform(progress, [0, 0.55, 1], [1, 1, 0]);
   const wordmarkLetter = useTransform(progress, [0, 1], [0, 40]);
   const wordmarkLetterSpacing = useTransform(wordmarkLetter, (v) => `${v}px`);
@@ -145,6 +146,7 @@ export function IntroSequence() {
   const meterLabel = useTransform(progress, (v) =>
     `${Math.min(100, Math.round(v * 100)).toString().padStart(3, "0")}`,
   );
+  const shardOpacity = useTransform(progress, [0, 0.3, 1], [0, 0.7, 0]);
 
   return (
     <AnimatePresence>
@@ -262,7 +264,7 @@ export function IntroSequence() {
                     transform: `rotate(${angle}deg)`,
                     background:
                       "linear-gradient(to right, transparent 0%, transparent 35%, oklch(0.85 0.2 312 / 0.9) 60%, transparent 100%)",
-                    opacity: useTransform(progress, [0, 0.3, 1], [0, 0.7, 0]) as unknown as number,
+                    opacity: shardOpacity,
                   }}
                   animate={{ x: ["0%", "20%"] }}
                   transition={{ duration: 1.6, repeat: Infinity, ease: "linear", delay: i * 0.03 }}
@@ -275,7 +277,7 @@ export function IntroSequence() {
           <motion.div
             style={{
               y: wordmarkY,
-              filter: useTransform(wordmarkBlur, (b) => `blur(${b})`) as unknown as string,
+              filter: wordmarkFilter,
               opacity: wordmarkOpacity,
             }}
             className="pointer-events-none absolute inset-0 grid place-items-center"
