@@ -130,6 +130,7 @@ export function IntroSequence() {
   const gridOpacity = useTransform(progress, [0, 0.2, 0.9, 1], [0, 0.55, 0.3, 0]);
   const wordmarkY = useTransform(progress, [0, 1], [0, -60]);
   const wordmarkBlur = useTransform(progress, [0, 0.6, 1], ["0px", "0px", "24px"]);
+  const wordmarkFilter = useTransform(wordmarkBlur, (b) => `blur(${b})`);
   const wordmarkOpacity = useTransform(progress, [0, 0.55, 1], [1, 1, 0]);
   const wordmarkLetter = useTransform(progress, [0, 1], [0, 40]);
   const wordmarkLetterSpacing = useTransform(wordmarkLetter, (v) => `${v}px`);
@@ -276,7 +277,7 @@ export function IntroSequence() {
           <motion.div
             style={{
               y: wordmarkY,
-              filter: useTransform(wordmarkBlur, (b) => `blur(${b})`) as unknown as string,
+              filter: wordmarkFilter,
               opacity: wordmarkOpacity,
             }}
             className="pointer-events-none absolute inset-0 grid place-items-center"
