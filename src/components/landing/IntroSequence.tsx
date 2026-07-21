@@ -145,6 +145,7 @@ export function IntroSequence() {
   const meterLabel = useTransform(progress, (v) =>
     `${Math.min(100, Math.round(v * 100)).toString().padStart(3, "0")}`,
   );
+  const shardOpacity = useTransform(progress, [0, 0.3, 1], [0, 0.7, 0]);
 
   return (
     <AnimatePresence>
@@ -262,7 +263,7 @@ export function IntroSequence() {
                     transform: `rotate(${angle}deg)`,
                     background:
                       "linear-gradient(to right, transparent 0%, transparent 35%, oklch(0.85 0.2 312 / 0.9) 60%, transparent 100%)",
-                    opacity: useTransform(progress, [0, 0.3, 1], [0, 0.7, 0]) as unknown as number,
+                    opacity: shardOpacity,
                   }}
                   animate={{ x: ["0%", "20%"] }}
                   transition={{ duration: 1.6, repeat: Infinity, ease: "linear", delay: i * 0.03 }}
