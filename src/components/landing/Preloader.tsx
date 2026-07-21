@@ -5,14 +5,10 @@ import { GlitchText } from "./GlitchText";
 export function Preloader() {
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
-  const [lite, setLite] = useState(false);
-
-  useEffect(() => {
-    setLite(
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-        window.matchMedia("(max-width: 768px)").matches,
-    );
-  }, []);
+  const lite =
+    typeof window !== "undefined" &&
+    (window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      window.matchMedia("(max-width: 768px)").matches);
 
   useEffect(() => {
     let raf = 0;
