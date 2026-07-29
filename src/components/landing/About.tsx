@@ -1,9 +1,18 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import portrait from "@/assets/jiyul.png";
+import extra2 from "@/assets/jiyul-2.jpg.asset.json";
+import extra3 from "@/assets/jiyul-3.jpg.asset.json";
+import extra4 from "@/assets/jiyul-4.jpg.asset.json";
 import { Reveal } from "./Reveal";
 import { Counter } from "./Counter";
 import { GlitchText } from "./GlitchText";
+
+const EXTRAS = [
+  { src: extra2.url, label: "IMG_3641 · 2025", rot: -6, x: -18, y: -12 },
+  { src: extra3.url, label: "IMG_3618 · archive", rot: 5, x: 22, y: 8 },
+  { src: extra4.url, label: "IMG_4433 · night", rot: -3, x: -8, y: 20 },
+];
 
 export function About() {
   const ref = useRef<HTMLElement>(null);
@@ -11,26 +20,131 @@ export function About() {
   const imgY = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
 
+  const [active, setActive] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+    }
+  }, []);
+
   return (
     <section ref={ref} id="about" className="relative px-6 py-32 md:px-10 md:py-40">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <motion.div
             style={{ y: imgY }}
-            className="relative aspect-[4/5] w-full overflow-hidden rounded-sm border border-border bg-surface"
+            className="relative aspect-[4/5] w-full [perspective:1200px]"
+            onMouseEnter={() => !isTouch && setActive(true)}
+            onMouseLeave={() => !isTouch && setActive(false)}
+            onPointerDown={() => isTouch && setActive(true)}
+            onPointerUp={() => isTouch && setActive(false)}
+            onPointerCancel={() => isTouch && setActive(false)}
           >
-            <motion.img
-              style={{ scale: imgScale }}
-              src={portrait}
-              alt="Jiyul Ahn"
-              width={832}
-              height={1024}
-              className="h-full w-full object-cover"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
-            <div className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em] text-foreground/80">
-              <span className="text-accent">●</span> Jiyul Ahn / 2026
-            </div>
+            {/* Extra photos — fanned out on hover/press */}
+            {EXTRAS.map((e, i) => (
+              <motion.div
+                key={e.src}
+                aria-hidden={!active}
+                initial={false}
+                animate={
+                  active
+                    ? {
+                        opacity: 1,
+                        x: `${e.x}%`,
+                        y: `${e.y}%`,
+                        rotate: e.rot,
+                        scale: 1,
+                        filter: "blur(0px)",
+                      }
+                    : {
+                        opacity: 0,
+                        x: "0%",
+                        y: "0%",
+                        rotate: 0,
+                        scale: 0.85,
+                        filter: "blur(8px)",
+                      }
+                }
+                transition={{
+                  type: "spring",
+                  stiffness: 220,
+                  damping: 22,
+                  delay: active ? i * 0.06 : (EXTRAS.length - 1 - i) * 0.03,
+                }}
+                className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-sm border border-accent/40 bg-surface shadow-[0_20px_60px_-10px_oklch(0.62_0.31_312_/_0.5)]"
+                style={{ transformOrigin: "center" }}
+              >
+                <img
+                  src={e.src}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-0 mix-blend-overlay [background-image:linear-gradient(oklch(1_0_0_/_0.06)_1px,transparent_1px)] [background-size:1px_3px]" />
+                <div className="absolute bottom-3 left-3 font-mono text-[9px] uppercase tracking-[0.3em] text-accent">
+                  {e.label}
+                </div>
+                <div className="absolute right-3 top-3 font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/70">
+                  0{i + 2}
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Main portrait */}
+            <motion.div
+              animate={{
+                scale: active ? 0.94 : 1,
+                rotate: active ? -1.5 : 0,
+                x: active ? "-4%" : "0%",
+                y: active ? "-3%" : "0%",
+              }}
+              transition={{ type: "spring", stiffness: 200, damping: 24 }}
+              className="relative z-[2] h-full w-full overflow-hidden rounded-sm border border-border bg-surface shadow-[0_30px_80px_-20px_oklch(0_0_0_/_0.6)]"
+            >
+              <motion.img
+                style={{ scale: imgScale }}
+                src={portrait}
+                alt="Jiyul Ahn"
+                width={832}
+                height={1024}
+                className="h-full w-full object-cover"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 text-[10px] uppercase tracking-[0.3em] text-foreground/80">
+                <span className="text-accent">●</span> Jiyul Ahn / 2026
+              </div>
+
+              {/* Hint */}
+              <AnimatePresence>
+                {!active && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="absolute right-4 top-4 flex items-center gap-2 border border-accent/60 bg-background/50 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.25em] text-accent backdrop-blur"
+                  >
+                    <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
+                    {isTouch ? "hold" : "hover"} · reveal
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+            {/* Scanline flicker when active */}
+            <AnimatePresence>
+              {active && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="pointer-events-none absolute inset-0 z-[3] mix-blend-screen [background-image:linear-gradient(oklch(0.62_0.31_312_/_0.08)_1px,transparent_2px)] [background-size:1px_4px]"
+                />
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
 
