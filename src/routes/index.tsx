@@ -8,6 +8,7 @@ import { ExplodedSkills } from "@/components/landing/ExplodedSkills";
 import { ExperienceTimeline } from "@/components/landing/ExperienceTimeline";
 import { ProjectsHorizontal } from "@/components/landing/ProjectsHorizontal";
 import { Education } from "@/components/landing/Education";
+import { Awards } from "@/components/landing/Awards";
 import { Contact } from "@/components/landing/Contact";
 import { MagneticCursor } from "@/components/landing/MagneticCursor";
 import { GrainOverlay } from "@/components/landing/GrainOverlay";
