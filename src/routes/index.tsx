@@ -55,6 +55,7 @@ function Index() {
       <About />
       <ExplodedSkills />
       <ExperienceTimeline />
+      <Awards />
       <ProjectsHorizontal />
       <Education />
       <Contact />
