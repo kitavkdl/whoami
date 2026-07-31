@@ -50,6 +50,8 @@ function Index() {
       <MagneticBinder />
       <AmbientAudio />
       <Toaster />
+      <ContentProtect />
+
       <Nav />
       <Hero3D />
       <ZoomPortal />
