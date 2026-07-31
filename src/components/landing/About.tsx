@@ -9,10 +9,11 @@ import { Counter } from "./Counter";
 import { GlitchText } from "./GlitchText";
 
 const EXTRAS = [
-  { src: extra2.url, label: "IMG_3641 · 2025", rot: -6, x: -18, y: -12 },
-  { src: extra3.url, label: "IMG_3618 · archive", rot: 5, x: 22, y: 8 },
-  { src: extra4.url, label: "IMG_4433 · night", rot: -3, x: -8, y: 20 },
+  { src: extra2.url, label: "IMG_3641 · 2025", rot: -8, x: -46, y: -34 },
+  { src: extra3.url, label: "IMG_3618 · archive", rot: 7, x: 48, y: -6 },
+  { src: extra4.url, label: "IMG_4433 · night", rot: -4, x: -34, y: 40 },
 ];
+
 
 export function About() {
   const ref = useRef<HTMLElement>(null);
