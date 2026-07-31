@@ -56,7 +56,7 @@ export function About() {
                         x: `${e.x}%`,
                         y: `${e.y}%`,
                         rotate: e.rot,
-                        scale: 1,
+                        scale: 0.5,
                         filter: "blur(0px)",
                       }
                     : {
@@ -64,7 +64,7 @@ export function About() {
                         x: "0%",
                         y: "0%",
                         rotate: 0,
-                        scale: 0.85,
+                        scale: 0.4,
                         filter: "blur(8px)",
                       }
                 }
@@ -74,7 +74,7 @@ export function About() {
                   damping: 22,
                   delay: active ? i * 0.06 : (EXTRAS.length - 1 - i) * 0.03,
                 }}
-                className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-sm border border-accent/40 bg-surface shadow-[0_20px_60px_-10px_oklch(0.62_0.31_312_/_0.5)]"
+                className="pointer-events-none absolute inset-0 z-[4] overflow-hidden rounded-sm border border-accent/40 bg-surface shadow-[0_20px_60px_-10px_oklch(0.62_0.31_312_/_0.5)]"
                 style={{ transformOrigin: "center" }}
               >
                 <img
@@ -97,7 +97,7 @@ export function About() {
             {/* Main portrait */}
             <motion.div
               animate={{
-                scale: active ? 0.94 : 1,
+                scale: active ? 0.82 : 1,
                 rotate: active ? -1.5 : 0,
                 x: active ? "-4%" : "0%",
                 y: active ? "-3%" : "0%",
