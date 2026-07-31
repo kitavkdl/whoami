@@ -17,6 +17,8 @@ import { Preloader } from "@/components/landing/Preloader";
 import { MagneticBinder } from "@/components/landing/MagneticButton";
 import { AmbientAudio } from "@/components/landing/AmbientAudio";
 import { Toaster } from "@/components/ui/sonner";
+import { ContentProtect } from "@/components/ContentProtect";
+
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -48,6 +50,8 @@ function Index() {
       <MagneticBinder />
       <AmbientAudio />
       <Toaster />
+      <ContentProtect />
+
       <Nav />
       <Hero3D />
       <ZoomPortal />

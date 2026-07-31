@@ -6,13 +6,15 @@ import { GlitchText } from "./GlitchText";
 import { Terminal } from "./Terminal";
 
 function useKstClock() {
-  const [time, setTime] = useState(() => formatKst(new Date()));
+  const [time, setTime] = useState("--:--:--");
   useEffect(() => {
+    setTime(formatKst(new Date()));
     const id = setInterval(() => setTime(formatKst(new Date())), 1000);
     return () => clearInterval(id);
   }, []);
   return time;
 }
+
 
 function formatKst(d: Date) {
   const fmt = new Intl.DateTimeFormat("en-GB", {
