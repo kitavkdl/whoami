@@ -17,7 +17,7 @@ export function Skills() {
           <div>
             <Reveal>
               <p className="mb-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-                ⟢ 02 — Capabilities
+                ⟢ 02 · Capabilities
               </p>
             </Reveal>
             <Reveal delay={0.1}>
@@ -29,7 +29,7 @@ export function Skills() {
           </div>
           <Reveal delay={0.2}>
             <p className="max-w-xs text-sm text-muted-foreground md:text-right">
-              A toolkit shaped by shipping operational platforms in production — not toy projects.
+              A toolkit shaped by shipping operational platforms in production · not toy projects.
             </p>
           </Reveal>
         </div>

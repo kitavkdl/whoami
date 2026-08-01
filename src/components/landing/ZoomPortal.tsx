@@ -18,7 +18,7 @@ function Ring({ progress, i, opacity, rotate }: {
 }
 
 /**
- * Scroll-pinned zoom-in transition — gives the feeling of being pulled
+ * Scroll-pinned zoom-in transition · gives the feeling of being pulled
  * into a screen / portal between Hero and About.
  */
 export function ZoomPortal() {

@@ -24,17 +24,17 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Jiyul Ahn — Developer & Systems Architect" },
+      { title: "Jiyul Ahn · Developer & Systems Architect" },
       {
         name: "description",
         content:
-          "Jiyul Ahn — systems-oriented developer, founder, and DX Tech PM. Building B2B export infrastructure and digitized operational platforms.",
+          "Jiyul Ahn · systems-oriented developer, founder, and DX Tech PM. Building B2B export infrastructure and digitized operational platforms.",
       },
-      { property: "og:title", content: "Jiyul Ahn — Developer & Systems Architect" },
+      { property: "og:title", content: "Jiyul Ahn · Developer & Systems Architect" },
       {
         property: "og:description",
         content:
-          "Portfolio of Jiyul Ahn — developer, founder, and Stony Brook CS undergrad building production-grade systems.",
+          "Portfolio of Jiyul Ahn · developer, founder, and Stony Brook CS undergrad building production-grade systems.",
       },
     ],
   }),

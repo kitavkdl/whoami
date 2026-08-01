@@ -60,7 +60,7 @@ export function Contact() {
       <div className="relative z-10 max-w-3xl">
         <Reveal>
           <p className="mb-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-            <GlitchText text="⟢ 05 — Contact" />
+            <GlitchText text="⟢ 05 · Contact" />
           </p>
         </Reveal>
         <Reveal delay={0.1}>
@@ -120,7 +120,7 @@ export function Contact() {
 
 
       <div className="relative z-10 mt-16 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-[10px] uppercase tracking-[0.3em] text-muted-foreground md:flex-row md:items-center">
-        <span>© 2026 Jiyul Ahn — All rights reserved</span>
+        <span>© 2026 Jiyul Ahn · All rights reserved</span>
         <span className="flex items-center gap-3">
           <span className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">

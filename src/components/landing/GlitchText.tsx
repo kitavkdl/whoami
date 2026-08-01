@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const GLITCH_CHARS = "!<>-_\\/[]{}—=+*^?#%$&▓▒░█";
+const GLITCH_CHARS = "!<>_\\/[]{}=+*^?#%$&▓▒░█";
 
 function randomChar() {
   return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
@@ -128,7 +128,7 @@ export function GlitchText({
     } else if (mode === "typewriter") {
       runTypewriter();
     } else {
-      // oneshot — start when scrolled into view, only once
+      // oneshot · start when scrolled into view, only once
       const el = ref.current;
       if (!el) return;
       const io = new IntersectionObserver(

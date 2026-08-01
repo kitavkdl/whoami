@@ -115,7 +115,7 @@ export function Hero3D() {
     pointer.current.y = ((e.clientY - r.top) / r.height) * 2 - 1;
   };
 
-  // Gyroscope (mobile) — drives the same pointer ref.
+  // Gyroscope (mobile) · drives the same pointer ref.
   useEffect(() => {
     const handler = (e: DeviceOrientationEvent) => {
       const gx = (e.gamma ?? 0) / 45; // -1..1

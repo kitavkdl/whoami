@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 type Line = { kind: "in" | "out" | "err" | "info"; text: string };
 
 const PROJECTS = [
-  "P/01  B2B Export Infra        — Founder · 2025",
-  "P/02  Odoo Operations         — PM · DX Tech",
-  "P/03  BADA Admissions         — Developer · 2023–24",
-  "P/04  Internal Tools          — Always shipping",
+  "P/01  B2B Export Infra        · Founder · 2025",
+  "P/02  Odoo Operations         · PM · DX Tech",
+  "P/03  BADA Admissions         · Developer · 2023~24",
+  "P/04  Internal Tools          · Always shipping",
 ];
 
 const SKILLS = [
@@ -16,7 +16,7 @@ const SKILLS = [
 ];
 
 const ABOUT =
-  "Systems-oriented developer building digitized operational platforms — end-to-end workflow architecture, data modeling, and production deployment.";
+  "Systems-oriented developer building digitized operational platforms · end-to-end workflow architecture, data modeling, and production deployment.";
 
 const HELP = [
   "available commands:",
@@ -36,7 +36,7 @@ function run(cmd: string): Line[] {
 
   switch (lower) {
     case "whoami":
-      return [{ kind: "out", text: "jiyul.ahn — Systems Developer · Founder" }];
+      return [{ kind: "out", text: "jiyul.ahn · Systems Developer · Founder" }];
     case "ls projects":
       return PROJECTS.map((t) => ({ kind: "out" as const, text: t }));
     case "cat about.txt":
@@ -58,7 +58,7 @@ function run(cmd: string): Line[] {
 export function Terminal() {
   const [value, setValue] = useState("");
   const [lines, setLines] = useState<Line[]>([
-    { kind: "info", text: "ja-term v.2026.05 — type 'help' to list commands" },
+    { kind: "info", text: "ja-term v.2026.05 · type 'help' to list commands" },
   ]);
   const [history, setHistory] = useState<string[]>([]);
   const [hIdx, setHIdx] = useState(-1);
