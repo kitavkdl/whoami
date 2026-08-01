@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export const Route = createFileRoute("/study")({
   head: () => ({
     meta: [
-      { title: "오늘의 학점 운세 — Study Fortune" },
+      { title: "오늘의 학점 운세 · Study Fortune" },
       { name: "description", content: "과목별 오늘의 학업 운세. 하루에 한 번, 당신의 학점을 점쳐드립니다." },
       { property: "og:title", content: "오늘의 학점 운세" },
       { property: "og:description", content: "과목 이름을 입력하면 오늘의 학업 운세를 알려드립니다." },
@@ -82,7 +82,7 @@ const MESSAGES: Record<Lang, string[]> = {
     "One cup of coffee will double your focus today.",
     "An unfamiliar café will hand you a fresh insight.",
     "Today, more sleep is the most productive study session.",
-    "Start the assignment now — your evening will thank you.",
+    "Start the assignment now · your evening will thank you.",
     "An email to your professor will summon good fortune.",
     "One problem solved today decides half of your exam.",
     "Instead of borrowing notes, lend yours out.",
@@ -97,8 +97,8 @@ const ADVICE: Record<Lang, { k: string; v: string[] }[]> = {
     {
       k: "행운의 시간",
       v: [
-        "오전 9–11시","오후 2–4시","오후 7–9시","밤 11시–새벽 1시",
-        "오전 6–8시","오후 5–6시","자정 12–1시","오전 10시–정오",
+        "오전 9~11시","오후 2~4시","오후 7~9시","밤 11시~새벽 1시",
+        "오전 6~8시","오후 5~6시","자정 12~1시","오전 10시~정오",
       ],
     },
     {
@@ -126,7 +126,7 @@ const ADVICE: Record<Lang, { k: string; v: string[] }[]> = {
   en: [
     {
       k: "Lucky hours",
-      v: ["9–11 AM","2–4 PM","7–9 PM","11 PM – 1 AM","6–8 AM","5–6 PM","12–1 AM","10 AM – noon"],
+      v: ["9~11 AM","2~4 PM","7~9 PM","11 PM ~ 1 AM","6~8 AM","5~6 PM","12~1 AM","10 AM ~ noon"],
     },
     {
       k: "Lucky place",
@@ -151,7 +151,7 @@ function fortuneFor(subject: string, lang: Lang) {
   const key = `${normalized}::${todayKey()}`;
   const seed = hash(key);
   const grade = pickGrade(seed);
-  const score = 40 + (seed % 61); // 40–100
+  const score = 40 + (seed % 61); // 40~100
   const msgs = MESSAGES[lang];
   const adv = ADVICE[lang];
   const msg = msgs[seed % msgs.length];
@@ -318,7 +318,7 @@ function StudyPage() {
           </div>
         </motion.header>
 
-        {/* HERO — asymmetric editorial grid */}
+        {/* HERO · asymmetric editorial grid */}
         <section className="mt-10 md:mt-16 grid grid-cols-12 gap-x-4 gap-y-8">
           <div className="col-span-12 md:col-span-8">
             <motion.p
@@ -365,7 +365,7 @@ function StudyPage() {
           </aside>
         </section>
 
-        {/* INPUT — brutal stamp form */}
+        {/* INPUT · brutal stamp form */}
         <motion.form
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -396,7 +396,7 @@ function StudyPage() {
           </button>
         </motion.form>
 
-        {/* RESULT — ticket stub */}
+        {/* RESULT · ticket stub */}
         <AnimatePresence mode="wait">
           {fortune && submitted && (
             <motion.section
@@ -436,7 +436,7 @@ function StudyPage() {
                 </div>
 
                 <div className="grid grid-cols-12 gap-0">
-                  {/* Left — subject + message */}
+                  {/* Left · subject + message */}
                   <div className="col-span-12 md:col-span-7 p-6 md:p-10 md:border-r-2 md:border-[#0b0b0b]">
                     <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
                       {t.resultSubject}
@@ -463,7 +463,7 @@ function StudyPage() {
                     </div>
                   </div>
 
-                  {/* Right — giant grade stub */}
+                  {/* Right · giant grade stub */}
                   <div className="col-span-12 md:col-span-5 relative p-6 md:p-10 bg-[#d6ff3a]">
                     <div
                       aria-hidden
@@ -530,7 +530,7 @@ function StudyPage() {
           )}
         </AnimatePresence>
 
-        {/* Links — index card row */}
+        {/* Links · index card row */}
         <motion.nav
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

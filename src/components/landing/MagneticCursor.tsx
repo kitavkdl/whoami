@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Site-wide custom cursor.
- * Desktop only — auto-disabled on touch devices.
+ * Desktop only · auto-disabled on touch devices.
  * Default state: small terminal block.
  * On hover over interactive elements: expanded ring.
  */

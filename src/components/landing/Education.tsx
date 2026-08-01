@@ -9,7 +9,7 @@ export function Education() {
         <div className="md:col-span-3">
           <Reveal>
             <p className="mb-8 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              <GlitchText text="⟢ 06 — Education" />
+              <GlitchText text="⟢ 06 · Education" />
             </p>
           </Reveal>
           <Reveal delay={0.15}>
@@ -36,7 +36,7 @@ export function Education() {
           </Reveal>
           <Reveal delay={0.3}>
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-foreground/80 md:text-lg">
-              Studying computer science at SBU — focusing on systems thinking, distributed data, and the messy bridge between code and operations.
+              Studying computer science at SBU · focusing on systems thinking, distributed data, and the messy bridge between code and operations.
             </p>
           </Reveal>
         </div>

@@ -43,7 +43,7 @@ export function About() {
             onPointerUp={() => isTouch && setActive(false)}
             onPointerCancel={() => isTouch && setActive(false)}
           >
-            {/* Extra photos — fanned out on hover/press */}
+            {/* Extra photos · fanned out on hover/press */}
             {EXTRAS.map((e, i) => (
               <motion.div
                 key={e.src}
@@ -152,7 +152,7 @@ export function About() {
         <div className="lg:col-span-7 lg:pl-8">
           <Reveal>
             <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
-              <GlitchText text="⟢ 01 — About" />
+              <GlitchText text="⟢ 01 · About" />
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -162,7 +162,7 @@ export function About() {
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-              I'm a systems-oriented developer with experience building and digitizing operational platforms — from end-to-end workflow architecture and UX, to backend data structures for administrative and B2B transaction processes.
+              I'm a systems-oriented developer with experience building and digitizing operational platforms · from end-to-end workflow architecture and UX, to backend data structures for administrative and B2B transaction processes.
             </p>
           </Reveal>
           <Reveal delay={0.3}>

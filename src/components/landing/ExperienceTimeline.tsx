@@ -7,30 +7,30 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 const roles = [
   {
-    date: "Jul 2025 — Present",
+    date: "Jul 2025 · Present",
     role: "Founder & Lead Developer",
     company: "SeekOnce",
     location: "Incheon, KR",
     bullets: [
       "Built and shipped an academic management platform for SUNY Korea, gated by @stonybrook.edu, reaching 100 users within 20 days of launch.",
       "Architected a 20+ table PostgreSQL schema spanning users, clubs, transcripts, courses, evaluations, and geolocation modules.",
-      "Continuously improved architecture decisions — replaced polling with Supabase Realtime and refactored curriculum-path animations with Framer Motion across 15+ releases.",
+      "Continuously improved architecture decisions · replaced polling with Supabase Realtime and refactored curriculum-path animations with Framer Motion across 15+ releases.",
     ],
     tags: ["React", "Supabase", "PostgreSQL", "Realtime"],
   },
   {
-    date: "Mar 2026 — Jun 2026",
+    date: "Mar 2026 · Jun 2026",
     role: "Research Intern (Paid Contract)",
     company: "KOPRI (Korea Polar Research Institute) · Life Sciences Research Division",
     location: "Incheon, KR",
     bullets: [
       "Built an offline software program for internal use under a paid development contract.",
-      "Engagement is governed by a signed non-disclosure agreement — scope and details are confidential.",
+      "Engagement is governed by a signed non-disclosure agreement · scope and details are confidential.",
     ],
     tags: ["Paid Contract", "NDA", "Government Institute"],
   },
   {
-    date: "Jun 2025 — Present",
+    date: "Jun 2025 · Present",
     role: "Odoo Partner Project Manager",
     company: "DX Tech Company",
     location: "Incheon, KR",
@@ -42,24 +42,24 @@ const roles = [
     tags: ["Odoo", "PM", "Operations"],
   },
   {
-    date: "Feb 2025 — Present",
+    date: "Feb 2025 · Present",
     role: "Founder & Lead Developer",
     company: "Stealth · B2B Export Infra",
     location: "Incheon, KR",
     bullets: [
       "Planned a B2B export transaction infrastructure connecting domestic sellers with overseas buyers.",
-      "Architected hybrid data structures — NoSQL for high-volume behavior and social signals — tuned to data nature.",
+      "Architected hybrid data structures · NoSQL for high-volume behavior and social signals · tuned to data nature.",
       "Led functional definition and MVP build, automating customs and logistics across the export pipeline.",
     ],
     tags: ["Founder", "B2B", "Architecture"],
   },
   {
-    date: "Apr 2023 — Dec 2024",
+    date: "Apr 2023 · Dec 2024",
     role: "Developer",
     company: "BADA",
     location: "Cheonan, KR",
     bullets: [
-      "Digitized an offline student application pipeline into a website using PHP, HTML, and JavaScript — improving access and processing.",
+      "Digitized an offline student application pipeline into a website using PHP, HTML, and JavaScript · improving access and processing.",
       "Designed cross-platform (Mobile + PC) UI/UX and led end-to-end deployment on Cafe24, including server config and release.",
     ],
     tags: ["PHP", "Full-stack", "Deployment"],
@@ -126,7 +126,7 @@ export function ExperienceTimeline() {
             data-exp-anim
             className="mb-4 text-[10px] uppercase tracking-[0.4em] text-muted-foreground"
           >
-            <GlitchText text="⟢ 03 — Experience" />
+            <GlitchText text="⟢ 03 · Experience" />
           </p>
           <h2
             data-exp-anim
@@ -139,7 +139,7 @@ export function ExperienceTimeline() {
         </div>
 
         <div className="relative grid grid-cols-1 gap-y-24 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-32">
-          {/* progress line — sits in the gap between col-4 and col-8 */}
+          {/* progress line · sits in the gap between col-4 and col-8 */}
           <div
             className="pointer-events-none absolute top-0 hidden h-full w-px bg-border lg:block"
             style={{ left: "calc((100% - 15 * 1rem) / 12 * 4 + 8 * 1rem)" }}

@@ -7,7 +7,7 @@ export function Awards() {
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <p className="mb-6 text-[10px] uppercase tracking-[0.4em] text-muted-foreground font-mono">
-            <GlitchText text="⟢ 02 — Awards" />
+            <GlitchText text="⟢ 02 · Awards" />
           </p>
         </Reveal>
         <Reveal delay={0.1}>

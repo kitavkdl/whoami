@@ -63,7 +63,7 @@ export function Preloader() {
             </>
           )}
 
-          {/* central seed — same shape that morphs into hero core */}
+          {/* central seed · same shape that morphs into hero core */}
           <motion.div
             layoutId="hero-seed"
             className="absolute h-24 w-24 rounded-full bg-gradient-to-br from-accent via-accent/40 to-background shadow-[0_0_120px_40px_oklch(0.62_0.31_312_/_0.45)]"
@@ -85,7 +85,7 @@ export function Preloader() {
                 className="text-accent"
               />
               <GlitchText
-                text="/ 100 — initializing"
+                text="/ 100 · initializing"
                 mode="typewriter"
                 duration={900}
               />
