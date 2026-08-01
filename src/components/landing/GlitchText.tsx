@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const GLITCH_CHARS = "!<>-_\\/[]{}·=+*^?#%$&▓▒░█";
+const GLITCH_CHARS = "!<>_\\/[]{}=+*^?#%$&▓▒░█";
 
 function randomChar() {
   return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];

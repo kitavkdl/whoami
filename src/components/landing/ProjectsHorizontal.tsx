@@ -23,7 +23,7 @@ const PROJECTS: Project[] = [
     title: "SeekOnce",
     tag: "Founder & Lead Developer · 2025~Present · seek-once.com",
     desc: "Academic management platform for SUNY Korea · gated by @stonybrook.edu. 100 users in 20 days of launch. Currently v3.7.1, actively shipped.\n\nGPA simulation, curriculum path mapping, friend schedule overlay, anonymous course evaluations, and campus café geolocation (Outstanding partnership). Transcript-based auto-ingestion across all features.",
-    color: "from-emerald-500/30 to-teal-500/10",
+    color: "from-fuchsia-500/30 to-purple-500/10",
     metrics: ["100 users · 20 days", "v3.7.1 · 15+ releases", "20+ table schema", "10+ DAU"],
     tags: ["React", "Supabase", "PostgreSQL", "Framer Motion", "React Query", "Supabase Realtime"],
     link: "https://www.seek-once.com/",
@@ -54,7 +54,7 @@ const PROJECTS: Project[] = [
     title: "Internal Tools",
     tag: "Always shipping",
     desc: "A trail of small, sharp tools · admin dashboards, dataset cleaners, automation hooks. Boring on purpose, fast by design.",
-    color: "from-cyan-500/20 to-sky-500/10",
+    color: "from-indigo-500/25 to-violet-500/10",
   },
 ];
 
