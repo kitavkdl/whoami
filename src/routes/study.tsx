@@ -26,6 +26,13 @@ function hash(str: string): number {
   return h >>> 0;
 }
 
+function displayDate(): string {
+  const d = new Date();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${d.getFullYear()}.${mm}.${dd}`;
+}
+
 function todayKey(): string {
   const d = new Date();
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
@@ -179,7 +186,7 @@ const T = {
   ko: {
     back: "← 뒤로",
     daily: "오늘 · 하루 한 번",
-    eyebrow: "today's academic fortune / 학점 점성술",
+    eyebrow: "하루에 한 번, 과목 이름으로 보는 오늘의 학점 운세",
     title1: "오늘의",
     titleEm: "학점",
     title2: "운세",
@@ -191,8 +198,9 @@ const T = {
     resultGrade: "예상 학점",
     luckScore: "행운 지수",
     disclaimer: "* 결과는 과목 이름과 오늘 날짜를 기반으로 결정되며, 자정까지 동일하게 유지됩니다.",
-    footer: "ideantoe · study",
-    ticket: "ADMIT ONE · 학점 운세권",
+    footer: "jiyul ahn · study",
+    ticket: "학점 운세권",
+    oracle: "오늘의 한마디",
     serial: "발권번호",
     issued: "발행",
     valid: "유효기간 · 오늘 자정까지",
@@ -200,7 +208,7 @@ const T = {
   en: {
     back: "← back",
     daily: "daily · once a day",
-    eyebrow: "today's academic fortune / oracle of grades",
+    eyebrow: "one subject, one day, one grade",
     title1: "Today's",
     titleEm: "Grade",
     title2: "Fortune",
@@ -212,22 +220,14 @@ const T = {
     resultGrade: "predicted grade",
     luckScore: "luck score",
     disclaimer: "* The result is derived from the subject name and today's date, and stays the same until midnight.",
-    footer: "ideantoe · study",
-    ticket: "ADMIT ONE · GRADE FORTUNE",
+    footer: "jiyul ahn · study",
+    ticket: "grade fortune ticket",
+    oracle: "today's note",
     serial: "serial",
     issued: "issued",
     valid: "valid until midnight",
   },
 } as const;
-
-const TICKER_KO = [
-  "오늘의 학점 운세","STUDY FORTUNE","하루 한 번","SUBJECT × DATE","결과는 자정까지 고정",
-  "ASK THE ORACLE","행운은 노트 위에","CAFFEINE OPTIONAL","집중 +∞","NO REFUNDS",
-];
-const TICKER_EN = [
-  "TODAY'S GRADE FORTUNE","ONCE A DAY","SUBJECT × DATE","LOCKED UNTIL MIDNIGHT",
-  "ASK THE ORACLE","LUCK ON PAPER","CAFFEINE OPTIONAL","FOCUS +∞","NO REFUNDS","STUDY FORTUNE",
-];
 
 function StudyPage() {
   const [lang, setLang] = useState<Lang>("ko");
@@ -238,7 +238,6 @@ function StudyPage() {
     () => (submitted ? fortuneFor(submitted, lang) : null),
     [submitted, lang],
   );
-  const tickerItems = lang === "ko" ? TICKER_KO : TICKER_EN;
   const serial = fortune
     ? fortune.seed.toString(36).toUpperCase().padStart(7, "0").slice(0, 7)
     : "·······";
@@ -262,17 +261,6 @@ function StudyPage() {
         }}
       />
 
-      {/* Top ticker */}
-      <div className="border-y-2 border-[#0b0b0b] bg-[#0b0b0b] text-[#d6ff3a] overflow-hidden">
-        <div className="flex whitespace-nowrap animate-marquee py-2 font-mono text-[11px] uppercase tracking-[0.35em]">
-          {[...tickerItems, ...tickerItems, ...tickerItems].map((x, i) => (
-            <span key={i} className="mx-6 flex items-center gap-6">
-              <span>{x}</span>
-              <span aria-hidden className="text-[#d6ff3a]/70">✦</span>
-            </span>
-          ))}
-        </div>
-      </div>
 
       <div className="mx-auto max-w-[1300px] px-5 md:px-10 pb-24">
         {/* Header bar */}
@@ -282,13 +270,11 @@ function StudyPage() {
           transition={{ duration: 0.5 }}
           className="flex items-center justify-between gap-4 py-5 border-b border-[#0b0b0b]/20"
         >
-          <a href="/" className="font-mono text-[11px] uppercase tracking-[0.35em] hover:text-[#0b0b0b]/60">
+          <a href="/" className="font-mono text-[11px] uppercase tracking-[0.18em] hover:text-[#0b0b0b]/60">
             {t.back}
           </a>
-          <div className="hidden md:flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
-            <span>FILE №{todayKey()}</span>
-            <span>·</span>
-            <span>EDITION 001</span>
+          <div className="hidden md:flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
+            <span>{displayDate()}</span>
             <span>·</span>
             <span>{t.daily}</span>
           </div>
@@ -307,8 +293,8 @@ function StudyPage() {
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className={`relative z-10 px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.3em] transition-colors ${
-                  lang === l ? "text-[#d6ff3a]" : "text-[#0b0b0b]"
+                className={`relative z-10 px-4 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] transition-colors ${
+                  lang === l ? "text-[#efc84a]" : "text-[#0b0b0b]"
                 }`}
                 aria-pressed={lang === l}
               >
@@ -325,9 +311,9 @@ function StudyPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="font-mono text-[10px] uppercase tracking-[0.45em] text-[#0b0b0b]/60"
+              className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60"
             >
-              ✦ {t.eyebrow}
+              {t.eyebrow}
             </motion.p>
             <motion.h1
               key={lang}
@@ -335,7 +321,6 @@ function StudyPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="mt-5 font-serif leading-[0.86] tracking-[-0.03em] text-[16vw] md:text-[10.5rem]"
-              style={{ fontFamily: "'Syne', serif" }}
             >
               <span className="block">{t.title1}</span>
               <span className="block relative">
@@ -343,7 +328,7 @@ function StudyPage() {
                   <span className="relative z-10">{t.titleEm}</span>
                   <span
                     aria-hidden
-                    className="absolute inset-x-[-4%] bottom-[12%] h-[34%] -z-0 bg-[#d6ff3a] -rotate-[1.5deg]"
+                    className="absolute inset-x-[-4%] bottom-[12%] h-[34%] -z-0 bg-[#efc84a] -rotate-[1.5deg]"
                   />
                 </em>{" "}
                 <span className="text-[#0b0b0b]/30">{t.title2}</span>
@@ -352,16 +337,12 @@ function StudyPage() {
           </div>
 
           <aside className="col-span-12 md:col-span-4 md:pl-6 md:border-l-2 md:border-[#0b0b0b] flex flex-col justify-end">
-            <div className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/60">
-              ISSUE / {todayKey()}
+            <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
+              ISSUE / {displayDate()}
             </div>
             <p className="mt-3 text-[15px] leading-relaxed md:text-base">
               {t.lede}
             </p>
-            <div className="mt-5 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.35em]">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#0b0b0b] animate-blink" />
-              <span>LIVE · {t.daily}</span>
-            </div>
           </aside>
         </section>
 
@@ -378,8 +359,8 @@ function StudyPage() {
           className="mt-12 md:mt-16 grid grid-cols-12 gap-3"
         >
           <div className="col-span-12 md:col-span-9 relative">
-            <span className="absolute -top-3 left-4 bg-[#f1ede4] px-2 font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/70">
-              ✎ {t.inputBadge}
+            <span className="absolute -top-3 left-4 bg-[#f1ede4] px-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/70">
+              {t.inputBadge}
             </span>
             <input
               value={subject}
@@ -390,9 +371,9 @@ function StudyPage() {
           </div>
           <button
             type="submit"
-            className="col-span-12 md:col-span-3 group relative border-2 border-[#0b0b0b] bg-[#0b0b0b] px-7 py-5 font-mono text-sm font-bold uppercase tracking-[0.3em] text-[#d6ff3a] transition hover:bg-[#d6ff3a] hover:text-[#0b0b0b]"
+            className="col-span-12 md:col-span-3 group relative border-2 border-[#0b0b0b] bg-[#0b0b0b] px-7 py-5 font-mono text-sm font-bold uppercase tracking-[0.18em] text-[#efc84a] transition hover:bg-[#efc84a] hover:text-[#0b0b0b]"
           >
-            <span className="relative z-10">→ {t.submit}</span>
+            <span className="relative z-10">{t.submit}</span>
           </button>
         </motion.form>
 
@@ -429,8 +410,8 @@ function StudyPage() {
                 <span aria-hidden className="hidden md:block absolute -right-[11px] top-[30%] h-5 w-5 rounded-full bg-[#f1ede4] border-2 border-[#0b0b0b]" />
 
                 {/* header strip */}
-                <div className="flex items-center justify-between border-b-2 border-[#0b0b0b] bg-[#0b0b0b] px-5 py-2 font-mono text-[10px] uppercase tracking-[0.4em] text-[#d6ff3a]">
-                  <span>✦ {t.ticket}</span>
+                <div className="flex items-center justify-between border-b-2 border-[#0b0b0b] bg-[#0b0b0b] px-5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#efc84a]">
+                  <span>{t.ticket}</span>
                   <span className="hidden sm:inline">{t.serial} · {serial}</span>
                   <span>{t.valid}</span>
                 </div>
@@ -438,33 +419,32 @@ function StudyPage() {
                 <div className="grid grid-cols-12 gap-0">
                   {/* Left · subject + message */}
                   <div className="col-span-12 md:col-span-7 p-6 md:p-10 md:border-r-2 md:border-[#0b0b0b]">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
                       {t.resultSubject}
                     </p>
                     <h2
                       className="mt-2 font-serif text-3xl md:text-5xl tracking-tight break-words"
-                      style={{ fontFamily: "'Syne', serif" }}
                     >
                       {submitted}
                     </h2>
 
-                    <div className="mt-8 border-l-4 border-[#d6ff3a] pl-4">
-                      <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
-                        ORACLE SAYS
+                    <div className="mt-8 border-l-4 border-[#efc84a] pl-4">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
+                        {t.oracle}
                       </p>
                       <p className="mt-2 text-lg md:text-xl leading-snug">
                         “{fortune.msg}”
                       </p>
                     </div>
 
-                    <div className="mt-8 flex items-center gap-6 font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/70">
-                      <span>{t.issued} · {todayKey()}</span>
+                    <div className="mt-8 flex items-center gap-6 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/70">
+                      <span>{t.issued} · {displayDate()}</span>
                       <span className="hidden sm:inline">№ {serial}</span>
                     </div>
                   </div>
 
                   {/* Right · giant grade stub */}
-                  <div className="col-span-12 md:col-span-5 relative p-6 md:p-10 bg-[#d6ff3a]">
+                  <div className="col-span-12 md:col-span-5 relative p-6 md:p-10 bg-[#efc84a]">
                     <div
                       aria-hidden
                       className="absolute inset-0 opacity-[0.18] mix-blend-multiply"
@@ -474,7 +454,7 @@ function StudyPage() {
                       }}
                     />
                     <div className="relative">
-                      <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/70">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/70">
                         {t.resultGrade}
                       </p>
                       <motion.div
@@ -482,12 +462,11 @@ function StudyPage() {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
                         className="mt-2 font-serif leading-[0.82] tracking-[-0.04em] text-[#0b0b0b] text-[10rem] md:text-[14rem]"
-                        style={{ fontFamily: "'Syne', serif" }}
                       >
                         {fortune.grade.g}
                       </motion.div>
                       <div className="mt-2 flex items-end justify-between">
-                        <div className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/80">
+                        <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/80">
                           {t.luckScore}
                         </div>
                         <div className="font-mono text-xl tracking-tight text-[#0b0b0b]">
@@ -514,7 +493,7 @@ function StudyPage() {
                       key={l.k}
                       className={`p-5 md:p-6 ${i < (fortune.luck.length - 1) ? "border-r-2 border-[#0b0b0b]" : ""} ${i < 2 ? "border-b-2 md:border-b-0 border-[#0b0b0b]" : ""}`}
                     >
-                      <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/60">
+                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
                         0{i + 1} / {l.k}
                       </p>
                       <p className="mt-2 text-lg leading-snug">{l.v}</p>
@@ -522,7 +501,7 @@ function StudyPage() {
                   ))}
                 </div>
 
-                <p className="border-t-2 border-[#0b0b0b] bg-[#f1ede4] px-5 py-3 font-mono text-[10px] uppercase tracking-[0.35em] text-[#0b0b0b]/60">
+                <p className="border-t-2 border-[#0b0b0b] bg-[#f1ede4] px-5 py-3 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
                   {t.disclaimer}
                 </p>
               </div>
@@ -543,13 +522,13 @@ function StudyPage() {
               href={l.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative border-2 border-[#0b0b0b] bg-[#f6f3eb] p-6 transition hover:bg-[#d6ff3a] hover:-translate-y-1 hover:[box-shadow:6px_6px_0_0_#0b0b0b]"
+              className="group relative border-2 border-[#0b0b0b] bg-[#f6f3eb] p-6 transition hover:bg-[#efc84a] hover:-translate-y-1 hover:[box-shadow:6px_6px_0_0_#0b0b0b]"
             >
-              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
                 0{i + 1} / {l.sub}
               </p>
               <div className="mt-4 flex items-end justify-between">
-                <span className="font-serif text-2xl tracking-tight" style={{ fontFamily: "'Syne', serif" }}>
+                <span className="font-serif text-2xl tracking-tight">
                   {l.label}
                 </span>
                 <span className="font-mono text-lg transition group-hover:translate-x-1">↗</span>
@@ -559,10 +538,9 @@ function StudyPage() {
         </motion.nav>
 
         {/* Footer mark */}
-        <div className="mt-16 flex items-center justify-between border-t-2 border-[#0b0b0b] pt-4 font-mono text-[10px] uppercase tracking-[0.4em] text-[#0b0b0b]/60">
+        <div className="mt-16 flex items-center justify-between border-t-2 border-[#0b0b0b] pt-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
           <span>{t.footer}</span>
-          <span>© {new Date().getFullYear()} · oracle of grades</span>
-          <span>{todayKey()}</span>
+          <span>{displayDate()}</span>
         </div>
       </div>
     </main>

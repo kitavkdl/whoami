@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
@@ -9,28 +8,20 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { SmoothScroll } from "@/components/SmoothScroll";
-import { ScrollProgress } from "@/components/ScrollProgress";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
-      </div>
-    </div>
+    <main className="mx-auto max-w-[40rem] px-6 py-24">
+      <h1 className="text-[2rem] font-medium leading-none">Not here</h1>
+      <p className="mt-4 text-soft">
+        That page doesn't exist, or it used to and doesn't anymore.
+      </p>
+      <p className="mt-6">
+        <a href="/" className="underline">
+          Back to the front page
+        </a>
+      </p>
+    </main>
   );
 }
 
@@ -39,33 +30,26 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Try again
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Go home
-          </a>
-        </div>
-      </div>
-    </div>
+    <main className="mx-auto max-w-[40rem] px-6 py-24">
+      <h1 className="text-[2rem] font-medium leading-none">Something broke</h1>
+      <p className="mt-4 text-soft">
+        This one is on my side. Reloading usually does it.
+      </p>
+      <p className="mt-6 flex gap-6">
+        <button
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
+          className="underline"
+        >
+          Try again
+        </button>
+        <a href="/" className="underline">
+          Back to the front page
+        </a>
+      </p>
+    </main>
   );
 }
 
@@ -74,17 +58,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Jiyul Ahn_Developer & Systems Architect" },
-      { name: "description", content: "Personal portfolio" },
+      { title: "Jiyul Ahn" },
+      { name: "description", content: "Jiyul Ahn · developer in Songdo, Incheon." },
       { name: "author", content: "Jiyul Ahn" },
-      { property: "og:title", content: "Jiyul Ahn_Developer & Systems Architect" },
-      { property: "og:description", content: "Personal portfolio" },
+      { property: "og:title", content: "Jiyul Ahn" },
+      { property: "og:description", content: "Developer in Songdo, Incheon." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Jiyul Ahn_Developer & Systems Architect" },
-      { name: "twitter:description", content: "Personal portfolio" },
-      // TODO: add a self-hosted /public/og-image.png (real screenshot, not the Lovable
-      // preview capture) and re-add og:image / twitter:image once it exists.
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -93,7 +73,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap",
       },
     ],
   }),
@@ -122,10 +102,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SmoothScroll>
-        <ScrollProgress />
-        <Outlet />
-      </SmoothScroll>
+      <Outlet />
     </QueryClientProvider>
   );
 }
