@@ -393,7 +393,10 @@ export function Console() {
     const filled = candidates.length === 1 ? candidates[0] : commonPrefix(candidates);
 
     if (filled.length > last.length) {
-      const next = prefixText + filled + (candidates.length === 1 ? " " : "");
+      // A settled completion gets a trailing space so the next word can start,
+      // except on a directory, where you almost always want to keep descending.
+      const settled = candidates.length === 1 && !filled.endsWith("/");
+      const next = prefixText + filled + (settled ? " " : "");
       setValue(next + tail);
       const at = next.length;
       setCaret(at);
