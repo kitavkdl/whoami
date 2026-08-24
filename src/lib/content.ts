@@ -93,6 +93,19 @@ export const before: Entry[] = [
     body: ["An offline tool for internal use. It's covered by an NDA, so I'll leave it there."],
   },
   {
+    id: "decompiler",
+    when: "Jan 2025 ~ May 2026",
+    title: "Decompiler",
+    where: "student club at SUNY Korea",
+    kind: "work",
+    start: "2025-01",
+    end: "2026-05",
+    tags: ["technical advisor", "vice president", "president"],
+    body: [
+      "Technical advisor in Spring 2025, vice president in Fall 2025, president in Spring 2026. Three semesters, and the job changed shape each time: first answering the questions myself, then making sure somebody was around to answer them.",
+    ],
+  },
+  {
     id: "bada",
     when: "Apr 2023 ~ Dec 2024",
     title: "BADA",
