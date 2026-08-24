@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { profile } from "@/lib/content";
+import { useCopy, type Copy } from "@/lib/copy";
 
 const timeFormat = new Intl.DateTimeFormat("en-GB", {
   timeZone: profile.timeZone,
@@ -34,21 +35,23 @@ function zoneOffset(timeZone: string, at: Date): number | null {
   }
 }
 
-function mood(hour: number): string {
-  if (hour < 3) return "still up, apparently";
-  if (hour < 6) return "asleep, one would hope";
-  if (hour < 9) return "morning here";
-  if (hour < 12) return "at the desk";
-  if (hour < 14) return "lunch, probably";
-  if (hour < 18) return "at the desk";
-  if (hour < 22) return "evening here";
-  return "still up, apparently";
+type MoodKey = keyof Copy["clock"]["moods"];
+
+function mood(hour: number): MoodKey {
+  if (hour < 3) return "lateNight";
+  if (hour < 6) return "asleep";
+  if (hour < 9) return "morning";
+  if (hour < 12) return "desk";
+  if (hour < 14) return "lunch";
+  if (hour < 18) return "desk";
+  if (hour < 22) return "evening";
+  return "lateNight";
 }
 
 function useSongdoTime() {
   const [state, setState] = useState<{
     time: string;
-    mood: string;
+    mood: MoodKey;
     lead: number | null;
   } | null>(null);
 
@@ -91,6 +94,7 @@ function useSongdoTime() {
  */
 export function LocalClock() {
   const state = useSongdoTime();
+  const { clock } = useCopy();
 
   return (
     <p className="font-sans text-[12.5px] leading-5 text-soft" suppressHydrationWarning>
@@ -99,12 +103,15 @@ export function LocalClock() {
         style={{ background: state ? "var(--mark)" : "var(--rule)" }}
         aria-hidden
       />
-      <span className="tnum">{state?.time ?? "--:--:--"}</span> in Songdo
-      {state ? <span className="text-soft/80"> · {state.mood}</span> : null}
+      {/* Korean names the place before the time, English trails it after. */}
+      {clock.prefix}
+      <span className="tnum">{state?.time ?? "--:--:--"}</span>
+      {clock.suffix}
+      {state ? <span className="text-soft/80"> · {clock.moods[state.mood]}</span> : null}
       {state && state.lead !== null && state.lead !== 0 ? (
         <span className="text-soft/70">
-          {" "}
-          · {Math.abs(state.lead)}h {state.lead > 0 ? "ahead of" : "behind"} you
+          {" · "}
+          {state.lead > 0 ? clock.ahead(state.lead) : clock.behind(Math.abs(state.lead))}
         </span>
       ) : null}
     </p>

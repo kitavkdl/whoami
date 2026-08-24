@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { allEntries, timelineStart, type Entry } from "@/lib/content";
+import { getContent, timelineStart, useContent, type Entry } from "@/lib/content";
+import { useCopy } from "@/lib/copy";
 import { highlightProps, useHighlight } from "@/lib/highlight";
 
 /** Months since the left edge of the chart. */
@@ -19,7 +20,8 @@ function currentMonth(): string {
  * the server and the browser agree; the effect below swaps in the real month
  * once we are running somewhere that has a clock worth trusting.
  */
-const fallbackNow = Math.max(...allEntries.map((e) => monthIndex(e.end ?? e.start))) + 1;
+const fallbackNow =
+  Math.max(...getContent("en").allEntries.map((e) => monthIndex(e.end ?? e.start))) + 1;
 
 const TONE: Record<Entry["kind"], string> = {
   product: "var(--mark)",
@@ -28,6 +30,8 @@ const TONE: Record<Entry["kind"], string> = {
 };
 
 export function Overlap() {
+  const { allEntries } = useContent();
+  const copy = useCopy();
   const highlight = useHighlight();
   const [nowIndex, setNowIndex] = useState(fallbackNow);
 
@@ -41,7 +45,7 @@ export function Overlap() {
       [...allEntries].sort(
         (a, b) => monthIndex(a.start) - monthIndex(b.start) || a.title.localeCompare(b.title),
       ),
-    [],
+    [allEntries],
   );
 
   const pct = (months: number) => (months / span) * 100;
@@ -158,8 +162,7 @@ export function Overlap() {
       </div>
 
       <figcaption className="mt-3 font-sans text-[13px] leading-6 text-soft">
-        Everything above, on one axis. The overlaps are the honest part: four ran at once in late
-        2025, four again in the spring. Two are still going. The dashed line is today.
+        {copy.overlapCaption}
       </figcaption>
     </figure>
   );

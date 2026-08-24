@@ -5,7 +5,8 @@ import { CommandPalette } from "@/components/site/CommandPalette";
 import { ShortcutSheet } from "@/components/site/ShortcutSheet";
 import { KeyboardLayer } from "@/components/site/KeyboardLayer";
 import { Toasts } from "@/components/site/Toasts";
-import { cycleTheme, THEME_LABEL } from "@/lib/theme";
+import { cycleTheme } from "@/lib/theme";
+import { useCopy } from "@/lib/copy";
 import { emit, on } from "@/lib/bus";
 
 /** A little tooth on the paper. Cheap: one fixed layer, never repainted. */
@@ -29,9 +30,10 @@ function Grain() {
  * system-dark, and a cycle fired from the keyboard has no press to watch.
  */
 function useThemeCommands() {
+  const copy = useCopy();
   useEffect(
-    () => on("theme:cycle", (origin) => emit("toast", THEME_LABEL[cycleTheme(origin)])),
-    [],
+    () => on("theme:cycle", (origin) => emit("toast", copy.theme[cycleTheme(origin)])),
+    [copy],
   );
 }
 

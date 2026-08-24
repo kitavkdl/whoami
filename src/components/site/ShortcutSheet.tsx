@@ -1,43 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { on } from "@/lib/bus";
-
-const GROUPS: { title: string; rows: [string[], string][] }[] = [
-  {
-    title: "Anywhere",
-    rows: [
-      [["⌘", "K"], "Open the command palette"],
-      [["/"], "Same thing, one key"],
-      [["?"], "This sheet"],
-      [["t"], "Cycle the theme"],
-      [["p"], "Print as a resume"],
-      [["Esc"], "Close whatever is open"],
-    ],
-  },
-  {
-    title: "Moving around",
-    rows: [
-      [["j"], "Next section"],
-      [["k"], "Previous section"],
-      [["g", "h"], "Back to the top"],
-      [["g", "n"], "Now"],
-      [["g", "o"], "Overlap"],
-      [["g", "b"], "Before"],
-      [["g", "a"], "Awards"],
-      [["g", "c"], "Contact"],
-      [["g", "k"], "The console"],
-    ],
-  },
-  {
-    title: "In the console",
-    rows: [
-      [["Tab"], "Complete a command or a path"],
-      [["↑", "↓"], "Walk back through history"],
-      [["Ctrl", "L"], "Clear the scrollback"],
-      [["Ctrl", "U"], "Kill the line"],
-      [["Ctrl", "C"], "Cancel it"],
-    ],
-  },
-];
+import { useCopy } from "@/lib/copy";
 
 function Key({ children }: { children: string }) {
   return (
@@ -48,6 +11,7 @@ function Key({ children }: { children: string }) {
 }
 
 export function ShortcutSheet() {
+  const copy = useCopy();
   const [open, setOpen] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const restoreTo = useRef<HTMLElement | null>(null);
@@ -100,7 +64,7 @@ export function ShortcutSheet() {
             id="shortcuts-title"
             className="font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-soft"
           >
-            Keyboard
+            {copy.shortcuts.title}
           </h2>
           <button
             ref={closeRef}
@@ -108,11 +72,11 @@ export function ShortcutSheet() {
             onClick={() => setOpen(false)}
             className="font-sans text-[12px] text-soft underline-offset-4 hover:text-mark hover:underline"
           >
-            close
+            {copy.shortcuts.close}
           </button>
         </div>
 
-        {GROUPS.map((group) => (
+        {copy.shortcuts.groups.map((group) => (
           <div key={group.title} className="mt-5">
             <p className="font-sans text-[12px] text-soft/80">{group.title}</p>
             <dl className="mt-2">

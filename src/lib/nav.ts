@@ -1,6 +1,6 @@
-import { sections } from "@/lib/content";
+import { sectionIds } from "@/lib/content";
 
-export const sectionIds = sections.map((s) => s.id);
+export { sectionIds };
 
 /**
  * Scrolls a section into view and hands it focus, so the keyboard carries on

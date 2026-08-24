@@ -3,16 +3,49 @@
  *
  * The console walks this tree, so `cat now/seekonce.md` prints the same words
  * the page prints. Nothing is duplicated by hand; if the page changes, the
- * filesystem changes with it.
+ * filesystem changes with it — including the language, which is why there is
+ * one tree per language rather than one tree.
+ *
+ * Paths and field keys stay in English on both sides. They are typed at a
+ * prompt and completed with tab; they are an interface, not copy.
  */
 
-import { awards, before, now, profile, school, tools, type Entry } from "@/lib/content";
+import { getContent, type Entry } from "@/lib/content";
+import { getCopy } from "@/lib/copy";
+import { LANGS, type Lang } from "@/lib/i18n";
 
 export type VFile = { type: "file"; name: string; content: string };
 export type VDir = { type: "dir"; name: string; children: VNode[] };
 export type VNode = VFile | VDir;
 
 const WRAP = 72;
+
+/**
+ * Columns a character occupies in a monospaced terminal. Hangul and the rest
+ * of the CJK block are drawn two cells wide, so counting them as one would
+ * wrap Korean output at roughly double the intended measure.
+ */
+function charWidth(code: number): number {
+  return (code >= 0x1100 && code <= 0x115f) ||
+    (code >= 0x2e80 && code <= 0x303e) ||
+    (code >= 0x3041 && code <= 0x33ff) ||
+    (code >= 0x3400 && code <= 0x4dbf) ||
+    (code >= 0x4e00 && code <= 0x9fff) ||
+    (code >= 0xa000 && code <= 0xa4cf) ||
+    (code >= 0xac00 && code <= 0xd7a3) ||
+    (code >= 0xf900 && code <= 0xfaff) ||
+    (code >= 0xfe30 && code <= 0xfe4f) ||
+    (code >= 0xff00 && code <= 0xff60) ||
+    (code >= 0xffe0 && code <= 0xffe6)
+    ? 2
+    : 1;
+}
+
+export function displayWidth(text: string): number {
+  let total = 0;
+  for (const ch of text) total += charWidth(ch.codePointAt(0)!);
+  return total;
+}
 
 /** Greedy wrap at word boundaries, so `cat` output has a proper measure. */
 export function wrap(text: string, width = WRAP): string[] {
@@ -25,14 +58,19 @@ export function wrap(text: string, width = WRAP): string[] {
     }
 
     let line = "";
+    let used = 0;
     for (const word of paragraph.split(" ")) {
+      const w = displayWidth(word);
       if (!line.length) {
         line = word;
-      } else if (line.length + 1 + word.length <= width) {
+        used = w;
+      } else if (used + 1 + w <= width) {
         line += " " + word;
+        used += 1 + w;
       } else {
         out.push(line);
         line = word;
+        used = w;
       }
     }
     if (line.length) out.push(line);
@@ -46,7 +84,7 @@ function entryFile(entry: Entry): VFile {
     `# ${entry.title}`,
     "",
     `when   ${entry.when}`,
-    entry.hangul ? `ko     ${entry.hangul}` : null,
+    entry.altName ? `also   ${entry.altName}` : null,
     entry.where ? `what   ${entry.where}` : null,
     `stack  ${entry.tags.join(", ")}`,
     entry.href ? `url    ${entry.href}` : null,
@@ -66,36 +104,48 @@ function entryFile(entry: Entry): VFile {
   };
 }
 
-const aboutTxt = [
-  profile.name + "  ·  " + profile.hangul,
-  profile.location,
-  "",
-  ...wrap(profile.lede),
-  "",
-  ...wrap(profile.intro),
-].join("\n");
+function buildRoot(lang: Lang): VDir {
+  const { profile, now, before, awards, tools, school } = getContent(lang);
 
-const contactTxt = [
-  `email   ${profile.email}`,
-  `phone   ${profile.phone}`,
-  `web     ${profile.site.href}`,
-  "",
-  "Korean or English, either is fine.",
-].join("\n");
+  const aboutTxt = [
+    profile.name + "  ·  " + profile.hangul,
+    profile.location,
+    "",
+    ...wrap(profile.lede),
+    "",
+    ...wrap(profile.intro),
+  ].join("\n");
 
-export const root: VDir = {
-  type: "dir",
-  name: "",
-  children: [
-    { type: "file", name: "about.txt", content: aboutTxt },
-    { type: "dir", name: "now", children: now.map(entryFile) },
-    { type: "dir", name: "before", children: before.map(entryFile) },
-    { type: "dir", name: "awards", children: awards.map(entryFile) },
-    { type: "file", name: "tools.txt", content: wrap(tools).join("\n") },
-    { type: "file", name: "school.txt", content: wrap(school).join("\n") },
-    { type: "file", name: "contact.txt", content: contactTxt },
-  ],
-};
+  const contactTxt = [
+    `email   ${profile.email}`,
+    `phone   ${profile.phone}`,
+    `web     ${profile.site.href}`,
+    "",
+    getCopy(lang).contact.languages,
+  ].join("\n");
+
+  return {
+    type: "dir",
+    name: "",
+    children: [
+      { type: "file", name: "about.txt", content: aboutTxt },
+      { type: "dir", name: "now", children: now.map(entryFile) },
+      { type: "dir", name: "before", children: before.map(entryFile) },
+      { type: "dir", name: "awards", children: awards.map(entryFile) },
+      { type: "file", name: "tools.txt", content: wrap(tools).join("\n") },
+      { type: "file", name: "school.txt", content: wrap(school).join("\n") },
+      { type: "file", name: "contact.txt", content: contactTxt },
+    ],
+  };
+}
+
+const roots: Record<Lang, VDir> = Object.fromEntries(
+  LANGS.map((lang) => [lang, buildRoot(lang)]),
+) as Record<Lang, VDir>;
+
+export function getRoot(lang: Lang): VDir {
+  return roots[lang];
+}
 
 /** Normalises `.`, `..`, absolute and relative segments against a cwd. */
 export function resolvePath(cwd: string[], input: string): string[] {
@@ -112,7 +162,7 @@ export function resolvePath(cwd: string[], input: string): string[] {
   return segments;
 }
 
-export function lookup(segments: string[]): VNode | null {
+export function lookup(root: VDir, segments: string[]): VNode | null {
   let node: VNode = root;
 
   for (const segment of segments) {
@@ -130,13 +180,13 @@ export function formatPath(segments: string[]): string {
 }
 
 /** Every file path in the tree, for `grep` and for tab completion. */
-export function walk(node: VNode = root, prefix: string[] = []): string[] {
+export function walk(node: VNode, prefix: string[] = []): string[] {
   if (node.type === "file") return [[...prefix, node.name].join("/")];
 
   return node.children.flatMap((child) => walk(child, node.name ? [...prefix, node.name] : prefix));
 }
 
-export function renderTree(node: VDir = root, indent = ""): string[] {
+export function renderTree(node: VDir, indent = ""): string[] {
   const lines: string[] = [];
 
   node.children.forEach((child, i) => {

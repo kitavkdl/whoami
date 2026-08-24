@@ -54,8 +54,8 @@ export function EntryList({ items }: { items: Entry[] }) {
               {entry.where && <span className="font-normal text-soft"> · {entry.where}</span>}
             </h3>
 
-            {entry.hangul && (
-              <p className="mt-1 font-sans text-[13px] leading-6 text-soft">{entry.hangul}</p>
+            {entry.altName && (
+              <p className="mt-1 font-sans text-[13px] leading-6 text-soft">{entry.altName}</p>
             )}
 
             {entry.body.map((paragraph, k) => (

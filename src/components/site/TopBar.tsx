@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { sections } from "@/lib/content";
+import { useContent } from "@/lib/content";
+import { useCopy } from "@/lib/copy";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
+import { LangToggle } from "@/components/site/LangToggle";
 import { emit } from "@/lib/bus";
 
 /**
@@ -9,6 +11,8 @@ import { emit } from "@/lib/bus";
  * a scroll handler, so it costs nothing while you read.
  */
 export function TopBar({ active, sentinelId }: { active: string; sentinelId: string }) {
+  const { sections } = useContent();
+  const copy = useCopy();
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
@@ -45,7 +49,7 @@ export function TopBar({ active, sentinelId }: { active: string; sentinelId: str
           }}
           className="font-sans text-[13px] font-medium no-underline"
         >
-          Jiyul Ahn
+          {copy.name.primary}
         </a>
 
         {label && (
@@ -64,8 +68,9 @@ export function TopBar({ active, sentinelId }: { active: string; sentinelId: str
             className="hidden items-center gap-[6px] rounded-[3px] border border-rule px-2 py-[5px] font-mono text-[10.5px] text-soft transition-colors hover:border-mark/50 hover:text-mark sm:flex"
           >
             <span>⌘K</span>
-            <span className="text-soft/70">search</span>
+            <span className="text-soft/70">{copy.topBar.search}</span>
           </button>
+          <LangToggle />
           <ThemeToggle />
         </div>
       </div>

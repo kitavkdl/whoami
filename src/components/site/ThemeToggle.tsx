@@ -6,9 +6,9 @@ import {
   setThemePref,
   subscribeTheme,
   THEME_ANCHOR,
-  THEME_LABEL as LABEL,
   type ThemePref,
 } from "@/lib/theme";
+import { useCopy } from "@/lib/copy";
 
 function Glyph({ pref }: { pref: ThemePref }) {
   if (pref === "light") {
@@ -63,6 +63,7 @@ function Glyph({ pref }: { pref: ThemePref }) {
  * handled once, in Chrome.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
+  const LABEL = useCopy().theme;
   const [pref, setPref] = useState<ThemePref>("system");
 
   useEffect(() => {

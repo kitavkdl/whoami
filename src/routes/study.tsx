@@ -1,20 +1,31 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import type { Lang } from "@/lib/i18n";
+
 export const Route = createFileRoute("/study")({
+  // The language is in the URL, like the rest of the site, so a link from
+  // either version of the front page opens this one to match.
+  validateSearch: (search: Record<string, unknown>): { lang: Lang } => ({
+    lang: search.lang === "en" ? "en" : "ko",
+  }),
   head: () => ({
     meta: [
       { title: "오늘의 학점 운세 · Study Fortune" },
-      { name: "description", content: "과목별 오늘의 학업 운세. 하루에 한 번, 당신의 학점을 점쳐드립니다." },
+      {
+        name: "description",
+        content: "과목별 오늘의 학업 운세. 하루에 한 번, 당신의 학점을 점쳐드립니다.",
+      },
       { property: "og:title", content: "오늘의 학점 운세" },
-      { property: "og:description", content: "과목 이름을 입력하면 오늘의 학업 운세를 알려드립니다." },
+      {
+        property: "og:description",
+        content: "과목 이름을 입력하면 오늘의 학업 운세를 알려드립니다.",
+      },
     ],
   }),
   component: StudyPage,
 });
-
-type Lang = "ko" | "en";
 
 // Deterministic hash → seeded fortune per (subject + date)
 function hash(str: string): number {
@@ -40,16 +51,16 @@ function todayKey(): string {
 
 const GRADES = [
   { g: "A+", weight: 12 },
-  { g: "A",  weight: 16 },
+  { g: "A", weight: 16 },
   { g: "A-", weight: 14 },
   { g: "B+", weight: 10 },
-  { g: "B",  weight: 10 },
+  { g: "B", weight: 10 },
   { g: "B-", weight: 8 },
   { g: "C+", weight: 6 },
-  { g: "C",  weight: 5 },
+  { g: "C", weight: 5 },
   { g: "C-", weight: 4 },
-  { g: "D",  weight: 3 },
-  { g: "F",  weight: 2 },
+  { g: "D", weight: 3 },
+  { g: "F", weight: 2 },
 ];
 
 function pickGrade(seed: number) {
@@ -104,48 +115,108 @@ const ADVICE: Record<Lang, { k: string; v: string[] }[]> = {
     {
       k: "행운의 시간",
       v: [
-        "오전 9~11시","오후 2~4시","오후 7~9시","밤 11시~새벽 1시",
-        "오전 6~8시","오후 5~6시","자정 12~1시","오전 10시~정오",
+        "오전 9~11시",
+        "오후 2~4시",
+        "오후 7~9시",
+        "밤 11시~새벽 1시",
+        "오전 6~8시",
+        "오후 5~6시",
+        "자정 12~1시",
+        "오전 10시~정오",
       ],
     },
     {
       k: "행운의 장소",
       v: [
-        "도서관 3층","학교 근처 카페","기숙사 책상","빈 강의실",
-        "학교 정원 벤치","24시간 스터디카페","지하철 2호선 창가","집 책상 앞 창가",
+        "도서관 3층",
+        "학교 근처 카페",
+        "기숙사 책상",
+        "빈 강의실",
+        "학교 정원 벤치",
+        "24시간 스터디카페",
+        "지하철 2호선 창가",
+        "집 책상 앞 창가",
       ],
     },
     {
       k: "행운의 음료",
       v: [
-        "아메리카노","녹차 라떼","탄산수","꿀물",
-        "아이스티","요거트 스무디","레몬차","쌍화차",
+        "아메리카노",
+        "녹차 라떼",
+        "탄산수",
+        "꿀물",
+        "아이스티",
+        "요거트 스무디",
+        "레몬차",
+        "쌍화차",
       ],
     },
     {
       k: "피해야 할 것",
       v: [
-        "릴스 무한 스크롤","30분 이상의 낮잠","넷플릭스 한 화 더","단톡방 알림",
-        "배달 음식 주문하기","침대에서 공부하기","음악 + 가사 영상","오후 3시 커피",
+        "릴스 무한 스크롤",
+        "30분 이상의 낮잠",
+        "넷플릭스 한 화 더",
+        "단톡방 알림",
+        "배달 음식 주문하기",
+        "침대에서 공부하기",
+        "음악 + 가사 영상",
+        "오후 3시 커피",
       ],
     },
   ],
   en: [
     {
       k: "Lucky hours",
-      v: ["9~11 AM","2~4 PM","7~9 PM","11 PM ~ 1 AM","6~8 AM","5~6 PM","12~1 AM","10 AM ~ noon"],
+      v: [
+        "9~11 AM",
+        "2~4 PM",
+        "7~9 PM",
+        "11 PM ~ 1 AM",
+        "6~8 AM",
+        "5~6 PM",
+        "12~1 AM",
+        "10 AM ~ noon",
+      ],
     },
     {
       k: "Lucky place",
-      v: ["Library, 3rd floor","Café near campus","Dorm desk","Empty classroom","Garden bench","24h study café","Train window seat","Desk by home window"],
+      v: [
+        "Library, 3rd floor",
+        "Café near campus",
+        "Dorm desk",
+        "Empty classroom",
+        "Garden bench",
+        "24h study café",
+        "Train window seat",
+        "Desk by home window",
+      ],
     },
     {
       k: "Lucky drink",
-      v: ["Americano","Matcha latte","Sparkling water","Honey water","Iced tea","Yogurt smoothie","Lemon tea","Ssanghwacha"],
+      v: [
+        "Americano",
+        "Matcha latte",
+        "Sparkling water",
+        "Honey water",
+        "Iced tea",
+        "Yogurt smoothie",
+        "Lemon tea",
+        "Ssanghwacha",
+      ],
     },
     {
       k: "Avoid today",
-      v: ["Infinite Reels scroll","Naps over 30 min","One more Netflix episode","Group chat pings","Ordering delivery food","Studying in bed","Music with lyrics","3 PM coffee"],
+      v: [
+        "Infinite Reels scroll",
+        "Naps over 30 min",
+        "One more Netflix episode",
+        "Group chat pings",
+        "Ordering delivery food",
+        "Studying in bed",
+        "Music with lyrics",
+        "3 PM coffee",
+      ],
     },
   ],
 };
@@ -172,13 +243,25 @@ function fortuneFor(subject: string, lang: Lang) {
 const LINKS: Record<Lang, { label: string; sub: string; href: string }[]> = {
   ko: [
     { label: "Seek Once", sub: "한 번에 찾기", href: "https://www.seek-once.com/" },
-    { label: "Brightspace", sub: "강의 · 과제", href: "https://it.stonybrook.edu/services/brightspace" },
+    {
+      label: "Brightspace",
+      sub: "강의 · 과제",
+      href: "https://it.stonybrook.edu/services/brightspace",
+    },
     { label: "SOLAR", sub: "수강신청 · 학적", href: "https://it.stonybrook.edu/services/solar" },
   ],
   en: [
     { label: "Seek Once", sub: "Find it in one go", href: "https://www.seek-once.com/" },
-    { label: "Brightspace", sub: "Classes · Assignments", href: "https://it.stonybrook.edu/services/brightspace" },
-    { label: "SOLAR", sub: "Registration · Records", href: "https://it.stonybrook.edu/services/solar" },
+    {
+      label: "Brightspace",
+      sub: "Classes · Assignments",
+      href: "https://it.stonybrook.edu/services/brightspace",
+    },
+    {
+      label: "SOLAR",
+      sub: "Registration · Records",
+      href: "https://it.stonybrook.edu/services/solar",
+    },
   ],
 };
 
@@ -219,7 +302,8 @@ const T = {
     resultSubject: "subject",
     resultGrade: "predicted grade",
     luckScore: "luck score",
-    disclaimer: "* The result is derived from the subject name and today's date, and stays the same until midnight.",
+    disclaimer:
+      "* The result is derived from the subject name and today's date, and stays the same until midnight.",
     footer: "jiyul ahn · study",
     ticket: "grade fortune ticket",
     oracle: "today's note",
@@ -230,7 +314,11 @@ const T = {
 } as const;
 
 function StudyPage() {
-  const [lang, setLang] = useState<Lang>("ko");
+  const { lang } = Route.useSearch();
+  const navigate = useNavigate();
+  const setLang = (next: Lang) =>
+    void navigate({ to: "/study", search: { lang: next }, replace: true });
+
   const [subject, setSubject] = useState("");
   const [submitted, setSubmitted] = useState<string | null>(null);
   const t = T[lang];
@@ -248,8 +336,7 @@ function StudyPage() {
       <div
         className="pointer-events-none fixed inset-0 -z-10 opacity-[0.07] mix-blend-multiply"
         style={{
-          backgroundImage:
-            "radial-gradient(#000 1px, transparent 1.2px)",
+          backgroundImage: "radial-gradient(#000 1px, transparent 1.2px)",
           backgroundSize: "6px 6px",
         }}
       />
@@ -261,7 +348,6 @@ function StudyPage() {
         }}
       />
 
-
       <div className="mx-auto max-w-[1300px] px-5 md:px-10 pb-24">
         {/* Header bar */}
         <motion.header
@@ -270,7 +356,10 @@ function StudyPage() {
           transition={{ duration: 0.5 }}
           className="flex items-center justify-between gap-4 py-5 border-b border-[#0b0b0b]/20"
         >
-          <a href="/" className="font-mono text-[11px] uppercase tracking-[0.18em] hover:text-[#0b0b0b]/60">
+          <a
+            href="/"
+            className="font-mono text-[11px] uppercase tracking-[0.18em] hover:text-[#0b0b0b]/60"
+          >
             {t.back}
           </a>
           <div className="hidden md:flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
@@ -340,9 +429,7 @@ function StudyPage() {
             <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
               ISSUE / {displayDate()}
             </div>
-            <p className="mt-3 text-[15px] leading-relaxed md:text-base">
-              {t.lede}
-            </p>
+            <p className="mt-3 text-[15px] leading-relaxed md:text-base">{t.lede}</p>
           </aside>
         </section>
 
@@ -406,13 +493,21 @@ function StudyPage() {
                   }}
                 />
                 {/* notch holes */}
-                <span aria-hidden className="hidden md:block absolute -left-[11px] top-[30%] h-5 w-5 rounded-full bg-[#f1ede4] border-2 border-[#0b0b0b]" />
-                <span aria-hidden className="hidden md:block absolute -right-[11px] top-[30%] h-5 w-5 rounded-full bg-[#f1ede4] border-2 border-[#0b0b0b]" />
+                <span
+                  aria-hidden
+                  className="hidden md:block absolute -left-[11px] top-[30%] h-5 w-5 rounded-full bg-[#f1ede4] border-2 border-[#0b0b0b]"
+                />
+                <span
+                  aria-hidden
+                  className="hidden md:block absolute -right-[11px] top-[30%] h-5 w-5 rounded-full bg-[#f1ede4] border-2 border-[#0b0b0b]"
+                />
 
                 {/* header strip */}
                 <div className="flex items-center justify-between border-b-2 border-[#0b0b0b] bg-[#0b0b0b] px-5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[#efc84a]">
                   <span>{t.ticket}</span>
-                  <span className="hidden sm:inline">{t.serial} · {serial}</span>
+                  <span className="hidden sm:inline">
+                    {t.serial} · {serial}
+                  </span>
                   <span>{t.valid}</span>
                 </div>
 
@@ -422,9 +517,7 @@ function StudyPage() {
                     <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
                       {t.resultSubject}
                     </p>
-                    <h2
-                      className="mt-2 font-serif text-3xl md:text-5xl tracking-tight break-words"
-                    >
+                    <h2 className="mt-2 font-serif text-3xl md:text-5xl tracking-tight break-words">
                       {submitted}
                     </h2>
 
@@ -432,13 +525,13 @@ function StudyPage() {
                       <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
                         {t.oracle}
                       </p>
-                      <p className="mt-2 text-lg md:text-xl leading-snug">
-                        “{fortune.msg}”
-                      </p>
+                      <p className="mt-2 text-lg md:text-xl leading-snug">“{fortune.msg}”</p>
                     </div>
 
                     <div className="mt-8 flex items-center gap-6 font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/70">
-                      <span>{t.issued} · {displayDate()}</span>
+                      <span>
+                        {t.issued} · {displayDate()}
+                      </span>
                       <span className="hidden sm:inline">№ {serial}</span>
                     </div>
                   </div>
@@ -470,7 +563,8 @@ function StudyPage() {
                           {t.luckScore}
                         </div>
                         <div className="font-mono text-xl tracking-tight text-[#0b0b0b]">
-                          {fortune.score}<span className="text-[#0b0b0b]/50">/100</span>
+                          {fortune.score}
+                          <span className="text-[#0b0b0b]/50">/100</span>
                         </div>
                       </div>
                       {/* luck bar */}
@@ -491,7 +585,7 @@ function StudyPage() {
                   {fortune.luck.map((l, i) => (
                     <div
                       key={l.k}
-                      className={`p-5 md:p-6 ${i < (fortune.luck.length - 1) ? "border-r-2 border-[#0b0b0b]" : ""} ${i < 2 ? "border-b-2 md:border-b-0 border-[#0b0b0b]" : ""}`}
+                      className={`p-5 md:p-6 ${i < fortune.luck.length - 1 ? "border-r-2 border-[#0b0b0b]" : ""} ${i < 2 ? "border-b-2 md:border-b-0 border-[#0b0b0b]" : ""}`}
                     >
                       <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0b0b0b]/60">
                         0{i + 1} / {l.k}
@@ -528,9 +622,7 @@ function StudyPage() {
                 0{i + 1} / {l.sub}
               </p>
               <div className="mt-4 flex items-end justify-between">
-                <span className="font-serif text-2xl tracking-tight">
-                  {l.label}
-                </span>
+                <span className="font-serif text-2xl tracking-tight">{l.label}</span>
                 <span className="font-mono text-lg transition group-hover:translate-x-1">↗</span>
               </div>
             </a>

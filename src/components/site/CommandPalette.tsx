@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { allEntries, profile, sections } from "@/lib/content";
+import { useNavigate } from "@tanstack/react-router";
+import { useContent, type SiteContent } from "@/lib/content";
+import { useCopy, type Copy } from "@/lib/copy";
+import { HOME_PATH, otherLang, placeToKeep, useLang, type Lang } from "@/lib/i18n";
 import { fuzzyMatch, segment } from "@/lib/fuzzy";
 import { gotoSection } from "@/lib/nav";
 import { emit, on } from "@/lib/bus";
@@ -19,16 +22,23 @@ const GROUP_ORDER: Group[] = ["Sections", "Work", "Actions", "Elsewhere"];
 
 type Scored = Item & { indices?: number[]; score: number };
 
-function buildIndex(): Item[] {
+/**
+ * Keywords are matched but never shown, so they carry the terms a reader might
+ * reach for that are not in the visible label — including, in either language,
+ * the other language's words. Someone searching "dark" on the Korean page
+ * should still land on 테마 바꾸기.
+ */
+function buildIndex(content: SiteContent, copy: Copy, lang: Lang, goOtherLang: () => void): Item[] {
   const items: Item[] = [];
+  const { profile, sections, allEntries } = content;
 
   for (const section of sections) {
     items.push({
       id: `section:${section.id}`,
       label: section.label,
-      hint: "section",
+      hint: copy.palette.sectionHint,
       group: "Sections",
-      keywords: `${section.id} jump scroll`,
+      keywords: `${section.id} jump scroll 이동 섹션`,
       run: () => gotoSection(section.id),
     });
   }
@@ -39,7 +49,7 @@ function buildIndex(): Item[] {
       label: entry.title,
       hint: entry.when,
       group: "Work",
-      keywords: `${entry.id} ${entry.hangul ?? ""} ${entry.where ?? ""} ${entry.tags.join(" ")}`,
+      keywords: `${entry.id} ${entry.altName ?? ""} ${entry.where ?? ""} ${entry.tags.join(" ")}`,
       run: () => {
         const el = document.getElementById(`entry-${entry.id}`);
         if (!el) return;
@@ -56,57 +66,65 @@ function buildIndex(): Item[] {
   items.push(
     {
       id: "action:theme",
-      label: "Switch theme",
-      hint: "system · light · dark",
+      label: copy.palette.theme,
+      hint: copy.palette.themeHint,
       group: "Actions",
-      keywords: "dark light mode colour color appearance",
+      keywords: "dark light mode colour color appearance 테마 다크 라이트",
       // Through the bus rather than straight to lib/theme, so the cycle and
       // the confirmation it prints stay owned by one component.
       run: () => emit("theme:cycle", undefined),
     },
     {
+      id: "action:lang",
+      label: copy.palette.switchLanguage,
+      hint: copy.palette.switchLanguageHint,
+      group: "Actions",
+      keywords: `language 언어 한국어 english korean ${otherLang(lang)}`,
+      run: goOtherLang,
+    },
+    {
       id: "action:copy-email",
-      label: "Copy email address",
+      label: copy.palette.copyEmail,
       hint: profile.email,
       group: "Actions",
-      keywords: "clipboard contact mail reach",
+      keywords: "clipboard contact mail reach 메일 이메일 복사",
       run: () => {
         navigator.clipboard
           ?.writeText(profile.email)
-          .then(() => emit("toast", "Email copied"))
+          .then(() => emit("toast", copy.masthead.emailCopied))
           .catch(() => emit("toast", profile.email));
       },
     },
     {
       id: "action:console",
-      label: "Jump to the console",
-      hint: "and start typing",
+      label: copy.palette.toConsole,
+      hint: copy.palette.toConsoleHint,
       group: "Actions",
-      keywords: "terminal shell repl command prompt",
+      keywords: "terminal shell repl command prompt 콘솔 터미널",
       run: () => emit("console:focus"),
     },
     {
       id: "action:neofetch",
-      label: "Run neofetch",
-      hint: "in the console",
+      label: copy.palette.neofetch,
+      hint: copy.palette.neofetchHint,
       group: "Actions",
       keywords: "terminal system info specs",
       run: () => emit("console:run", "neofetch"),
     },
     {
       id: "action:print",
-      label: "Print as a resume",
-      hint: "the layout changes for paper",
+      label: copy.palette.print,
+      hint: copy.palette.printHint,
       group: "Actions",
-      keywords: "pdf cv save paper export",
+      keywords: "pdf cv save paper export 인쇄 이력서",
       run: () => window.print(),
     },
     {
       id: "action:shortcuts",
-      label: "Keyboard shortcuts",
+      label: copy.palette.shortcuts,
       hint: "?",
       group: "Actions",
-      keywords: "keys help hotkeys bindings",
+      keywords: "keys help hotkeys bindings 단축키",
       run: () => emit("shortcuts:toggle"),
     },
     {
@@ -119,18 +137,18 @@ function buildIndex(): Item[] {
     },
     {
       id: "link:study",
-      label: "오늘의 학점 운세",
+      label: copy.palette.study,
       hint: "/study",
       group: "Elsewhere",
-      keywords: "study fortune grade korean toy",
-      run: () => window.open("/study", "_blank", "noopener,noreferrer"),
+      keywords: "study fortune grade korean toy 학점 운세",
+      run: () => window.open(`/study?lang=${lang}`, "_blank", "noopener,noreferrer"),
     },
     {
       id: "link:email",
-      label: "Write an email",
+      label: copy.palette.writeEmail,
       hint: profile.email,
       group: "Elsewhere",
-      keywords: "contact mailto message",
+      keywords: "contact mailto message 메일",
       run: () => {
         window.location.href = `mailto:${profile.email}`;
       },
@@ -141,11 +159,22 @@ function buildIndex(): Item[] {
 }
 
 export function CommandPalette() {
+  const content = useContent();
+  const copy = useCopy();
+  const lang = useLang();
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);
 
-  const index = useMemo(buildIndex, []);
+  const index = useMemo(
+    () =>
+      buildIndex(content, copy, lang, () => {
+        void navigate({ to: HOME_PATH[otherLang(lang)], hash: placeToKeep() });
+      }),
+    [content, copy, lang, navigate],
+  );
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const restoreTo = useRef<HTMLElement | null>(null);
@@ -322,7 +351,7 @@ export function CommandPalette() {
             ref={inputRef}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Jump to anything"
+            placeholder={copy.palette.placeholder}
             aria-label="Search"
             aria-controls="palette-list"
             aria-activedescendant={flat[cursor] ? `palette-${flat[cursor].id}` : undefined}
@@ -344,14 +373,14 @@ export function CommandPalette() {
         >
           {flat.length === 0 && (
             <p className="px-4 py-6 text-center font-sans text-[13px] text-soft">
-              Nothing matches “{query}”.
+              {copy.palette.empty(query)}
             </p>
           )}
 
           {grouped.map(({ group, items }) => (
             <div key={group} className="mb-1">
               <p className="px-4 pb-1 pt-2 font-sans text-[10.5px] font-medium uppercase tracking-[0.12em] text-soft/70">
-                {group}
+                {copy.palette.groups[group]}
               </p>
 
               {items.map((item) => {
@@ -407,9 +436,9 @@ export function CommandPalette() {
         </div>
 
         <div className="flex items-center gap-4 border-t border-rule px-4 py-2 font-mono text-[10.5px] text-soft/80">
-          <span>↑↓ move</span>
-          <span>↵ open</span>
-          <span className="ml-auto tnum">{flat.length} results</span>
+          <span>{copy.palette.move}</span>
+          <span>{copy.palette.open}</span>
+          <span className="ml-auto tnum">{copy.palette.results(flat.length)}</span>
         </div>
       </div>
 

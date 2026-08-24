@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { sections } from "@/lib/content";
+import { useContent } from "@/lib/content";
 import { gotoSection } from "@/lib/nav";
 
 const useIsomorphic = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -16,6 +16,7 @@ type Props = {
  * loads late or the label wraps.
  */
 export function SectionNav({ active, orientation }: Props) {
+  const { sections } = useContent();
   const listRef = useRef<HTMLOListElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [rect, setRect] = useState<{ start: number; size: number } | null>(null);
@@ -112,7 +113,7 @@ export function SectionNav({ active, orientation }: Props) {
                 (current ? "text-ink" : "text-soft hover:text-mark")
               }
             >
-              {section.nav}
+              {section.label}
             </a>
           </li>
         );

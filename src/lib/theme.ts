@@ -169,12 +169,6 @@ export function nextPref(current: ThemePref): ThemePref {
   return current === "system" ? "light" : current === "light" ? "dark" : "system";
 }
 
-export const THEME_LABEL: Record<ThemePref, string> = {
-  system: "Following the system",
-  light: "Light",
-  dark: "Dark",
-};
-
 /**
  * Advances the rotation and reports where it landed.
  *

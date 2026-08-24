@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { sections } from "@/lib/content";
+import { sectionIds } from "@/lib/content";
 import { gotoSection } from "@/lib/nav";
 import { emit } from "@/lib/bus";
 
@@ -26,10 +26,10 @@ function isTyping(target: EventTarget | null): boolean {
 function step(direction: 1 | -1) {
   type Position = { id: string; top: number };
 
-  const positions = sections
-    .map((section): Position | null => {
-      const el = document.getElementById(section.id);
-      return el ? { id: section.id, top: el.getBoundingClientRect().top } : null;
+  const positions = sectionIds
+    .map((id): Position | null => {
+      const el = document.getElementById(id);
+      return el ? { id, top: el.getBoundingClientRect().top } : null;
     })
     .filter((p): p is Position => p !== null);
 

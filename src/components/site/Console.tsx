@@ -1,6 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { profile, sections } from "@/lib/content";
-import { formatPath, lookup, renderTree, resolvePath, root, walk, type VDir } from "@/lib/vfs";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { sectionIds, useContent } from "@/lib/content";
+import { useCopy } from "@/lib/copy";
+import { HOME_PATH, LANGS, useLang, type Lang } from "@/lib/i18n";
+import { formatPath, getRoot, lookup, renderTree, resolvePath, walk, type VDir } from "@/lib/vfs";
 import { gotoSection } from "@/lib/nav";
 import { readPref, readResolved, setThemePref, type ThemePref } from "@/lib/theme";
 import { emit, on } from "@/lib/bus";
@@ -9,41 +12,9 @@ import { fuzzyMatch } from "@/lib/fuzzy";
 type Tone = "in" | "out" | "dim" | "ok" | "err" | "accent";
 type Line = { id: number; tone: Tone; text: string };
 
-const COMMANDS: Record<string, string> = {
-  help: "this list",
-  ls: "list a directory",
-  cd: "change directory",
-  pwd: "where you are",
-  cat: "print a file",
-  tree: "the whole thing at once",
-  grep: "search every file",
-  whoami: "the short version",
-  date: "the time in Songdo",
-  open: "open a link — site, study, email",
-  email: "copy the address to your clipboard",
-  theme: "light, dark, or system",
-  goto: "scroll the page to a section",
-  neofetch: "the obligatory one",
-  resume: "print this page as a resume",
-  history: "what you have typed",
-  echo: "say it back",
-  clear: "wipe the scrollback",
-};
-
 const PATH_COMMANDS = new Set(["ls", "cd", "cat"]);
 const OPEN_TARGETS = ["site", "study", "email"];
 const THEME_VALUES: ThemePref[] = ["light", "dark", "system"];
-
-const BANNER: Line[] = [
-  { id: -4, tone: "accent", text: "jiyul-ahn — console" },
-  {
-    id: -3,
-    tone: "dim",
-    text: "Not a picture of a terminal. It reads the same file the page above does.",
-  },
-  { id: -2, tone: "dim", text: "help lists the commands · tab completes · ↑ recalls" },
-  { id: -1, tone: "out", text: "" },
-];
 
 const TONE_CLASS: Record<Tone, string> = {
   in: "text-term-fg",
@@ -71,7 +42,25 @@ function pad(value: string, width: number) {
 }
 
 export function Console() {
-  const [lines, setLines] = useState<Line[]>(BANNER);
+  const { profile, sections } = useContent();
+  const copy = useCopy();
+  const lang = useLang();
+  const navigate = useNavigate();
+  const root = getRoot(lang);
+
+  const banner = useMemo<Line[]>(
+    () => [
+      ...copy.console.banner.map((text, i) => ({
+        id: -(copy.console.banner.length - i) - 1,
+        tone: (i === 0 ? "accent" : "dim") as Tone,
+        text,
+      })),
+      { id: -1, tone: "out" as Tone, text: "" },
+    ],
+    [copy],
+  );
+
+  const [lines, setLines] = useState<Line[]>(banner);
   const [value, setValue] = useState("");
   const [caret, setCaret] = useState(0);
   const [cwd, setCwd] = useState<string[]>([]);
@@ -121,10 +110,13 @@ export function Console() {
     inputRef.current?.focus({ preventScroll: true });
   }, []);
 
-  const dirAt = useCallback((segments: string[]): VDir | null => {
-    const node = lookup(segments);
-    return node && node.type === "dir" ? node : null;
-  }, []);
+  const dirAt = useCallback(
+    (segments: string[]): VDir | null => {
+      const node = lookup(root, segments);
+      return node && node.type === "dir" ? node : null;
+    },
+    [root],
+  );
 
   const run = useCallback(
     (raw: string) => {
@@ -140,12 +132,13 @@ export function Console() {
 
       switch (command) {
         case "help": {
-          const width = Math.max(...Object.keys(COMMANDS).map((k) => k.length)) + 3;
+          const commands = copy.console.commands;
+          const width = Math.max(...Object.keys(commands).map((k) => k.length)) + 3;
           out(
-            Object.entries(COMMANDS).map(([name, note]) => `${pad(name, width)}${note}`),
+            Object.entries(commands).map(([name, note]) => `${pad(name, width)}${note}`),
             "out",
           );
-          out(["", "Ctrl+L clears · Ctrl+U kills the line · Ctrl+C cancels it"], "dim");
+          out(["", copy.console.helpFooter], "dim");
           break;
         }
 
@@ -153,9 +146,9 @@ export function Console() {
           const target = resolvePath(cwd, arg || ".");
           const dir = dirAt(target);
           if (!dir) {
-            const node = lookup(target);
+            const node = lookup(root, target);
             if (node) out(node.name, "out");
-            else out(`ls: ${arg || "."}: no such file or directory`, "err");
+            else out(copy.console.lsMissing(arg || "."), "err");
             break;
           }
           const width = Math.max(...dir.children.map((c) => c.name.length)) + 4;
@@ -169,7 +162,7 @@ export function Console() {
         case "cd": {
           const target = resolvePath(cwd, arg || "/");
           if (!dirAt(target)) {
-            out(`cd: ${arg}: not a directory`, "err");
+            out(copy.console.cdNotDir(arg), "err");
             break;
           }
           setCwd(target);
@@ -182,12 +175,12 @@ export function Console() {
 
         case "cat": {
           if (!arg) {
-            out("cat: which file? try tree", "err");
+            out(copy.console.catWhich, "err");
             break;
           }
-          const node = lookup(resolvePath(cwd, arg));
-          if (!node) out(`cat: ${arg}: no such file`, "err");
-          else if (node.type === "dir") out(`cat: ${arg}: that is a directory`, "err");
+          const node = lookup(root, resolvePath(cwd, arg));
+          if (!node) out(copy.console.catMissing(arg), "err");
+          else if (node.type === "dir") out(copy.console.catIsDir(arg), "err");
           else out(node.content.split("\n"), "out");
           break;
         }
@@ -198,14 +191,14 @@ export function Console() {
 
         case "grep": {
           if (!arg) {
-            out("grep: give me something to look for", "err");
+            out(copy.console.grepNeed, "err");
             break;
           }
           const needle = arg.toLowerCase();
           const hits: string[] = [];
 
-          for (const path of walk()) {
-            const node = lookup(path.split("/"));
+          for (const path of walk(root)) {
+            const node = lookup(root, path.split("/"));
             if (!node || node.type !== "file") continue;
 
             node.content.split("\n").forEach((line, i) => {
@@ -215,10 +208,10 @@ export function Console() {
             });
           }
 
-          if (hits.length === 0) out(`grep: no match for ${arg}`, "dim");
+          if (hits.length === 0) out(copy.console.grepNone(arg), "dim");
           else {
             out(hits.slice(0, 40), "out");
-            if (hits.length > 40) out(`… and ${hits.length - 40} more`, "dim");
+            if (hits.length > 40) out(copy.console.grepMore(hits.length - 40), "dim");
           }
           break;
         }
@@ -229,7 +222,7 @@ export function Console() {
 
         case "date":
           out(
-            new Intl.DateTimeFormat("en-GB", {
+            new Intl.DateTimeFormat(lang === "ko" ? "ko-KR" : "en-GB", {
               timeZone: profile.timeZone,
               dateStyle: "full",
               timeStyle: "medium",
@@ -242,15 +235,15 @@ export function Console() {
           const target = arg || "site";
           if (target === "site") {
             window.open(profile.site.href, "_blank", "noopener,noreferrer");
-            out(`opening ${profile.site.href}`, "ok");
+            out(copy.console.opening(profile.site.href), "ok");
           } else if (target === "study") {
-            window.open("/study", "_blank", "noopener,noreferrer");
-            out("opening /study", "ok");
+            window.open(`/study?lang=${lang}`, "_blank", "noopener,noreferrer");
+            out(copy.console.opening(`/study?lang=${lang}`), "ok");
           } else if (target === "email") {
             window.location.href = `mailto:${profile.email}`;
             out(`mailto:${profile.email}`, "ok");
           } else {
-            out(`open: nothing called ${target}. try: ${OPEN_TARGETS.join(", ")}`, "err");
+            out(copy.console.openUnknown(target, OPEN_TARGETS.join(", ")), "err");
           }
           break;
         }
@@ -259,30 +252,44 @@ export function Console() {
           navigator.clipboard
             ?.writeText(profile.email)
             .then(() => {
-              out(`copied ${profile.email}`, "ok");
-              emit("toast", "Email copied");
+              out(copy.console.copied(profile.email), "ok");
+              emit("toast", copy.masthead.emailCopied);
             })
             .catch(() => out(profile.email, "out"));
           break;
 
         case "theme": {
           if (!arg) {
-            out(`theme is ${readPref()} (currently ${readResolved()})`, "out");
+            out(copy.console.themeIs(readPref(), readResolved()), "out");
             break;
           }
           if (!THEME_VALUES.includes(arg as ThemePref)) {
-            out(`theme: pick one of ${THEME_VALUES.join(", ")}`, "err");
+            out(copy.console.themePick(THEME_VALUES.join(", ")), "err");
             break;
           }
           setThemePref(arg as ThemePref);
-          out(`theme set to ${arg}`, "ok");
+          out(copy.console.themeSet(arg), "ok");
+          break;
+        }
+
+        case "lang": {
+          if (!arg) {
+            out(lang, "out");
+            break;
+          }
+          if (!LANGS.includes(arg as Lang)) {
+            out(copy.console.langPick(LANGS.join(", ")), "err");
+            break;
+          }
+          // A language is a URL here, so this is a navigation, not a setting.
+          void navigate({ to: HOME_PATH[arg as Lang], hash: "console" });
           break;
         }
 
         case "goto": {
           const match = sections.find((s) => s.id === arg.toLowerCase());
           if (!match) {
-            out(`goto: try one of ${sections.map((s) => s.id).join(", ")}`, "err");
+            out(copy.console.gotoTry(sectionIds.join(", ")), "err");
             break;
           }
           gotoSection(match.id);
@@ -292,10 +299,7 @@ export function Console() {
 
         case "neofetch": {
           const seconds = Math.max(1, Math.round((Date.now() - mountedAt.current) / 1000));
-          const uptime =
-            seconds < 60
-              ? `${seconds}s on this page`
-              : `${Math.floor(seconds / 60)}m ${seconds % 60}s on this page`;
+          const uptime = copy.console.uptime(seconds);
 
           const facts = [
             [
@@ -306,6 +310,7 @@ export function Console() {
             ["display", `${window.innerWidth}×${window.innerHeight} @${window.devicePixelRatio}x`],
             ["threads", `${navigator.hardwareConcurrency ?? "?"}`],
             ["theme", `${readResolved()} (${readPref()})`],
+            ["lang", lang],
             ["stack", "TanStack Start · React 19 · Tailwind 4"],
             ["console", "hand-written, no terminal library"],
           ];
@@ -324,7 +329,7 @@ export function Console() {
         }
 
         case "resume":
-          out("handing this page to the printer — the layout changes for paper", "ok");
+          out(copy.console.resume, "ok");
           setTimeout(() => window.print(), 120);
           break;
 
@@ -344,16 +349,16 @@ export function Console() {
           break;
 
         default: {
-          const guess = Object.keys(COMMANDS)
+          const guess = Object.keys(copy.console.commands)
             .map((name) => ({ name, match: fuzzyMatch(command, name) }))
             .filter((c) => c.match)
             .sort((a, b) => b.match!.score - a.match!.score)[0];
 
-          out(`${command}: not a command${guess ? `. did you mean ${guess.name}?` : ""}`, "err");
+          out(copy.console.notACommand(command, guess?.name), "err");
         }
       }
     },
-    [cwd, dirAt, out],
+    [copy, cwd, dirAt, lang, navigate, out, profile, root, sections],
   );
 
   /** Tab completion over commands, paths, and the fixed argument lists. */
@@ -369,7 +374,7 @@ export function Console() {
     let candidates: string[] = [];
 
     if (isFirst) {
-      candidates = Object.keys(COMMANDS).filter((name) => name.startsWith(last));
+      candidates = Object.keys(copy.console.commands).filter((name) => name.startsWith(last));
     } else if (PATH_COMMANDS.has(command)) {
       const slash = last.lastIndexOf("/");
       const dirText = slash === -1 ? "" : last.slice(0, slash + 1);
@@ -384,8 +389,10 @@ export function Console() {
       candidates = THEME_VALUES.filter((v) => v.startsWith(last));
     } else if (command === "open") {
       candidates = OPEN_TARGETS.filter((v) => v.startsWith(last));
+    } else if (command === "lang") {
+      candidates = LANGS.filter((v) => v.startsWith(last));
     } else if (command === "goto") {
-      candidates = sections.map((s) => s.id).filter((v) => v.startsWith(last));
+      candidates = sectionIds.filter((v) => v.startsWith(last));
     }
 
     if (candidates.length === 0) return;
@@ -405,7 +412,7 @@ export function Console() {
       out(`${formatPath(cwd)} $ ${value}`, "in");
       out(candidates.join("   "), "dim");
     }
-  }, [caret, cwd, dirAt, out, value]);
+  }, [caret, copy, cwd, dirAt, out, value]);
 
   const recall = useCallback(
     (direction: -1 | 1) => {
@@ -526,7 +533,9 @@ export function Console() {
           <span className="text-term-dim">:{formatPath(cwd)}</span>
         </span>
         <div className="flex shrink-0 items-center gap-3">
-          <span className="hidden text-[11px] text-term-dim sm:inline">tab completes</span>
+          <span className="hidden text-[11px] text-term-dim sm:inline">
+            {copy.console.tabCompletes}
+          </span>
           <button
             type="button"
             onClick={() => {
@@ -535,7 +544,7 @@ export function Console() {
             }}
             className="text-[11px] text-term-dim transition-colors hover:text-term-accent"
           >
-            clear
+            {copy.console.clear}
           </button>
         </div>
       </div>
@@ -550,7 +559,7 @@ export function Console() {
         }}
         className="scroll-thin h-[21rem] cursor-text overflow-y-auto px-3 py-3"
       >
-        <div role="log" aria-live="polite" aria-label="Console output">
+        <div role="log" aria-live="polite" aria-label={copy.console.outputLabel}>
           {lines.map((line) => (
             <div
               key={line.id}
@@ -597,7 +606,7 @@ export function Console() {
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
-            aria-label="Console input"
+            aria-label={copy.console.inputLabel}
             className="absolute inset-0 w-full resize-none border-0 bg-transparent p-0 text-transparent caret-transparent outline-none"
           />
         </div>

@@ -3,21 +3,33 @@ import {
   Outlet,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
 import { themeBootScript } from "@/lib/theme";
+import { getCopy } from "@/lib/copy";
+import { HOME_PATH, HTML_LANG, langFromLocation } from "@/lib/i18n";
+
+/** The language of whatever is being rendered, taken from the URL. */
+function useRouteLang() {
+  const location = useRouterState({ select: (state) => state.location });
+  return langFromLocation(location.pathname, location.search as Record<string, unknown>);
+}
 
 function NotFoundComponent() {
+  const lang = useRouteLang();
+  const copy = getCopy(lang);
+
   return (
     <main className="mx-auto max-w-[40rem] px-6 py-24">
-      <h1 className="text-[2rem] font-medium leading-none">Not here</h1>
-      <p className="mt-4 text-soft">That page doesn't exist, or it used to and doesn't anymore.</p>
+      <h1 className="text-[2rem] font-medium leading-none">{copy.notFound.title}</h1>
+      <p className="mt-4 text-soft">{copy.notFound.body}</p>
       <p className="mt-6">
-        <a href="/" className="underline">
-          Back to the front page
+        <a href={HOME_PATH[lang]} className="underline">
+          {copy.notFound.back}
         </a>
       </p>
     </main>
@@ -27,11 +39,13 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const lang = useRouteLang();
+  const copy = getCopy(lang);
 
   return (
     <main className="mx-auto max-w-[40rem] px-6 py-24">
-      <h1 className="text-[2rem] font-medium leading-none">Something broke</h1>
-      <p className="mt-4 text-soft">This one is on my side. Reloading usually does it.</p>
+      <h1 className="text-[2rem] font-medium leading-none">{copy.error.title}</h1>
+      <p className="mt-4 text-soft">{copy.error.body}</p>
       <p className="mt-6 flex gap-6">
         <button
           onClick={() => {
@@ -40,10 +54,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           }}
           className="underline"
         >
-          Try again
+          {copy.error.retry}
         </button>
-        <a href="/" className="underline">
-          Back to the front page
+        <a href={HOME_PATH[lang]} className="underline">
+          {copy.error.back}
         </a>
       </p>
     </main>
@@ -55,11 +69,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Jiyul Ahn" },
-      { name: "description", content: "Jiyul Ahn · developer in Songdo, Incheon." },
       { name: "author", content: "Jiyul Ahn" },
-      { property: "og:title", content: "Jiyul Ahn" },
-      { property: "og:description", content: "Developer in Songdo, Incheon." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -81,8 +91,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
+  // Read off the URL rather than hardcoded, so the Korean page is served as
+  // Korean to crawlers and to a screen reader picking a voice.
+  const lang = useRouteLang();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={HTML_LANG[lang]} suppressHydrationWarning>
       <head>
         {/*
           Resolves the theme and marks the document as scripted before the

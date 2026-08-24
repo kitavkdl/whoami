@@ -1,7 +1,9 @@
 import photo from "@/assets/jiyul.png";
-import { profile } from "@/lib/content";
+import { useContent } from "@/lib/content";
+import { useCopy } from "@/lib/copy";
 import { LocalClock } from "@/components/site/LocalClock";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
+import { LangToggle } from "@/components/site/LangToggle";
 import { emit } from "@/lib/bus";
 
 function Action({
@@ -30,6 +32,9 @@ function Action({
  * reading rather than for a feed.
  */
 export function ProfileCard() {
+  const { profile } = useContent();
+  const copy = useCopy();
+
   return (
     <header id="top" className="pt-10 sm:pt-14">
       <div
@@ -50,15 +55,17 @@ export function ProfileCard() {
         />
 
         <div className="min-w-0 pb-1">
+          {/* Whichever script the reader is in leads; the other trails. */}
           <h1 className="text-[2.1rem] font-medium leading-none tracking-[-0.01em]">
-            {profile.name}
+            {copy.name.primary}
           </h1>
           <p className="mt-[6px] font-sans text-[13px] text-soft">
-            {profile.hangul} · {profile.location}
+            {copy.name.secondary} · {profile.location}
           </p>
         </div>
 
-        <div className="ml-auto hidden shrink-0 pb-1 sm:block" data-print="hide">
+        <div className="ml-auto hidden shrink-0 items-center gap-2 pb-1 sm:flex" data-print="hide">
+          <LangToggle />
           <ThemeToggle />
         </div>
       </div>
@@ -74,25 +81,27 @@ export function ProfileCard() {
               window.location.href = `mailto:${profile.email}`;
             }}
           >
-            Email me
+            {copy.masthead.emailMe}
           </Action>
           <Action
             onClick={() => {
               navigator.clipboard
                 ?.writeText(profile.email)
-                .then(() => emit("toast", "Email copied"))
+                .then(() => emit("toast", copy.masthead.emailCopied))
                 .catch(() => emit("toast", profile.email));
             }}
           >
-            Copy address
+            {copy.masthead.copyAddress}
           </Action>
           <Action onClick={() => window.open(profile.site.href, "_blank", "noopener,noreferrer")}>
             {profile.site.label} ↗
           </Action>
-          <Action onClick={() => window.print()}>Print as resume</Action>
+          <Action onClick={() => window.print()}>{copy.masthead.printResume}</Action>
           <Action onClick={() => emit("palette:open")}>
             <span className="font-mono text-[11px]">⌘K</span>
           </Action>
+          {/* The pair above the lede is hidden on small screens. */}
+          <LangToggle className="sm:hidden" />
         </div>
 
         <div className="mt-5">
