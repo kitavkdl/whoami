@@ -118,7 +118,9 @@ function buildRoot(lang: Lang): VDir {
 
   const contactTxt = [
     `email   ${profile.email}`,
-    `phone   ${profile.phone}`,
+    // A separate key rather than a repeated one: the console reads as a file,
+    // and "sms" says what the note on the page says.
+    ...profile.phones.map((p) => (p.smsOnly ? "sms" : "phone").padEnd(8) + p.label),
     `web     ${profile.site.href}`,
     "",
     getCopy(lang).contact.languages,

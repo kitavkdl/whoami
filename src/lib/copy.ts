@@ -45,6 +45,7 @@ export type Copy = {
   contact: {
     email: string;
     phone: string;
+    smsOnly: string;
     elsewhere: string;
     emailNote: string;
     languages: string;
@@ -163,6 +164,7 @@ const en: Copy = {
   contact: {
     email: "Email",
     phone: "Phone",
+    smsOnly: "text only",
     elsewhere: "Elsewhere",
     emailNote: " is the reliable one.",
     languages: "Korean or English, either is fine.",
@@ -365,6 +367,7 @@ const ko: Copy = {
   contact: {
     email: "이메일",
     phone: "전화",
+    smsOnly: "문자만",
     elsewhere: "그 밖에",
     emailNote: " — 이쪽이 가장 확실하다.",
     languages: "한국어든 영어든 괜찮다.",

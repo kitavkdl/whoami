@@ -127,9 +127,19 @@ function Page() {
                 </ContactRow>
 
                 <ContactRow term={copy.contact.phone}>
-                  <a href={profile.phoneHref} className="tnum underline">
-                    {profile.phone}
-                  </a>
+                  {profile.phones.map((phone) => (
+                    <p key={phone.href}>
+                      <a href={phone.href} className="tnum underline">
+                        {phone.label}
+                      </a>
+                      {phone.smsOnly && (
+                        <span className="font-sans text-[13px] text-soft">
+                          {" · "}
+                          {copy.contact.smsOnly}
+                        </span>
+                      )}
+                    </p>
+                  ))}
                 </ContactRow>
 
                 <ContactRow term={copy.contact.elsewhere}>

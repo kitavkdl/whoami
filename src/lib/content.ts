@@ -49,14 +49,21 @@ export type Entry = {
   kind: EntryKind;
 };
 
+export type Phone = { label: string; href: string; smsOnly?: boolean };
+
+/** In reachability order. The Korean line takes texts and nothing else. */
+const phones: Phone[] = [
+  { label: "+1 (631) 406 0295", href: "tel:+16314060295" },
+  { label: "+82 10 8685 9042", href: "tel:+821086859042", smsOnly: true },
+];
+
 /** Fields that read the same in either language. */
 export const profile = {
   name: "Jiyul Ahn",
   hangul: "안지율",
   timeZone: "America/New_York",
   email: "jiyul.ahn@stonybrook.edu",
-  phone: "+82 10 8685 9042",
-  phoneHref: "tel:+821086859042",
+  phones,
   site: { label: "seek-once.com", href: "https://www.seek-once.com/" },
 } as const;
 
