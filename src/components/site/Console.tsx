@@ -225,8 +225,8 @@ export function Console() {
             new Intl.DateTimeFormat(lang === "ko" ? "ko-KR" : "en-GB", {
               timeZone: profile.timeZone,
               dateStyle: "full",
-              timeStyle: "medium",
-            }).format(new Date()) + " (KST)",
+              timeStyle: "long",
+            }).format(new Date()),
             "out",
           );
           break;
@@ -529,7 +529,7 @@ export function Console() {
       <div className="flex items-center justify-between gap-3 border-b border-term-rule px-3 py-[7px]">
         <span className="truncate text-term-dim">
           <span className="text-term-accent">jiyul</span>
-          <span className="text-term-dim">@songdo</span>
+          <span className="text-term-dim">@stonybrook</span>
           <span className="text-term-dim">:{formatPath(cwd)}</span>
         </span>
         <div className="flex shrink-0 items-center gap-3">

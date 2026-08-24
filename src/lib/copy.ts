@@ -136,7 +136,7 @@ const en: Copy = {
 
   clock: {
     prefix: "",
-    suffix: " in Songdo",
+    suffix: " in Stony Brook",
     moods: {
       lateNight: "still up, apparently",
       asleep: "asleep, one would hope",
@@ -252,7 +252,7 @@ const en: Copy = {
       tree: "the whole thing at once",
       grep: "search every file",
       whoami: "the short version",
-      date: "the time in Songdo",
+      date: "the time in Stony Brook",
       open: "open a link — site, study, email",
       email: "copy the address to your clipboard",
       theme: "light, dark, or system",
@@ -314,8 +314,8 @@ const en: Copy = {
   meta: {
     title: "Jiyul Ahn",
     description:
-      "Jiyul Ahn · developer in Songdo, Incheon. SeekOnce, Odoo implementation projects, and a computer science degree at Stony Brook.",
-    ogDescription: "Developer in Songdo, Incheon. Currently building SeekOnce.",
+      "Jiyul Ahn · developer in Stony Brook, New York. SeekOnce, Odoo implementation projects, and a computer science degree at Stony Brook.",
+    ogDescription: "Developer in Stony Brook, New York. Currently building SeekOnce.",
     studyBlurb: "A grade fortune-teller, written for no good reason.",
   },
 
@@ -337,7 +337,7 @@ const ko: Copy = {
   },
 
   clock: {
-    prefix: "송도 ",
+    prefix: "스토니브룩 ",
     suffix: "",
     moods: {
       lateNight: "아직 안 잔 모양",
@@ -454,7 +454,7 @@ const ko: Copy = {
       tree: "전체를 한 번에",
       grep: "모든 파일 검색",
       whoami: "짧은 소개",
-      date: "송도의 시각",
+      date: "스토니브룩의 시각",
       open: "링크 열기 — site, study, email",
       email: "주소를 클립보드로",
       theme: "light, dark, system",
@@ -516,8 +516,8 @@ const ko: Copy = {
   meta: {
     title: "안지율",
     description:
-      "안지율 · 인천 송도의 개발자. SeekOnce, Odoo 구축 프로젝트, 그리고 스토니브룩 대학교 컴퓨터과학 전공.",
-    ogDescription: "인천 송도의 개발자. 지금은 SeekOnce를 만든다.",
+      "안지율 · 뉴욕 스토니브룩의 개발자. SeekOnce, Odoo 구축 프로젝트, 그리고 스토니브룩 대학교 컴퓨터과학 전공.",
+    ogDescription: "뉴욕 스토니브룩의 개발자. 지금은 SeekOnce를 만든다.",
     studyBlurb: "별 이유 없이 만든 학점 운세.",
   },
 

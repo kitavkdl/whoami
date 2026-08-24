@@ -53,7 +53,7 @@ export type Entry = {
 export const profile = {
   name: "Jiyul Ahn",
   hangul: "안지율",
-  timeZone: "Asia/Seoul",
+  timeZone: "America/New_York",
   email: "jiyul.ahn@stonybrook.edu",
   phone: "+82 10 8685 9042",
   phoneHref: "tel:+821086859042",
@@ -62,8 +62,8 @@ export const profile = {
 
 const profileText = {
   location: {
-    en: "Songdo, Incheon, South Korea",
-    ko: "인천 송도",
+    en: "Stony Brook, New York",
+    ko: "뉴욕 스토니브룩",
   },
   lede: {
     en: "I build internal software. Usually the kind that replaces a spreadsheet, a paper form, or a step only one person on the team remembers how to do.",

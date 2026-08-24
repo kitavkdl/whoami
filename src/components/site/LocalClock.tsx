@@ -48,7 +48,7 @@ function mood(hour: number): MoodKey {
   return "lateNight";
 }
 
-function useSongdoTime() {
+function useLocalTime() {
   const [state, setState] = useState<{
     time: string;
     mood: MoodKey;
@@ -88,12 +88,13 @@ function useSongdoTime() {
 }
 
 /**
- * Live local time in Songdo, plus how far ahead of the reader that is. Renders
+ * Live local time where he is, plus how far off the reader's own clock that
+ * is. The place and the zone both come from lib/content. Renders
  * a fixed-width placeholder on the server so hydration has nothing to argue
  * with and the line never reflows.
  */
 export function LocalClock() {
-  const state = useSongdoTime();
+  const state = useLocalTime();
   const { clock } = useCopy();
 
   return (
