@@ -121,7 +121,7 @@ function Home() {
               <EntryList items={before} />
             </Section>
 
-            <Section id="awards" label="Awards" count={awards.length}>
+            <Section id="awards" label="Awards & certs" count={awards.length}>
               <EntryList items={awards} />
             </Section>
 

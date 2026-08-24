@@ -13,6 +13,8 @@ export type Entry = {
   id: string;
   when: string;
   title: string;
+  /** Native-script name, when the English one is a translation. */
+  hangul?: string;
   where?: string;
   body: string[];
   tags: string[];
@@ -42,28 +44,17 @@ export const profile = {
 export const now: Entry[] = [
   {
     id: "seekonce",
-    when: "Jul 2025 ~",
+    when: "Oct 2025 ~",
     title: "SeekOnce",
-    where: "founder, and so far the only developer",
+    where: "project lead first, sole developer since January",
     kind: "product",
-    start: "2025-07",
+    start: "2025-10",
     href: "https://www.seek-once.com/",
     tags: ["TypeScript", "React", "Postgres", "Supabase Realtime"],
     body: [
       "An academic platform for SUNY Korea students. Sign-up is limited to @stonybrook.edu addresses, which keeps it small on purpose. It reached 100 users in the first twenty days and is on 3.7.1 now, after fifteen or so releases.",
       "You upload a transcript once and the rest of the site runs off it: GPA simulation, curriculum paths, schedules laid over your friends', anonymous course reviews, and the cafés near campus. About twenty tables in Postgres. The first version polled for updates, which was fine until it wasn't. Moving to Supabase Realtime fixed more than I expected it to.",
-    ],
-  },
-  {
-    id: "dx-tech",
-    when: "Jun 2025 ~",
-    title: "DX Tech",
-    where: "Odoo project manager, Incheon",
-    kind: "work",
-    start: "2025-06",
-    tags: ["Odoo", "Python", "scoping"],
-    body: [
-      "I run several Odoo implementations at the same time: scope, schedule, and the steady negotiation between what a client wants this month and what the team can actually finish. Less code than I would like. More useful than I expected.",
+      "It began in October 2025 as Decompiler × LAMBDA, a joint club project I ran as PL. In January 2026 it broke off on its own, and it has been mine to carry since.",
     ],
   },
   {
@@ -85,12 +76,26 @@ export const before: Entry[] = [
     id: "kopri",
     when: "Mar ~ Jun 2026",
     title: "Korea Polar Research Institute",
+    hangul: "한국해양과학기술원 부설 극지연구소",
     where: "research intern, paid contract · Life Sciences Research Division",
     kind: "work",
     start: "2026-03",
     end: "2026-06",
     tags: ["internal tooling", "offline"],
     body: ["An offline tool for internal use. It's covered by an NDA, so I'll leave it there."],
+  },
+  {
+    id: "dx-tech",
+    when: "Jun ~ Nov 2025",
+    title: "DX Tech",
+    where: "Odoo project manager, Incheon · six-month contract",
+    kind: "work",
+    start: "2025-06",
+    end: "2025-11",
+    tags: ["Odoo", "Python", "scoping"],
+    body: [
+      "I ran several Odoo implementations at the same time: scope, schedule, and the steady negotiation between what a client wanted this month and what the team could actually finish. Less code than I would have liked. More useful than I expected.",
+    ],
   },
   {
     id: "decompiler",
@@ -103,6 +108,20 @@ export const before: Entry[] = [
     tags: ["technical advisor", "vice president", "president"],
     body: [
       "Technical advisor in Spring 2025, vice president in Fall 2025, president in Spring 2026. Three semesters, and the job changed shape each time: first answering the questions myself, then making sure somebody was around to answer them.",
+      "Founding a Stony Brook chapter — Decompiler at SBU — in Fall 2026.",
+    ],
+  },
+  {
+    id: "facility-booking",
+    when: "Jan ~ Sep 2024",
+    title: "Facility booking",
+    where: "for high schools, on my own",
+    kind: "product",
+    start: "2024-01",
+    end: "2024-09",
+    tags: ["booking", "scheduling"],
+    body: [
+      "A site for reserving school facilities, run for high schools. Nine months of it, and keeping the thing running turned out to be a different job from building it.",
     ],
   },
   {
@@ -134,6 +153,19 @@ export const awards: Entry[] = [
       "I planned the product and gave the final pitch: an AI platform for handing down know-how inside small manufacturers, before the people holding it retire. First out of every team that competed.",
     ],
   },
+  {
+    id: "odoo-plo",
+    when: "Mar 2026",
+    title: "Odoo Project Leader Ownership",
+    where: "certification",
+    kind: "award",
+    start: "2026-03",
+    end: "2026-03",
+    tags: ["Odoo", "project leadership"],
+    body: [
+      "Odoo's PLO track, finished on the eleventh. I also sit on the Odoo Enterprise repository, with viewer access.",
+    ],
+  },
 ];
 
 export const tools =
@@ -150,7 +182,7 @@ export const sections: { id: SectionId; label: string; nav: string }[] = [
   { id: "now", label: "Now", nav: "Now" },
   { id: "overlap", label: "Overlap", nav: "Overlap" },
   { id: "before", label: "Before", nav: "Before" },
-  { id: "awards", label: "Awards", nav: "Awards" },
+  { id: "awards", label: "Awards & certs", nav: "Awards & certs" },
   { id: "tools", label: "Tools", nav: "Tools" },
   { id: "school", label: "School", nav: "School" },
   { id: "contact", label: "Contact", nav: "Contact" },

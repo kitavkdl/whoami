@@ -158,9 +158,8 @@ export function Overlap() {
       </div>
 
       <figcaption className="mt-3 font-sans text-[13px] leading-6 text-soft">
-        Everything above, on one axis. The overlaps are the honest part: four of these ran at the
-        same time through the back half of 2025, and three of them still do. The dashed line is
-        today.
+        Everything above, on one axis. The overlaps are the honest part: four ran at once in late
+        2025, four again in the spring. Two are still going. The dashed line is today.
       </figcaption>
     </figure>
   );

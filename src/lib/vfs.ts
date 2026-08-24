@@ -46,6 +46,7 @@ function entryFile(entry: Entry): VFile {
     `# ${entry.title}`,
     "",
     `when   ${entry.when}`,
+    entry.hangul ? `ko     ${entry.hangul}` : null,
     entry.where ? `what   ${entry.where}` : null,
     `stack  ${entry.tags.join(", ")}`,
     entry.href ? `url    ${entry.href}` : null,

@@ -40,7 +40,7 @@ function buildIndex(): Item[] {
       label: entry.title,
       hint: entry.when,
       group: "Work",
-      keywords: `${entry.id} ${entry.where ?? ""} ${entry.tags.join(" ")}`,
+      keywords: `${entry.id} ${entry.hangul ?? ""} ${entry.where ?? ""} ${entry.tags.join(" ")}`,
       run: () => {
         const el = document.getElementById(`entry-${entry.id}`);
         if (!el) return;
