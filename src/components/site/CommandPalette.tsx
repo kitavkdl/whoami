@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { allEntries, profile, sections } from "@/lib/content";
 import { fuzzyMatch, segment } from "@/lib/fuzzy";
 import { gotoSection } from "@/lib/nav";
-import { nextPref, readPref, setThemePref } from "@/lib/theme";
 import { emit, on } from "@/lib/bus";
 
 type Group = "Sections" | "Work" | "Actions" | "Elsewhere";
@@ -61,7 +60,9 @@ function buildIndex(): Item[] {
       hint: "system · light · dark",
       group: "Actions",
       keywords: "dark light mode colour color appearance",
-      run: () => setThemePref(nextPref(readPref())),
+      // Through the bus rather than straight to lib/theme, so the cycle and
+      // the confirmation it prints stay owned by one component.
+      run: () => emit("theme:cycle", undefined),
     },
     {
       id: "action:copy-email",

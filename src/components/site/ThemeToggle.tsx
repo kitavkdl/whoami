@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { nextPref, readPref, setThemePref, subscribeTheme, type ThemePref } from "@/lib/theme";
-import { on } from "@/lib/bus";
-
-const LABEL: Record<ThemePref, string> = {
-  system: "Following the system",
-  light: "Light",
-  dark: "Dark",
-};
+import {
+  nextPref,
+  originOf,
+  readPref,
+  setThemePref,
+  subscribeTheme,
+  THEME_ANCHOR,
+  THEME_LABEL as LABEL,
+  type ThemePref,
+} from "@/lib/theme";
 
 function Glyph({ pref }: { pref: ThemePref }) {
   if (pref === "light") {
@@ -55,6 +57,10 @@ function Glyph({ pref }: { pref: ThemePref }) {
  * Rotates system → light → dark. The swap itself is handed to the View
  * Transition API in lib/theme, which clips the repaint to a circle growing out
  * of this button, so the new palette arrives from where you pressed.
+ *
+ * This renders in two places at once — the masthead and the top bar — so it
+ * owns no bus subscription; a cycle fired from the keyboard or the palette is
+ * handled once, in Chrome.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const [pref, setPref] = useState<ThemePref>("system");
@@ -64,25 +70,11 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     return subscribeTheme((next) => setPref(next));
   }, []);
 
-  useEffect(
-    () =>
-      on("theme:cycle", (origin) => {
-        const current = readPref();
-        setThemePref(nextPref(current), origin ?? { x: window.innerWidth - 48, y: 48 });
-      }),
-    [],
-  );
-
   return (
     <button
       type="button"
-      onClick={(event) => {
-        const box = event.currentTarget.getBoundingClientRect();
-        setThemePref(nextPref(pref), {
-          x: box.left + box.width / 2,
-          y: box.top + box.height / 2,
-        });
-      }}
+      {...{ [THEME_ANCHOR]: "" }}
+      onClick={(event) => setThemePref(nextPref(pref), originOf(event.currentTarget))}
       title={`Theme · ${LABEL[pref]}`}
       aria-label={`Theme: ${LABEL[pref]}. Switch to ${LABEL[nextPref(pref)].toLowerCase()}.`}
       className={
@@ -90,7 +82,10 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
         className
       }
     >
-      <Glyph pref={pref} />
+      {/* Keyed so React remounts on every change and the entry animation runs. */}
+      <span key={pref} className="glyph-swap inline-flex">
+        <Glyph pref={pref} />
+      </span>
     </button>
   );
 }
