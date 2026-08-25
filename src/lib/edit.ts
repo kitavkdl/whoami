@@ -1,26 +1,36 @@
 /**
  * Edit mode.
  *
- * There is no server behind this page, so "editing" means exactly this: a
- * passcode turns the prose into something you can type into, the changed
- * strings are kept in this browser, and the page reads them back over the
- * source content on the next load. Nothing is sent anywhere, and no other
- * reader ever sees a word of it.
+ * Two halves. The first is local and always available: a passcode turns the
+ * prose into something you can type into, and the changed strings are kept in
+ * this browser as drafts, read back over content/site.json on every render.
+ * Nothing about that half leaves the machine it is typed on.
  *
- * The passcode itself is not in this repository and not in the bundle — see
- * the derivation below. It is still a latch rather than a lock: no check that
- * runs in the reader's own browser can be authentication, because the reader
- * owns the browser. What it can do is keep the passcode out of a public repo.
+ * The second half is publishing. Drafts are only ever a preview until they are
+ * sent to /api/publish, which checks the passcode again on the server, folds
+ * the same drafts over the copy of content/site.json that GitHub currently
+ * holds, and commits the result. The deploy that follows is what every other
+ * reader eventually sees. Until then a draft is one browser's private opinion.
  *
- * The log is deliberately thin: when, where, and which part. What the line
- * said before, and what it says now, is not written down anywhere.
+ * The passcode check that runs here is still a latch rather than a lock — the
+ * reader owns the browser, so no check running in it can be authentication.
+ * The one that matters is the server's, on the way into the commit.
  */
 
 import { useSyncExternalStore } from "react";
 
+import {
+  applyDraftsVerbose,
+  draftKey,
+  siteData,
+  type Drafts,
+  type SiteData,
+} from "@/lib/site-data";
 import type { SiteContent } from "@/lib/content";
 import type { Copy } from "@/lib/copy";
 import type { Lang } from "@/lib/i18n";
+
+export type { Drafts } from "@/lib/site-data";
 
 /**
  * The passcode, as much of it as anything here is allowed to know.
@@ -34,7 +44,9 @@ import type { Lang } from "@/lib/i18n";
  *
  * So the repository can be public. Nothing here, and nothing in the built
  * bundle or the network tab, spells the passcode out; changing it means
- * deriving a new pair rather than editing a string.
+ * deriving a new pair rather than editing a string. The server holds the same
+ * passcode as a secret (EDIT_PASSCODE) and checks it independently before it
+ * will write anything to the repository.
  *
  * To rotate it, run this with the new passcode and paste the two lines back:
  *
@@ -57,14 +69,12 @@ export class InsecureContextError extends Error {}
 const UNLOCK_KEY = "edit:unlocked";
 const DRAFTS_KEY = "edit:drafts";
 const LOG_KEY = "edit:log";
+const PUBLISHED_KEY = "edit:published";
 
 /** Old records fall off the end rather than growing without bound. */
 const LOG_LIMIT = 300;
 
-/** `${lang}/${path}` → the text that replaces whatever the source says. */
-export type Drafts = Readonly<Record<string, string>>;
-
-export type LogKind = "edit" | "reset";
+export type LogKind = "edit" | "reset" | "publish";
 
 /** One line of history. Note what is missing: the words themselves. */
 export type LogEntry = {
@@ -74,20 +84,34 @@ export type LogEntry = {
   /** The field that was touched, as a content path. Empty for a reset. */
   path: string;
   kind: LogKind;
+  /** How many lines went out in a publish. Absent on the other kinds. */
+  count?: number;
 };
+
+/** What the last successful publish did, so the bar can point at the commit. */
+export type Published = { at: number; count: number; sha: string; url: string };
 
 export type EditState = {
   unlocked: boolean;
   editing: boolean;
+  publishing: boolean;
   drafts: Drafts;
   log: readonly LogEntry[];
+  published: Published | null;
 };
 
 /**
  * What the server renders, and therefore what the first client render has to
  * agree with. Everything stored is read after hydration, never before.
  */
-const EMPTY: EditState = { unlocked: false, editing: false, drafts: {}, log: [] };
+const EMPTY: EditState = {
+  unlocked: false,
+  editing: false,
+  publishing: false,
+  drafts: {},
+  log: [],
+  published: null,
+};
 
 /** The drafts of a page nobody has edited. Shared, so the caches key on it. */
 export const NO_DRAFTS: Drafts = EMPTY.drafts;
@@ -96,37 +120,59 @@ let state: EditState = EMPTY;
 let loaded = false;
 let counter = 0;
 
+/**
+ * The passcode, for as long as this page is open.
+ *
+ * Publishing has to prove itself to the server on every attempt, and asking
+ * for the passcode a second time thirty seconds after the first one is theatre.
+ * It is held in a module variable rather than in storage: a reload asks again,
+ * and nothing on disk ever holds it.
+ */
+let sessionPasscode: string | null = null;
+
 const listeners = new Set<() => void>();
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function readDrafts(): Drafts {
+function readJson<T>(key: string, fallback: T, parse: (value: unknown) => T | null): T {
   try {
-    const parsed: unknown = JSON.parse(localStorage.getItem(DRAFTS_KEY) ?? "null");
-    if (!isRecord(parsed)) return EMPTY.drafts;
+    const raw = localStorage.getItem(key);
+    if (raw === null) return fallback;
+    return parse(JSON.parse(raw)) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function readDrafts(): Drafts {
+  return readJson(DRAFTS_KEY, EMPTY.drafts, (parsed) => {
+    if (!isRecord(parsed)) return null;
     const out: Record<string, string> = {};
     for (const [key, value] of Object.entries(parsed)) {
       if (typeof value === "string") out[key] = value;
     }
     return out;
-  } catch {
-    return EMPTY.drafts;
-  }
+  });
 }
 
 function readLog(): readonly LogEntry[] {
-  try {
-    const parsed: unknown = JSON.parse(localStorage.getItem(LOG_KEY) ?? "null");
-    if (!Array.isArray(parsed)) return EMPTY.log;
+  return readJson(LOG_KEY, EMPTY.log, (parsed) => {
+    if (!Array.isArray(parsed)) return null;
     return parsed.filter(
       (row): row is LogEntry =>
         isRecord(row) && typeof row.at === "number" && typeof row.path === "string",
     );
-  } catch {
-    return EMPTY.log;
-  }
+  });
+}
+
+function readPublished(): Published | null {
+  return readJson(PUBLISHED_KEY, EMPTY.published, (parsed) =>
+    isRecord(parsed) && typeof parsed.at === "number" && typeof parsed.sha === "string"
+      ? (parsed as Published)
+      : null,
+  );
 }
 
 /**
@@ -144,13 +190,23 @@ function load(): void {
     /* private mode; locked is the safe answer */
   }
 
-  state = { unlocked, editing: false, drafts: readDrafts(), log: readLog() };
+  state = {
+    ...EMPTY,
+    unlocked,
+    drafts: readDrafts(),
+    log: readLog(),
+    published: readPublished(),
+  };
 }
 
-function persist(drafts: Drafts, log: readonly LogEntry[]): void {
+function persist(drafts: Drafts, log: readonly LogEntry[], published?: Published | null): void {
   try {
     localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
     localStorage.setItem(LOG_KEY, JSON.stringify(log));
+    if (published !== undefined) {
+      if (published) localStorage.setItem(PUBLISHED_KEY, JSON.stringify(published));
+      else localStorage.removeItem(PUBLISHED_KEY);
+    }
   } catch {
     /* private mode, or the quota is spent; the change still holds for this view */
   }
@@ -192,26 +248,18 @@ export function useEditing(): boolean {
 
 /* -------------------------------------------------------------------------- */
 
-export function draftKey(lang: Lang, path: string): string {
-  return `${lang}/${path}`;
-}
-
-/** Both halves of a content path, built in one place so they cannot drift. */
-export function entryPath(id: string, field: string): string {
-  return `entry.${id}.${field}`;
-}
-
-export function bodyPath(id: string, index: number): string {
-  return entryPath(id, `body.${index}`);
-}
-
 /** One line of prose, however it arrived out of a contenteditable. */
 function normalize(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
-function record(lang: Lang, path: string, kind: LogKind): LogEntry {
-  return { id: `${Date.now()}-${++counter}`, at: Date.now(), lang, path, kind };
+function record(lang: Lang, path: string, kind: LogKind, count?: number): LogEntry {
+  return { id: `${Date.now()}-${++counter}`, at: Date.now(), lang, path, kind, count };
+}
+
+function write(drafts: Drafts, log: readonly LogEntry[]): void {
+  persist(drafts, log);
+  set({ drafts, log });
 }
 
 /**
@@ -224,22 +272,36 @@ export function saveEdit(lang: Lang, path: string, next: string, current: string
   const text = normalize(next);
   if (!text || text === normalize(current)) return false;
 
-  const drafts = { ...state.drafts, [draftKey(lang, path)]: text };
-  const log = [...state.log, record(lang, path, "edit")].slice(-LOG_LIMIT);
-
-  persist(drafts, log);
-  set({ drafts, log });
+  write(
+    { ...state.drafts, [draftKey(lang, path)]: text },
+    [...state.log, record(lang, path, "edit")].slice(-LOG_LIMIT),
+  );
   return true;
 }
 
-/** Puts every line back to what the source file says. Also a logged event. */
+/**
+ * The same, for a value that is a list rather than a line — the paragraphs of
+ * a body, or a row of tags. Whitespace inside is structural here, so the text
+ * is compared and stored as it arrived rather than flattened.
+ */
+export function saveBlocks(lang: Lang, path: string, next: string, current: string): boolean {
+  load();
+  const text = next.trim();
+  if (text === current.trim()) return false;
+
+  write(
+    { ...state.drafts, [draftKey(lang, path)]: text },
+    [...state.log, record(lang, path, "edit")].slice(-LOG_LIMIT),
+  );
+  return true;
+}
+
+/** Puts every line back to what the content file says. Also a logged event. */
 export function resetAll(lang: Lang): boolean {
   load();
   if (Object.keys(state.drafts).length === 0) return false;
 
-  const log = [...state.log, record(lang, "", "reset")].slice(-LOG_LIMIT);
-  persist(EMPTY.drafts, log);
-  set({ drafts: EMPTY.drafts, log });
+  write(EMPTY.drafts, [...state.log, record(lang, "", "reset")].slice(-LOG_LIMIT));
   return true;
 }
 
@@ -248,6 +310,10 @@ export function clearLog(): void {
   persist(state.drafts, EMPTY.log);
   set({ log: EMPTY.log });
 }
+
+/* -------------------------------------------------------------------------- */
+/* The passcode                                                               */
+/* -------------------------------------------------------------------------- */
 
 function toHex(buffer: ArrayBuffer): string {
   return Array.from(new Uint8Array(buffer), (byte) => byte.toString(16).padStart(2, "0")).join("");
@@ -295,6 +361,8 @@ export async function verifyPasscode(passcode: string): Promise<boolean> {
 export async function unlock(passcode: string): Promise<boolean> {
   load();
   if (!(await verifyPasscode(passcode))) return false;
+
+  sessionPasscode = passcode.trim();
   try {
     sessionStorage.setItem(UNLOCK_KEY, "1");
   } catch {
@@ -306,12 +374,18 @@ export async function unlock(passcode: string): Promise<boolean> {
 
 export function lock(): void {
   load();
+  sessionPasscode = null;
   try {
     sessionStorage.removeItem(UNLOCK_KEY);
   } catch {
     /* nothing was stored to begin with */
   }
   set({ unlocked: false, editing: false });
+}
+
+/** Whether publishing can go ahead without asking for the passcode again. */
+export function hasSessionPasscode(): boolean {
+  return sessionPasscode !== null;
 }
 
 export function setEditing(on: boolean): void {
@@ -322,6 +396,111 @@ export function setEditing(on: boolean): void {
 
 export function toggleEditing(): void {
   setEditing(!state.editing);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Publishing                                                                 */
+/* -------------------------------------------------------------------------- */
+
+export type PublishFailure =
+  | "empty"
+  | "passcode"
+  | "unconfigured"
+  | "conflict"
+  | "github"
+  | "network";
+
+export type PublishResult =
+  | { ok: true; count: number; sha: string; url: string }
+  | { ok: false; reason: PublishFailure; detail?: string };
+
+/** The drafts that still name something, and what the file becomes with them. */
+export function pendingCount(drafts: Drafts): number {
+  return applyDraftsVerbose(siteData, drafts).applied.length;
+}
+
+/** The content file as it would be committed right now. For the preview. */
+export function previewOf(drafts: Drafts): SiteData {
+  return applyDraftsVerbose(siteData, drafts).data;
+}
+
+function isFailure(value: unknown): value is PublishFailure {
+  return (
+    typeof value === "string" &&
+    ["empty", "passcode", "unconfigured", "conflict", "github", "network"].includes(value)
+  );
+}
+
+/**
+ * Sends the drafts to the server, which checks the passcode, folds them over
+ * the file GitHub currently holds and commits the result.
+ *
+ * The drafts go up as they are rather than as a finished file: the merge has
+ * to happen against the live content, not against the copy this browser was
+ * served, or an edit made in one tab would silently revert an edit published
+ * from another.
+ */
+export async function publish(message: string, passcode?: string): Promise<PublishResult> {
+  load();
+
+  const secret = (passcode ?? sessionPasscode ?? "").trim();
+  if (!secret) return { ok: false, reason: "passcode" };
+  if (Object.keys(state.drafts).length === 0) return { ok: false, reason: "empty" };
+
+  set({ publishing: true });
+
+  try {
+    const response = await fetch("/api/publish", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ passcode: secret, drafts: state.drafts, message }),
+    });
+
+    const payload: unknown = await response.json().catch(() => null);
+    const body = isRecord(payload) ? payload : {};
+
+    if (!response.ok || body.ok !== true) {
+      const reason = isFailure(body.reason)
+        ? body.reason
+        : response.status === 401
+          ? "passcode"
+          : response.status === 409
+            ? "conflict"
+            : response.status === 501
+              ? "unconfigured"
+              : "github";
+      return {
+        ok: false,
+        reason,
+        detail: typeof body.detail === "string" ? body.detail : undefined,
+      };
+    }
+
+    // The passcode was good enough for the server, so it is good enough to
+    // keep for the rest of this page view.
+    sessionPasscode = secret;
+
+    const count = typeof body.count === "number" ? body.count : 0;
+    const sha = typeof body.sha === "string" ? body.sha : "";
+    const url = typeof body.url === "string" ? body.url : "";
+    const published: Published = { at: Date.now(), count, sha, url };
+
+    // The drafts are the file now, so holding on to them would only mean the
+    // page keeps claiming there is something unpublished.
+    const log = [...state.log, record("en", "", "publish", count)].slice(-LOG_LIMIT);
+    persist(EMPTY.drafts, log, published);
+    set({ drafts: EMPTY.drafts, log, published, publishing: false });
+
+    return { ok: true, count, sha, url };
+  } catch (cause) {
+    return {
+      ok: false,
+      reason: "network",
+      detail: cause instanceof Error ? cause.message : undefined,
+    };
+  } finally {
+    if (state.publishing) set({ publishing: false });
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -342,29 +521,37 @@ export function describePath(path: string, content: SiteContent, copy: Copy): Pa
 
   const label = (id: string) => content.sections.find((s) => s.id === id)?.label ?? id;
   const named = (field: string) => parts[field as keyof typeof parts];
+  const partFor = (field: string, fallback: string) => {
+    const part = named(field);
+    return typeof part === "string" ? part : fallback;
+  };
+
+  if (path.startsWith("shared.profile.")) {
+    const field = path.slice("shared.profile.".length);
+    return { place: places.profile, part: partFor(field.split(".")[0], field) };
+  }
 
   if (path.startsWith("profile.")) {
     const field = path.slice("profile.".length);
-    const part = named(field);
-    return { place: places.profile, part: typeof part === "string" ? part : field };
+    return { place: places.profile, part: partFor(field, field) };
   }
 
-  if (path.startsWith("entry.")) {
-    const [, id, ...rest] = path.split(".");
-    const groups = [
-      { section: "now", items: content.now },
-      { section: "before", items: content.before },
-      { section: "awards", items: content.awards },
-    ];
-    const found = groups.find((group) => group.items.some((entry) => entry.id === id));
-    const entry = found?.items.find((item) => item.id === id);
-    const place = found ? `${label(found.section)} · ${entry?.title ?? id}` : id;
+  const named2 = /^(entry|note)\.([\w-]+)\.(.+)$/.exec(path);
+  if (named2) {
+    const [, kind, id, field] = named2;
+    const entry = content.allEntries.find((item) => item.id === id);
+    const section = (["now", "before", "awards"] as const).find((key) =>
+      content[key].some((item) => item.id === id),
+    );
+    const place = section ? `${label(section)} · ${entry?.title ?? id}` : id;
+    const part =
+      field === "body" ? parts.text : field === "lede" ? parts.lede : partFor(field, field);
 
-    if (rest[0] === "body") {
-      return { place, part: parts.paragraph(Number(rest[1] ?? 0) + 1) };
-    }
-    const part = named(rest[0] ?? "");
-    return { place, part: typeof part === "string" ? part : (rest[0] ?? id) };
+    return { place: kind === "note" ? `${place} · ${parts.note}` : place, part };
+  }
+
+  if (path.startsWith("section.")) {
+    return { place: label(path.slice("section.".length)), part: parts.heading };
   }
 
   if (path === "tools" || path === "school") {

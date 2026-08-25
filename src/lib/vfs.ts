@@ -92,16 +92,27 @@ function entryFile(entry: Entry): VFile {
     "",
   ].filter((l): l is string => l !== null);
 
-  const body: string[] = [];
-  entry.body.forEach((paragraph, i) => {
-    if (i) body.push("");
-    body.push(...wrap(paragraph));
-  });
+  const paragraphs = (list: readonly string[]): string[] => {
+    const out: string[] = [];
+    list.forEach((paragraph, i) => {
+      if (i) out.push("");
+      out.push(...wrap(paragraph));
+    });
+    return out;
+  };
+
+  // The page behind the entry is part of the file, not a second one: `cat`
+  // should print everything this site knows about the entry, and `grep` should
+  // find a sentence wherever it was written.
+  const note =
+    entry.note.lede || entry.note.body.length
+      ? ["", "## notes", "", ...paragraphs([entry.note.lede, ...entry.note.body].filter(Boolean))]
+      : [];
 
   return {
     type: "file",
     name: `${entry.id}.md`,
-    content: [...head, ...body].join("\n"),
+    content: [...head, ...paragraphs(entry.body), ...note].join("\n"),
   };
 }
 

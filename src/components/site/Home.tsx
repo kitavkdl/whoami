@@ -12,6 +12,8 @@ import { SectionNav } from "@/components/site/SectionNav";
 import { TopBar } from "@/components/site/TopBar";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import { sectionIds, useContent, type SectionId } from "@/lib/content";
+import { sectionPath } from "@/lib/site-data";
+import { useEdit } from "@/lib/edit";
 import { useCopy } from "@/lib/copy";
 import { LangContext, useLang, type Lang } from "@/lib/i18n";
 import { emit } from "@/lib/bus";
@@ -25,7 +27,7 @@ function Section({ id, count, children }: { id: SectionId; count?: number; child
   return (
     <section id={id} className="mt-16 first:mt-0">
       <h2 className="flex items-center gap-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-soft">
-        <span>{label}</span>
+        <Editable path={sectionPath(id)}>{label}</Editable>
         <span aria-hidden className="h-px flex-1 bg-rule" />
         {count !== undefined && (
           <span className="tnum text-soft/50">{String(count).padStart(2, "0")}</span>
@@ -50,6 +52,7 @@ function Page() {
   const { profile, now, before, awards, tools, school, sections } = useContent();
   const copy = useCopy();
   const lang = useLang();
+  const { editing } = useEdit();
 
   return (
     <HighlightProvider>
@@ -121,22 +124,32 @@ function Page() {
             <Section id="contact">
               <dl className="space-y-2" data-allow-copy>
                 <ContactRow term={copy.contact.email}>
-                  <a
-                    href={`mailto:${profile.email}`}
-                    className="underline"
-                    data-print-url={profile.email}
-                  >
-                    {profile.email}
-                  </a>
+                  {editing ? (
+                    <Editable path="shared.profile.email">{profile.email}</Editable>
+                  ) : (
+                    <a
+                      href={`mailto:${profile.email}`}
+                      className="underline"
+                      data-print-url={profile.email}
+                    >
+                      {profile.email}
+                    </a>
+                  )}
                   {copy.contact.emailNote}
                 </ContactRow>
 
                 <ContactRow term={copy.contact.phone}>
-                  {profile.phones.map((phone) => (
-                    <p key={phone.href}>
-                      <a href={phone.href} className="tnum underline">
-                        {phone.label}
-                      </a>
+                  {profile.phones.map((phone, i) => (
+                    <p key={i}>
+                      {editing ? (
+                        <Editable path={`shared.profile.phone.${i}.label`} className="tnum">
+                          {phone.label}
+                        </Editable>
+                      ) : (
+                        <a href={phone.href} className="tnum underline">
+                          {phone.label}
+                        </a>
+                      )}
                       {phone.smsOnly && (
                         <span className="font-sans text-[13px] text-soft">
                           {" · "}
@@ -148,15 +161,19 @@ function Page() {
                 </ContactRow>
 
                 <ContactRow term={copy.contact.elsewhere}>
-                  <a
-                    href={profile.site.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline"
-                    data-print-url={profile.site.label}
-                  >
-                    {profile.site.label}
-                  </a>
+                  {editing ? (
+                    <Editable path="shared.profile.site.label">{profile.site.label}</Editable>
+                  ) : (
+                    <a
+                      href={profile.site.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="underline"
+                      data-print-url={profile.site.label}
+                    >
+                      {profile.site.label}
+                    </a>
+                  )}
                 </ContactRow>
               </dl>
               <p className="mt-4">{copy.contact.languages}</p>
@@ -166,7 +183,9 @@ function Page() {
 
         <section id="console" className="mt-24" data-print="hide">
           <h2 className="flex items-center gap-3 font-sans text-[11px] font-medium uppercase tracking-[0.14em] text-soft">
-            <span>{sections.find((s) => s.id === "console")?.label}</span>
+            <Editable path={sectionPath("console")}>
+              {sections.find((s) => s.id === "console")?.label ?? "console"}
+            </Editable>
             <span aria-hidden className="h-px flex-1 bg-rule" />
           </h2>
 
@@ -190,7 +209,9 @@ function Page() {
 
         <footer className="mt-20 border-t border-rule pt-6 font-sans text-[13px] leading-6 text-soft">
           <p>
-            {copy.footer.before(profile.updated)}
+            {copy.footer.updatedBefore}
+            <Editable path="profile.updated">{profile.updated}</Editable>
+            {copy.footer.updatedAfter}
             <a href={`/study?lang=${lang}`} className="underline">
               {copy.footer.studyLink}
             </a>

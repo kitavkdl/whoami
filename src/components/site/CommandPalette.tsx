@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useContent, type SiteContent } from "@/lib/content";
 import { useCopy, type Copy } from "@/lib/copy";
-import { HOME_PATH, otherLang, placeToKeep, useLang, type Lang } from "@/lib/i18n";
+import { HOME_PATH, notesHref, otherLang, placeToKeep, useLang, type Lang } from "@/lib/i18n";
 import { fuzzyMatch, segment } from "@/lib/fuzzy";
 import { gotoSection } from "@/lib/nav";
 import { emit, on } from "@/lib/bus";
@@ -51,8 +51,13 @@ function buildIndex(content: SiteContent, copy: Copy, lang: Lang, goOtherLang: (
       group: "Work",
       keywords: `${entry.id} ${entry.altName ?? ""} ${entry.where ?? ""} ${entry.tags.join(" ")}`,
       run: () => {
+        // On the front page the entry is already here, so go to it. Anywhere
+        // else — a notes page, say — the entry means its own page.
         const el = document.getElementById(`entry-${entry.id}`);
-        if (!el) return;
+        if (!el) {
+          window.location.href = notesHref(entry.id, lang);
+          return;
+        }
         el.scrollIntoView({
           behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
             ? "auto"

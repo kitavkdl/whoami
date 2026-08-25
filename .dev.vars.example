@@ -1,0 +1,12 @@
+# Copy to .dev.vars for `wrangler dev`. Never commit the real file.
+# See README.md → Publishing → Setting it up.
+
+# Fine-grained PAT, scoped to this repository, Contents: Read and write.
+GITHUB_TOKEN=github_pat_...
+
+# The edit-mode passcode, in plain text. Must match the one the page asks for.
+EDIT_PASSCODE=...
+
+# Optional.
+# GITHUB_REPO=kitavkdl/jiyul-showcase-magic
+# GITHUB_BRANCH=main

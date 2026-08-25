@@ -15,6 +15,7 @@ export type BusEvents = {
   "theme:cycle": { x: number; y: number } | undefined;
   "edit:toggle": void;
   "edit:history": void;
+  "edit:publish": void;
   toast: string;
 };
 

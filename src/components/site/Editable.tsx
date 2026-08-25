@@ -6,12 +6,17 @@ import { emit } from "@/lib/bus";
 import { useCopy } from "@/lib/copy";
 
 type Props = {
-  /** The content path this line came from. See lib/edit. */
+  /** The content path this line came from. See lib/site-data. */
   path: string;
   /** Rendered element. Anything that holds a single run of text. */
   as?: ElementType;
   className?: string;
   children: string;
+  /**
+   * Shown in place of an empty line while edit mode is on, so an optional
+   * field that has never been filled in still has something to click.
+   */
+  placeholder?: string;
 };
 
 /**
@@ -25,7 +30,7 @@ type Props = {
  * the log entry written. Nothing re-renders while the caret is in here, so
  * React is never fighting the caret for the same node.
  */
-export function Editable({ path, as: Tag = "span", className = "", children }: Props) {
+export function Editable({ path, as: Tag = "span", className = "", children, placeholder }: Props) {
   const editing = useEditing();
   const lang = useLang();
   const copy = useCopy();
@@ -38,13 +43,18 @@ export function Editable({ path, as: Tag = "span", className = "", children }: P
 
   return (
     <Tag
-      className={className}
+      className={
+        className +
+        // Empty lines have no box to click, so while editing they get one.
+        (children ? "" : " min-w-[6rem] text-soft/50 before:content-[attr(data-placeholder)]")
+      }
       contentEditable
       suppressContentEditableWarning
       role="textbox"
       aria-label={path}
       spellCheck={false}
       data-edit-path={path}
+      data-placeholder={children ? undefined : (placeholder ?? "…")}
       // A title and a heading are both links on this page; while the line is
       // being edited, clicking into it must not navigate away from it.
       onClick={(event: React.MouseEvent) => event.preventDefault()}
