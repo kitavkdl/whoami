@@ -262,7 +262,7 @@
       "note": {
         "lede": {
           "en": "The second of the two, six months after the first.",
-          "ko": "둘 중 나중. 앞의 것에서 반년 뒤."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -270,8 +270,8 @@
             "Second time through the same list. The ideathon in November 2025 had been the same job."
           ],
           "ko": [
-            "2026년 5월 30일, Decompiler 주최·주관. 내가 맡은 건 프로그램이 아니라 행사 자체. 컨택, 시설 대여, 일정, 당일 전에 정리돼 있어야 하는 것 전부.",
-            "같은 목록을 두 번째로 훑은 셈. 2025년 11월 아이디어톤이 같은 일이었음."
+            "부제",
+            "부제"
           ]
         }
       }
@@ -319,7 +319,7 @@
       "note": {
         "lede": {
           "en": "Four months, one NDA, and a hard requirement I had never had before: no network.",
-          "ko": "넉 달, NDA 하나, 그리고 처음 받아본 제약: 네트워크 없음."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -327,8 +327,7 @@
             "Most of what I reach for by default assumes a network. Taking that away removed the shortcuts and left the actual problem, which was a good four months."
           ],
           "ko": [
-            "무엇을 만들었는지는 못 씀. 대신 말할 수 있는 건, '오프라인'이 배포 조건이 아니라 설계 전체를 결정하는 제약이었다는 것. 호스팅 DB 없음, 인증 서비스 없음, 외부 호출 없음, 다른 기계가 있다는 가정도 없음.",
-            "평소에 기본값으로 집어드는 것들이 대부분 네트워크를 전제함. 그걸 빼니까 지름길이 사라지고 문제 자체만 남았음. 넉 달 잘 썼다고 생각함."
+            "부제"
           ]
         }
       }
@@ -368,13 +367,13 @@
           "Ideathon hosted and run by Decompiler, held on 15 November 2025. I was the organizer of the event itself — reaching the people and institutions who had to be involved, renting the venue, and running the preparation."
         ],
         "ko": [
-          "Decompiler가 주최·주관한 아이디어톤. 2025년 11월 15일 진행. 행사 자체의 총괄을 맡음. 관계자·기관 컨택, 시설 대여, 준비 전반."
+          "제목"
         ]
       },
       "note": {
         "lede": {
           "en": "The earlier of the two.",
-          "ko": "둘 중 먼저 치른 쪽."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -382,8 +381,7 @@
             "That meant the parts of an event that are not the event: who had to be contacted, what the space cost and when it was free, and the order everything had to happen in beforehand."
           ],
           "ko": [
-            "2025년 11월 15일 진행. 주최·주관은 Decompiler, 조직은 내가 함.",
-            "행사에서 행사가 아닌 부분을 맡았다는 뜻. 누구를 컨택해야 하는지, 장소는 얼마고 언제 비는지, 그전까지 무엇을 어떤 순서로 해야 하는지."
+            "부제"
           ]
         }
       }
@@ -423,13 +421,13 @@
           "Ran several Odoo implementations at once — scope, schedule, and the constant negotiation between what a client wanted this month and what the team could actually ship. Less code than I expected. More useful than I expected."
         ],
         "ko": [
-          "Odoo 구축 프로젝트 여러 건을 동시에 맡음. 범위와 일정, 그리고 이번 달에 고객이 원하는 것과 팀이 실제로 끝낼 수 있는 것 사이의 조율 및 개발 역할 진행"
+          "제목"
         ]
       },
       "note": {
         "lede": {
           "en": "Six months of finding out that scoping is the engineering.",
-          "ko": "범위 산정이 곧 엔지니어링이라는 걸 알게 된 6개월."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -438,9 +436,7 @@
             "I wrote less Python than I wanted to. I got much better at saying what something would cost before agreeing to it."
           ],
           "ko": [
-            "Odoo는 중견 기업이 필요한 것 대부분을 기본으로 커버함. 그래서 일이 '이 기능 만들기'인 경우가 거의 없음. 고객 요청이 설정 변경인지, 작은 모듈인지, 아니면 제품을 다른 물건으로 만들어 달라는 얘기인지 판별하는 게 일. 이걸 1주차에 틀리면 3개월차에 값을 치름.",
-            "여러 건을 동시에 하다 보니 사고는 항상 기술 쪽이 아니었음. 고객 둘이 같은 주에 같은 두 사람을 기대하고 있는 상황이 문제였음.",
-            "Python은 쓰고 싶었던 것보다 적게 씀. 대신 합의하기 전에 비용을 먼저 말하는 건 확실히 늘었음."
+            "부제"
           ]
         }
       }
@@ -488,7 +484,7 @@
       "note": {
         "lede": {
           "en": "Three semesters, three different versions of the same job.",
-          "ko": "세 학기, 같은 일의 세 가지 버전."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -498,10 +494,7 @@
             "The SBU chapter starts in fall 2026 and I am starting it from zero again."
           ],
           "ko": [
-            "기술 자문일 때는 질문에 답하는 게 일이었음. 제일 쉬운 버전. 누가 막히고, 답을 알고, 답해주면 끝.",
-            "부회장 때는 일정 잡고 조용해진 사람 눈치채는 게 일의 대부분. 회장 때는 나 말고 다른 사람이 답할 수 있게 만드는 게 일이었는데, 이건 훨씬 느리고 당장은 보람도 적음.",
-            "SeekOnce가 여기서 나옴. 이 동아리가 있어야 하는 이유로는 이게 제일 셈.",
-            "SBU 챕터는 2026년 가을에 시작. 또 0부터."
+            "부제"
           ]
         }
       }
@@ -545,7 +538,7 @@
       "note": {
         "lede": {
           "en": "Nine months, and about seven of them were operations.",
-          "ko": "9개월 중 7개월쯤은 운영이었음."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -554,9 +547,7 @@
             "First time I ran something other people depended on to get through a normal week."
           ],
           "ko": [
-            "예약은 다 풀린 문제처럼 보이는데, 중복 예약, 시작한 뒤에 들어오는 취소, 매주 화요일 체육관을 영구히 잡고 싶어하는 선생님을 만나면 얘기가 달라짐.",
-            "만드는 데는 두 달쯤. 나머지는 전화 받고, 아무도 안 할 거라 생각한 걸 한 사람 뒤처리하고, 관리 안 하는 시스템은 시스템이 아니게 된다는 걸 배우는 시간이었음.",
-            "다른 사람들이 평범한 한 주를 보내는 데 내가 만든 게 필요했던 첫 경험."
+            "부제"
           ]
         }
       }
@@ -604,7 +595,7 @@
       "note": {
         "lede": {
           "en": "My first paid work, and the first time I touched a server that other people were already using.",
-          "ko": "첫 유급 일. 그리고 다른 사람이 이미 쓰고 있는 서버를 처음 만져본 일."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -613,9 +604,7 @@
             "Drawing the mobile layout mattered more than anything else I did. Almost every applicant filled the form on a phone."
           ],
           "ko": [
-            "종이 지원서라는 건 누군가 그걸 전부 스프레드시트에 다시 타이핑하고 있다는 뜻임. 요구사항은 그게 전부였음.",
-            "지금 누가 카페24 + PHP를 고르진 않겠지만, 그 2년이 아깝다고 생각하지 않음. 공용 호스팅은 한계선을 알려줌. 뭘 설치할 수 있고 뭘 못 하는지, 오전 9시에 다 같이 제출하면 무슨 일이 벌어지는지.",
-            "제일 중요했던 건 모바일 레이아웃이었음. 지원자 거의 전부가 폰으로 작성했음."
+            "부제"
           ]
         }
       }
@@ -659,7 +648,7 @@
       "note": {
         "lede": {
           "en": "The pitch was the product, for about 48 hours.",
-          "ko": "48시간 동안은 발표가 곧 제품이었음."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -668,9 +657,7 @@
             "I did the planning and the final presentation. First out of every team."
           ],
           "ko": [
-            "전제: 국내 중소 제조업에서 기계 설정이 왜 그렇게 되어 있는지 아는 사람은 보통 30년 일한 사람이고, 곧 나감. 기록은 없음. 기록이 없는 이유는 기록하는 게 별도의 일이기 때문.",
-            "그래서 제품의 초점은 '노력 거의 0'으로 캡처하는 것. 데모는 그걸 3분 안에 납득시켜야 했음.",
-            "기획과 최종 발표를 맡았음. 참가 팀 전체 1위."
+            "부제"
           ]
         }
       }
@@ -714,7 +701,7 @@
       "note": {
         "lede": {
           "en": "A certificate that matched work I was already doing.",
-          "ko": "이미 하고 있던 일에 이름을 붙여준 수료증."
+          "ko": "제목"
         },
         "body": {
           "en": [
@@ -722,8 +709,7 @@
             "I took it while running implementations at DX Tech, so most of it read as a formalization of things I had already gotten wrong once."
           ],
           "ko": [
-            "PLO는 모듈 하나가 아니라 구축 전체를 책임지는 사람을 위한 과정. 범위 산정, 단계 나누기, 그리고 고객에게 안 된다고 말하는 부분.",
-            "DX Tech에서 구축을 돌리는 중에 들었음. 그래서 대부분이 이미 한 번씩 틀려본 것들을 정리해주는 내용이었음."
+            "부제"
           ]
         }
       }
