@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { HOME_PATH, LANGS, placeToKeep, useLang } from "@/lib/i18n";
+import { HOME_PATH, LANGS, placeToKeep, useLang, type Lang } from "@/lib/i18n";
 import { useCopy } from "@/lib/copy";
 
 const SHORT = { en: "EN", ko: "KO" } as const;
@@ -11,10 +11,18 @@ const SHORT = { en: "EN", ko: "KO" } as const;
  * landing back at the masthead is the sort of thing that stops people trying
  * the other language at all.
  */
-export function LangToggle({ className = "" }: { className?: string }) {
+export function LangToggle({
+  className = "",
+  hrefFor,
+}: {
+  className?: string;
+  /** Where each language lives, when it is not the front page. */
+  hrefFor?: (lang: Lang) => string;
+}) {
   const lang = useLang();
   const copy = useCopy();
   const navigate = useNavigate();
+  const href = hrefFor ?? ((code: Lang) => HOME_PATH[code]);
 
   return (
     <div
@@ -29,7 +37,7 @@ export function LangToggle({ className = "" }: { className?: string }) {
         return (
           <a
             key={code}
-            href={HOME_PATH[code]}
+            href={href(code)}
             hrefLang={code}
             aria-current={current ? "true" : undefined}
             onClick={(event) => {
@@ -41,7 +49,7 @@ export function LangToggle({ className = "" }: { className?: string }) {
               if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
 
               event.preventDefault();
-              void navigate({ to: HOME_PATH[code], hash: placeToKeep() });
+              void navigate({ to: href(code), hash: placeToKeep() });
             }}
             className={
               "px-[9px] py-[5px] font-mono text-[10.5px] tracking-[0.06em] no-underline transition-colors duration-200 " +

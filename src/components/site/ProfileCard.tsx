@@ -6,6 +6,7 @@ import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { LangToggle } from "@/components/site/LangToggle";
 import { Editable } from "@/components/site/Editable";
 import { useEdit } from "@/lib/edit";
+import { useLang } from "@/lib/i18n";
 import { emit } from "@/lib/bus";
 
 function Action({
@@ -36,7 +37,15 @@ function Action({
 export function ProfileCard() {
   const { profile } = useContent();
   const copy = useCopy();
+  const lang = useLang();
   const { editing } = useEdit();
+
+  // Whichever script the reader is in leads; the other trails. Both are one
+  // value rather than two translations, so both carry a shared path.
+  const primary = lang === "ko" ? "shared.profile.hangul" : "shared.profile.name";
+  const secondary = lang === "ko" ? "shared.profile.name" : "shared.profile.hangul";
+  const nameFor = (path: string) =>
+    path === "shared.profile.hangul" ? profile.hangul : profile.name;
 
   return (
     <header id="top" className="pt-10 sm:pt-14">
@@ -58,12 +67,12 @@ export function ProfileCard() {
         />
 
         <div className="min-w-0 pb-1">
-          {/* Whichever script the reader is in leads; the other trails. */}
           <h1 className="text-[2.1rem] font-medium leading-none tracking-[-0.01em]">
-            {copy.name.primary}
+            <Editable path={primary}>{nameFor(primary)}</Editable>
           </h1>
           <p className="mt-[6px] font-sans text-[13px] text-soft">
-            {copy.name.secondary} · <Editable path="profile.location">{profile.location}</Editable>
+            <Editable path={secondary}>{nameFor(secondary)}</Editable> ·{" "}
+            <Editable path="profile.location">{profile.location}</Editable>
           </p>
         </div>
 

@@ -5,8 +5,11 @@ import { useCopy, type Copy } from "@/lib/copy";
 import {
   clearLog,
   describePath,
+  hasSessionPasscode,
   InsecureContextError,
   lock,
+  pendingCount,
+  publish,
   resetAll,
   toggleEditing,
   unlock,
@@ -215,6 +218,119 @@ function Gate({ onClose }: { onClose: () => void }) {
   );
 }
 
+/**
+ * Publishing.
+ *
+ * Everything up to here happened in this browser. This is the one control that
+ * reaches the repository, so it says what it is about to do, asks for the
+ * passcode again when the page has been reloaded since the unlock, and reports
+ * back with the commit rather than a shrug.
+ */
+function PublishSheet({ onClose }: { onClose: () => void }) {
+  const copy = useCopy();
+  const { drafts, publishing } = useEdit();
+
+  const count = useMemo(() => pendingCount(drafts), [drafts]);
+  const [needsPasscode] = useState(() => !hasSessionPasscode());
+  const [passcode, setPasscode] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  const blocked = publishing || count === 0 || (needsPasscode && !passcode.trim());
+
+  return (
+    <Sheet title={copy.edit.publishTitle} onClose={onClose} width="max-w-[26rem]">
+      <p className="mt-4 font-sans text-[13px] leading-6 text-soft">{copy.edit.publishBody}</p>
+
+      <p className="mt-3 font-sans text-[12.5px] text-ink">
+        {count === 0 ? copy.edit.publishNothing : copy.edit.pending(count)}
+      </p>
+
+      <form
+        className="mt-4"
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (blocked) return;
+          setError("");
+
+          void publish(message, needsPasscode ? passcode : undefined).then((result) => {
+            if (result.ok) {
+              emit("toast", copy.edit.publishedToast(result.count));
+              onClose();
+              return;
+            }
+            setError(copy.edit.errors[result.reason]);
+          });
+        }}
+      >
+        {needsPasscode && (
+          <div className="mb-4">
+            <label
+              className="font-sans text-[11px] uppercase tracking-[0.14em] text-soft"
+              htmlFor="publish-passcode"
+            >
+              {copy.edit.passcode}
+            </label>
+            <input
+              id="publish-passcode"
+              data-autofocus
+              type="password"
+              autoComplete="off"
+              spellCheck={false}
+              disabled={publishing}
+              value={passcode}
+              onChange={(event) => {
+                setPasscode(event.target.value);
+                setError("");
+              }}
+              className="mt-2 block w-full rounded-[3px] border border-rule bg-paper px-3 py-2 font-mono text-[15px] tracking-[0.3em] text-ink outline-none focus:border-mark disabled:opacity-60"
+            />
+            <p className="mt-2 font-sans text-[11.5px] text-soft/75">{copy.edit.needPasscode}</p>
+          </div>
+        )}
+
+        <label
+          className="font-sans text-[11px] uppercase tracking-[0.14em] text-soft"
+          htmlFor="publish-message"
+        >
+          {copy.edit.message}
+        </label>
+        <input
+          id="publish-message"
+          data-autofocus={needsPasscode ? undefined : true}
+          type="text"
+          maxLength={72}
+          autoComplete="off"
+          disabled={publishing}
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          className="mt-2 block w-full rounded-[3px] border border-rule bg-paper px-3 py-2 font-sans text-[13px] text-ink outline-none focus:border-mark disabled:opacity-60"
+        />
+        <p className="mt-2 font-sans text-[11.5px] text-soft/75">{copy.edit.messageHint}</p>
+
+        <p aria-live="polite" className="mt-3 min-h-[1.25rem] font-sans text-[12px] text-mark">
+          {error}
+        </p>
+
+        <div className="mt-1 flex items-center gap-2">
+          <button
+            type="submit"
+            disabled={blocked}
+            className="rounded-[3px] bg-ink px-[10px] py-[5px] font-sans text-[12.5px] text-paper transition-colors duration-200 hover:bg-mark disabled:opacity-50"
+          >
+            {publishing ? copy.edit.publishing : copy.edit.publish}
+          </button>
+          <SmallButton onClick={onClose}>{copy.edit.cancel}</SmallButton>
+        </div>
+      </form>
+
+      <p className="mt-5 border-t border-rule pt-3 font-sans text-[11.5px] leading-5 text-soft/75">
+        {copy.edit.publishNote}
+      </p>
+    </Sheet>
+  );
+}
+
 type Row = { entry: LogEntry; place: string; part: string };
 
 function groupByDay(
@@ -229,7 +345,11 @@ function groupByDay(
   // Newest first, which is the order the question "what changed?" is asked in.
   for (const entry of [...log].reverse()) {
     const label = day.format(entry.at);
-    const row = { entry, ...describePath(entry.kind === "reset" ? "" : entry.path, content, copy) };
+    const described =
+      entry.kind === "publish"
+        ? { place: copy.edit.publishTitle, part: copy.edit.changed(entry.count ?? 0) }
+        : describePath(entry.kind === "reset" ? "" : entry.path, content, copy);
+    const row = { entry, ...described };
     const last = out[out.length - 1];
     if (last?.day === label) last.rows.push(row);
     else out.push({ day: label, rows: [row] });
@@ -276,7 +396,11 @@ function History({ onClose }: { onClose: () => void }) {
                       aria-hidden
                       className={
                         "absolute -left-[23px] top-[7px] size-[7px] rounded-full border " +
-                        (entry.kind === "reset" ? "border-mark bg-paper" : "border-mark bg-mark/70")
+                        (entry.kind === "edit"
+                          ? "border-mark bg-mark/70"
+                          : entry.kind === "publish"
+                            ? "border-mark bg-mark"
+                            : "border-mark bg-paper")
                       }
                     />
                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-[2px]">
@@ -317,10 +441,10 @@ function History({ onClose }: { onClose: () => void }) {
 }
 
 /** Sits in the corner for as long as the page is unlocked. */
-function Bar({ onHistory }: { onHistory: () => void }) {
+function Bar({ onHistory, onPublish }: { onHistory: () => void; onPublish: () => void }) {
   const copy = useCopy();
   const lang = useLang();
-  const { editing, drafts } = useEdit();
+  const { editing, drafts, published, publishing } = useEdit();
   const changed = Object.keys(drafts).length;
 
   return (
@@ -350,6 +474,18 @@ function Bar({ onHistory }: { onHistory: () => void }) {
       </p>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
+        {/*
+          The only control here that leaves the browser, so it is the only one
+          that looks like a commitment rather than a toggle.
+        */}
+        <button
+          type="button"
+          disabled={changed === 0 || publishing}
+          onClick={onPublish}
+          className="rounded-[3px] bg-ink px-[10px] py-[4px] font-sans text-[12px] text-paper transition-colors duration-200 hover:bg-mark disabled:opacity-40"
+        >
+          {publishing ? copy.edit.publishing : copy.edit.publish}
+        </button>
         <SmallButton
           onClick={() => {
             toggleEditing();
@@ -375,6 +511,25 @@ function Bar({ onHistory }: { onHistory: () => void }) {
           {copy.edit.lock}
         </SmallButton>
       </div>
+
+      {published && (
+        <p className="mt-3 border-t border-rule pt-2 font-sans text-[11.5px] leading-5 text-soft/70">
+          {copy.edit.lastPublished} · {copy.edit.changed(published.count)}
+          {published.url && (
+            <>
+              {" · "}
+              <a
+                href={published.url}
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-rule underline-offset-[3px] hover:text-mark"
+              >
+                {published.sha || copy.edit.viewCommit}
+              </a>
+            </>
+          )}
+        </p>
+      )}
     </div>
   );
 }
@@ -389,6 +544,7 @@ export function EditMode() {
   const { unlocked, editing } = useEdit();
   const [gate, setGate] = useState(false);
   const [history, setHistory] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
 
   useEffect(
     () =>
@@ -405,16 +561,24 @@ export function EditMode() {
 
   useEffect(() => on("edit:history", () => setHistory(true)), []);
 
-  // A locked page has no log to show: the button that opens it is on the bar.
+  useEffect(() => on("edit:publish", () => setPublishOpen(true)), []);
+
+  // A locked page has no log to show: the buttons that open these are on the bar.
   useEffect(() => {
-    if (!unlocked) setHistory(false);
+    if (!unlocked) {
+      setHistory(false);
+      setPublishOpen(false);
+    }
   }, [unlocked]);
 
   return (
     <>
-      {unlocked && <Bar onHistory={() => setHistory(true)} />}
+      {unlocked && (
+        <Bar onHistory={() => setHistory(true)} onPublish={() => setPublishOpen(true)} />
+      )}
       {gate && <Gate onClose={() => setGate(false)} />}
       {history && unlocked && <History onClose={() => setHistory(false)} />}
+      {publishOpen && unlocked && <PublishSheet onClose={() => setPublishOpen(false)} />}
     </>
   );
 }

@@ -73,6 +73,30 @@ export type Copy = {
     local: string;
     edits: (n: number) => string;
     changed: (n: number) => string;
+
+    /** Publishing: the half that reaches the repository. */
+    publish: string;
+    publishTitle: string;
+    publishBody: string;
+    publishNote: string;
+    message: string;
+    messageHint: string;
+    publishing: string;
+    publishNothing: string;
+    publishedToast: (n: number) => string;
+    pending: (n: number) => string;
+    viewCommit: string;
+    lastPublished: string;
+    needPasscode: string;
+    errors: {
+      passcode: string;
+      unconfigured: string;
+      conflict: string;
+      github: string;
+      network: string;
+      empty: string;
+    };
+
     places: { profile: string; page: string };
     parts: {
       lede: string;
@@ -84,8 +108,29 @@ export type Copy = {
       altName: string;
       text: string;
       reset: string;
+      note: string;
+      heading: string;
+      tags: string;
+      name: string;
+      hangul: string;
+      email: string;
+      phone: string;
+      site: string;
+      updated: string;
       paragraph: (n: number) => string;
     };
+  };
+
+  /** The page behind each entry. */
+  notes: {
+    open: string;
+    back: string;
+    heading: string;
+    empty: string;
+    addParagraph: string;
+    remove: string;
+    hint: string;
+    alsoOn: string;
   };
 
   overlapCaption: string;
@@ -101,7 +146,13 @@ export type Copy = {
     languages: string;
   };
 
-  footer: { before: (updated: string) => string; studyLink: string; after: string; built: string };
+  footer: {
+    updatedBefore: string;
+    updatedAfter: string;
+    studyLink: string;
+    after: string;
+    built: string;
+  };
 
   palette: {
     placeholder: string;
@@ -235,9 +286,36 @@ const en: Copy = {
     resetNothing: "Nothing to undo",
     clearLog: "Clear the log",
     clearLogDone: "Log cleared",
-    local: "Kept in this browser only. Nothing is sent anywhere, and no other reader sees it.",
+    local:
+      "Kept in this browser until you publish. Publishing commits the change to the repository, and the site rebuilds from it.",
     edits: (n) => (n === 1 ? "1 entry" : `${n} entries`),
     changed: (n) => (n === 1 ? "1 line changed" : `${n} lines changed`),
+
+    publish: "Publish",
+    publishTitle: "Publish to GitHub",
+    publishBody:
+      "This commits your changes to content/site.json. The deploy that follows is what everyone else sees.",
+    publishNote:
+      "The passcode is checked again on the server — the one in this browser only opens the page.",
+    message: "Commit message",
+    messageHint: "Optional. One line, in the log next to the commit.",
+    publishing: "Publishing…",
+    publishNothing: "Nothing to publish",
+    publishedToast: (n) => (n === 1 ? "Published 1 change" : `Published ${n} changes`),
+    pending: (n) => (n === 1 ? "1 unpublished change" : `${n} unpublished changes`),
+    viewCommit: "See the commit",
+    lastPublished: "Last published",
+    needPasscode: "Type the passcode again to publish.",
+    errors: {
+      passcode: "The server did not accept that passcode.",
+      unconfigured:
+        "Publishing is not set up on the server yet: GITHUB_TOKEN and EDIT_PASSCODE are missing.",
+      conflict: "The file changed on GitHub while you were writing. Reload and try again.",
+      github: "GitHub refused the commit.",
+      network: "Could not reach the server.",
+      empty: "Nothing to publish.",
+    },
+
     places: { profile: "Masthead", page: "The whole page" },
     parts: {
       lede: "Lede",
@@ -249,12 +327,32 @@ const en: Copy = {
       altName: "Other name",
       text: "Body",
       reset: "Everything put back",
+      note: "Notes",
+      heading: "Section heading",
+      tags: "Tags",
+      name: "Name",
+      hangul: "Name in Hangul",
+      email: "Email",
+      phone: "Phone",
+      site: "Link",
+      updated: "Updated",
       paragraph: (n) => `Paragraph ${n}`,
     },
   },
 
+  notes: {
+    open: "Read the notes",
+    back: "Back to the front page",
+    heading: "Notes",
+    empty: "Nothing written here yet.",
+    addParagraph: "Add a paragraph",
+    remove: "Delete",
+    hint: "Click a paragraph to change it. Enter for a new one, Esc to drop the change.",
+    alsoOn: "Also on the front page",
+  },
+
   overlapCaption:
-    "Everything above, on one axis. The overlaps are the honest part: four ran at once in late 2025, four again in the spring. Two are still going. The dashed line is today.",
+    "Everything above on one axis. Five ran at once in November 2025, and five again in March and May 2026. Two are still going. The dashed line is today.",
 
   consoleIntro: {
     lead: "Everything above is also a filesystem. This reads it. It is not a recording of a terminal, it is a small one:",
@@ -272,7 +370,8 @@ const en: Copy = {
   },
 
   footer: {
-    before: (updated) => `Updated ${updated}. There is also `,
+    updatedBefore: "Updated ",
+    updatedAfter: ". There is also ",
     studyLink: "오늘의 학점 운세",
     after: ", a grade fortune-teller I wrote for no good reason.",
     built:
@@ -489,9 +588,34 @@ const ko: Copy = {
     resetNothing: "되돌릴 것이 없다",
     clearLog: "기록 지우기",
     clearLogDone: "기록을 지웠다",
-    local: "이 브라우저에만 남는다. 어디로도 보내지 않고, 다른 사람에게는 보이지 않는다.",
+    local:
+      "게시하기 전까지는 이 브라우저에만 남는다. 게시하면 저장소에 커밋되고, 사이트가 그걸로 다시 빌드된다.",
     edits: (n) => `${n}건`,
     changed: (n) => `고친 줄 ${n}개`,
+
+    publish: "게시",
+    publishTitle: "GitHub에 게시",
+    publishBody:
+      "고친 내용을 content/site.json에 커밋한다. 그 뒤에 배포가 돌고, 그게 다른 사람들이 보는 화면이 된다.",
+    publishNote: "비밀번호는 서버에서 한 번 더 확인한다. 브라우저의 확인은 화면을 여는 용도일 뿐.",
+    message: "커밋 메시지",
+    messageHint: "선택. 한 줄, 커밋 기록에 그대로 남는다.",
+    publishing: "게시 중…",
+    publishNothing: "게시할 것이 없다",
+    publishedToast: (n) => `${n}건 게시함`,
+    pending: (n) => `게시 안 한 변경 ${n}건`,
+    viewCommit: "커밋 보기",
+    lastPublished: "마지막 게시",
+    needPasscode: "게시하려면 비밀번호를 다시 입력해야 한다.",
+    errors: {
+      passcode: "서버가 그 비밀번호를 받지 않았다.",
+      unconfigured: "서버에 게시 설정이 아직 없다. GITHUB_TOKEN과 EDIT_PASSCODE가 필요하다.",
+      conflict: "쓰는 동안 GitHub에서 파일이 바뀌었다. 새로고침하고 다시 시도.",
+      github: "GitHub가 커밋을 거절했다.",
+      network: "서버에 닿지 못했다.",
+      empty: "게시할 것이 없다.",
+    },
+
     places: { profile: "머리말", page: "페이지 전체" },
     parts: {
       lede: "첫 문장",
@@ -503,12 +627,32 @@ const ko: Copy = {
       altName: "다른 이름",
       text: "본문",
       reset: "전부 되돌림",
+      note: "기록",
+      heading: "섹션 제목",
+      tags: "태그",
+      name: "이름",
+      hangul: "한글 이름",
+      email: "이메일",
+      phone: "전화",
+      site: "링크",
+      updated: "갱신일",
       paragraph: (n) => `${n}번째 문단`,
     },
   },
 
+  notes: {
+    open: "기록 읽기",
+    back: "첫 페이지로",
+    heading: "기록",
+    empty: "아직 쓴 것이 없다.",
+    addParagraph: "문단 추가",
+    remove: "삭제",
+    hint: "문단을 누르면 고칠 수 있다. Enter로 새 문단, Esc로 취소.",
+    alsoOn: "첫 페이지에도 있는 내용",
+  },
+
   overlapCaption:
-    "위의 모든 것을 하나의 축에 올렸다. 겹치는 부분이 정직한 쪽이다. 2025년 늦가을에 네 개가 동시에 돌았고, 봄에 다시 네 개였다. 지금 돌아가는 건 두 개. 점선이 오늘이다.",
+    "위의 모든 것을 하나의 축에 올린 것. 2025년 11월에 다섯 개가 동시에 돌았고, 2026년 3월과 5월에도 다섯 개였다. 지금 돌아가는 건 두 개. 점선이 오늘.",
 
   consoleIntro: {
     lead: "위에 있는 것들은 파일시스템이기도 하다. 이 콘솔은 그것을 읽는다. 터미널을 찍어 둔 그림이 아니라 작은 터미널이다:",
@@ -526,7 +670,8 @@ const ko: Copy = {
   },
 
   footer: {
-    before: (updated) => `${updated} 갱신. 별 이유 없이 만든 `,
+    updatedBefore: "",
+    updatedAfter: " 갱신. 별 이유 없이 만든 ",
     studyLink: "오늘의 학점 운세",
     after: "도 있다.",
     built:

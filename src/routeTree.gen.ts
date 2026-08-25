@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as KoRouteImport } from './routes/ko'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NotesIdRouteImport } from './routes/notes.$id'
+import { Route as ApiPublishRouteImport } from './routes/api.publish'
 
 const StudyRoute = StudyRouteImport.update({
   id: '/study',
@@ -28,35 +30,53 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotesIdRoute = NotesIdRouteImport.update({
+  id: '/notes/$id',
+  path: '/notes/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublishRoute = ApiPublishRouteImport.update({
+  id: '/api/publish',
+  path: '/api/publish',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ko': typeof KoRoute
   '/study': typeof StudyRoute
+  '/api/publish': typeof ApiPublishRoute
+  '/notes/$id': typeof NotesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ko': typeof KoRoute
   '/study': typeof StudyRoute
+  '/api/publish': typeof ApiPublishRoute
+  '/notes/$id': typeof NotesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ko': typeof KoRoute
   '/study': typeof StudyRoute
+  '/api/publish': typeof ApiPublishRoute
+  '/notes/$id': typeof NotesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ko' | '/study'
+  fullPaths: '/' | '/ko' | '/study' | '/api/publish' | '/notes/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ko' | '/study'
-  id: '__root__' | '/' | '/ko' | '/study'
+  to: '/' | '/ko' | '/study' | '/api/publish' | '/notes/$id'
+  id: '__root__' | '/' | '/ko' | '/study' | '/api/publish' | '/notes/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   KoRoute: typeof KoRoute
   StudyRoute: typeof StudyRoute
+  ApiPublishRoute: typeof ApiPublishRoute
+  NotesIdRoute: typeof NotesIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +102,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notes/$id': {
+      id: '/notes/$id'
+      path: '/notes/$id'
+      fullPath: '/notes/$id'
+      preLoaderRoute: typeof NotesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/publish': {
+      id: '/api/publish'
+      path: '/api/publish'
+      fullPath: '/api/publish'
+      preLoaderRoute: typeof ApiPublishRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +123,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   KoRoute: KoRoute,
   StudyRoute: StudyRoute,
+  ApiPublishRoute: ApiPublishRoute,
+  NotesIdRoute: NotesIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

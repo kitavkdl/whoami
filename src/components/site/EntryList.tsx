@@ -1,6 +1,10 @@
 import { Editable } from "@/components/site/Editable";
+import { EditableBlocks } from "@/components/site/EditableBlocks";
 import type { Entry } from "@/lib/content";
-import { bodyPath, entryPath } from "@/lib/edit";
+import { entryPath, joinTags } from "@/lib/site-data";
+import { useEditing } from "@/lib/edit";
+import { useCopy } from "@/lib/copy";
+import { notesHref, useLang } from "@/lib/i18n";
 import { highlightProps, useHighlight } from "@/lib/highlight";
 
 function Tag({ children }: { children: string }) {
@@ -11,8 +15,42 @@ function Tag({ children }: { children: string }) {
   );
 }
 
+/**
+ * The tags, as a row of chips to read and as one line to write. A chip each
+ * would mean a separate path per tag, and then no way to add a fourth one.
+ */
+function Tags({ entry }: { entry: Entry }) {
+  const editing = useEditing();
+
+  if (editing) {
+    return (
+      <Editable
+        as="p"
+        path={entryPath(entry.id, "tags")}
+        placeholder="TypeScript, React"
+        className="mt-4 font-mono text-[10.5px] uppercase tracking-[0.06em] text-soft"
+      >
+        {joinTags(entry.tags)}
+      </Editable>
+    );
+  }
+
+  if (entry.tags.length === 0) return null;
+
+  return (
+    <ul className="mt-4 flex flex-wrap gap-[6px]" data-print="hide">
+      {entry.tags.map((tag) => (
+        <Tag key={tag}>{tag}</Tag>
+      ))}
+    </ul>
+  );
+}
+
 export function EntryList({ items }: { items: Entry[] }) {
   const highlight = useHighlight();
+  const editing = useEditing();
+  const copy = useCopy();
+  const lang = useLang();
 
   return (
     <ul className="space-y-10">
@@ -40,55 +78,79 @@ export function EntryList({ items }: { items: Entry[] }) {
 
           <div>
             <h3 className="text-[19px] font-medium leading-snug">
-              {entry.href ? (
+              {/*
+                The title opens the page behind the entry rather than the
+                project's own site: that page is the one this site owns, and
+                the ↗ beside it is where the outside link went.
+              */}
+              {editing ? (
+                <Editable path={entryPath(entry.id, "title")}>{entry.title}</Editable>
+              ) : (
+                <a
+                  href={notesHref(entry.id, lang)}
+                  className="no-underline decoration-mark/40 hover:underline"
+                >
+                  {entry.title}
+                  <span
+                    aria-hidden
+                    className="ml-[3px] inline-block text-[13px] text-soft/70 transition-transform duration-200 group-hover:translate-x-[2px]"
+                  >
+                    →
+                  </span>
+                </a>
+              )}
+
+              {entry.href && !editing && (
                 <a
                   href={entry.href}
                   target="_blank"
                   rel="noreferrer"
                   data-print-url={entry.href.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                  className="no-underline decoration-mark/40 hover:underline"
+                  aria-label={entry.title}
+                  className="ml-[6px] align-baseline text-[13px] text-soft/70 no-underline hover:text-mark"
                 >
-                  <Editable path={entryPath(entry.id, "title")}>{entry.title}</Editable>
-                  <span
-                    aria-hidden
-                    className="ml-[3px] inline-block text-[13px] text-soft/70 transition-transform duration-200 group-hover:translate-x-[2px]"
-                  >
-                    ↗
-                  </span>
+                  ↗
                 </a>
-              ) : (
-                <Editable path={entryPath(entry.id, "title")}>{entry.title}</Editable>
               )}
-              {entry.where && (
+
+              {(entry.where || editing) && (
                 <span className="font-normal text-soft">
                   {" · "}
-                  <Editable path={entryPath(entry.id, "where")}>{entry.where}</Editable>
+                  <Editable path={entryPath(entry.id, "where")} placeholder={copy.edit.parts.where}>
+                    {entry.where ?? ""}
+                  </Editable>
                 </span>
               )}
             </h3>
 
-            {entry.altName && (
+            {(entry.altName || editing) && (
               <Editable
                 as="p"
                 path={entryPath(entry.id, "altName")}
+                placeholder={copy.edit.parts.altName}
                 className="mt-1 font-sans text-[13px] leading-6 text-soft"
               >
-                {entry.altName}
+                {entry.altName ?? ""}
               </Editable>
             )}
 
-            {entry.body.map((paragraph, k) => (
-              <Editable as="p" key={k} path={bodyPath(entry.id, k)} className="mt-3">
-                {paragraph}
-              </Editable>
-            ))}
+            <EditableBlocks
+              path={entryPath(entry.id, "body")}
+              paragraphs={entry.body}
+              itemClassName="mt-3"
+            />
 
-            {entry.tags.length > 0 && (
-              <ul className="mt-4 flex flex-wrap gap-[6px]" data-print="hide">
-                {entry.tags.map((tag) => (
-                  <Tag key={tag}>{tag}</Tag>
-                ))}
-              </ul>
+            <Tags entry={entry} />
+
+            {!editing && (
+              <p className="mt-3 font-sans text-[12.5px]" data-print="hide">
+                <a
+                  href={notesHref(entry.id, lang)}
+                  className="text-soft/80 underline decoration-rule underline-offset-[3px] hover:text-mark"
+                >
+                  {copy.notes.open}
+                </a>
+              </p>
             )}
           </div>
         </li>
