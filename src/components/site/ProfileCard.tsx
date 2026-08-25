@@ -4,6 +4,8 @@ import { useCopy } from "@/lib/copy";
 import { LocalClock } from "@/components/site/LocalClock";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { LangToggle } from "@/components/site/LangToggle";
+import { Editable } from "@/components/site/Editable";
+import { useEdit } from "@/lib/edit";
 import { emit } from "@/lib/bus";
 
 function Action({
@@ -34,6 +36,7 @@ function Action({
 export function ProfileCard() {
   const { profile } = useContent();
   const copy = useCopy();
+  const { editing } = useEdit();
 
   return (
     <header id="top" className="pt-10 sm:pt-14">
@@ -60,7 +63,7 @@ export function ProfileCard() {
             {copy.name.primary}
           </h1>
           <p className="mt-[6px] font-sans text-[13px] text-soft">
-            {copy.name.secondary} · {profile.location}
+            {copy.name.secondary} · <Editable path="profile.location">{profile.location}</Editable>
           </p>
         </div>
 
@@ -71,8 +74,12 @@ export function ProfileCard() {
       </div>
 
       <div className="mt-7 px-4 sm:px-6">
-        <p className="text-[19px] leading-[1.55]">{profile.lede}</p>
-        <p className="mt-4">{profile.intro}</p>
+        <Editable as="p" path="profile.lede" className="text-[19px] leading-[1.55]">
+          {profile.lede}
+        </Editable>
+        <Editable as="p" path="profile.intro" className="mt-4">
+          {profile.intro}
+        </Editable>
 
         <div className="mt-6 flex flex-wrap items-center gap-2" data-print="hide">
           <Action
@@ -99,6 +106,9 @@ export function ProfileCard() {
           <Action onClick={() => window.print()}>{copy.masthead.printResume}</Action>
           <Action onClick={() => emit("palette:open")}>
             <span className="font-mono text-[11px]">⌘K</span>
+          </Action>
+          <Action primary={editing} onClick={() => emit("edit:toggle")}>
+            {editing ? copy.edit.buttonOn : copy.edit.button}
           </Action>
           {/* The pair above the lede is hidden on small screens. */}
           <LangToggle className="sm:hidden" />

@@ -12,7 +12,8 @@
 
 import { getContent, type Entry } from "@/lib/content";
 import { getCopy } from "@/lib/copy";
-import { LANGS, type Lang } from "@/lib/i18n";
+import { NO_DRAFTS, type Drafts } from "@/lib/edit";
+import { type Lang } from "@/lib/i18n";
 
 export type VFile = { type: "file"; name: string; content: string };
 export type VDir = { type: "dir"; name: string; children: VNode[] };
@@ -104,8 +105,8 @@ function entryFile(entry: Entry): VFile {
   };
 }
 
-function buildRoot(lang: Lang): VDir {
-  const { profile, now, before, awards, tools, school } = getContent(lang);
+function buildRoot(lang: Lang, drafts: Drafts): VDir {
+  const { profile, now, before, awards, tools, school } = getContent(lang, drafts);
 
   const aboutTxt = [
     profile.name + "  ·  " + profile.hangul,
@@ -141,12 +142,18 @@ function buildRoot(lang: Lang): VDir {
   };
 }
 
-const roots: Record<Lang, VDir> = Object.fromEntries(
-  LANGS.map((lang) => [lang, buildRoot(lang)]),
-) as Record<Lang, VDir>;
+// Built once per language, and again if edit mode changes a line — the tree is
+// a view of the content, so `cat` has to print whatever the page prints. The
+// cache is keyed on the drafts object, as in lib/content.
+const roots = new WeakMap<Drafts, Partial<Record<Lang, VDir>>>();
 
-export function getRoot(lang: Lang): VDir {
-  return roots[lang];
+export function getRoot(lang: Lang, drafts: Drafts = NO_DRAFTS): VDir {
+  let byLang = roots.get(drafts);
+  if (!byLang) {
+    byLang = {};
+    roots.set(drafts, byLang);
+  }
+  return (byLang[lang] ??= buildRoot(lang, drafts));
 }
 
 /** Normalises `.`, `..`, absolute and relative segments against a cwd. */

@@ -13,6 +13,8 @@ export type BusEvents = {
   "console:focus": void;
   "console:run": string;
   "theme:cycle": { x: number; y: number } | undefined;
+  "edit:toggle": void;
+  "edit:history": void;
   toast: string;
 };
 

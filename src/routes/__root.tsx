@@ -80,7 +80,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&display=swap",
+        // Newsreader carries the Latin, Noto Serif KR the Hangul: same
+        // transitional-serif build, so a Korean line and an English one sit at
+        // the same weight and colour instead of one arriving in a system UI
+        // face. Noto Sans KR does the same job for the small sans furniture.
+        // Google serves both Korean families as unicode-range subsets, so a
+        // page with no Hangul on it downloads none of them.
+        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Noto+Sans+KR:wght@400;500&family=Noto+Serif+KR:wght@400;500&display=swap",
       },
     ],
   }),

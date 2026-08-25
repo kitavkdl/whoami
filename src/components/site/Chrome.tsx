@@ -5,6 +5,7 @@ import { CommandPalette } from "@/components/site/CommandPalette";
 import { ShortcutSheet } from "@/components/site/ShortcutSheet";
 import { KeyboardLayer } from "@/components/site/KeyboardLayer";
 import { Toasts } from "@/components/site/Toasts";
+import { EditMode } from "@/components/site/EditMode";
 import { cycleTheme } from "@/lib/theme";
 import { useCopy } from "@/lib/copy";
 import { emit, on } from "@/lib/bus";
@@ -49,6 +50,7 @@ export function Chrome() {
       <KeyboardLayer />
       <CommandPalette />
       <ShortcutSheet />
+      <EditMode />
       <Toasts />
     </>
   );

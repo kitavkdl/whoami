@@ -11,6 +11,7 @@
  * hands back the flat shape the components expect.
  */
 
+import { NO_DRAFTS, bodyPath, draftKey, entryPath, useDrafts, type Drafts } from "@/lib/edit";
 import { useLang, type L, type Lang } from "@/lib/i18n";
 
 export type EntryKind = "product" | "work" | "award";
@@ -333,52 +334,71 @@ export type SiteContent = {
   sections: Section[];
 };
 
-function resolveEntry(source: EntrySource, lang: Lang): Entry {
+/**
+ * A line as the page should show it: what is written below, unless edit mode
+ * has been over it in this browser. lib/edit owns the storage; this is the one
+ * place the two meet, so every surface reading from here — the page, the
+ * console filesystem, the palette index — sees the same words.
+ */
+function edited(drafts: Drafts, lang: Lang, path: string, source: string): string {
+  return drafts[draftKey(lang, path)] ?? source;
+}
+
+function resolveEntry(source: EntrySource, lang: Lang, drafts: Drafts): Entry {
   const { when, title, altName, where, body, tags, ...rest } = source;
+  const at = (field: string) => entryPath(source.id, field);
+
   return {
     ...rest,
-    when: when[lang],
-    title: title[lang],
-    altName: altName?.[lang],
-    where: where?.[lang],
-    body: body[lang],
+    when: edited(drafts, lang, at("when"), when[lang]),
+    title: edited(drafts, lang, at("title"), title[lang]),
+    altName: altName && edited(drafts, lang, at("altName"), altName[lang]),
+    where: where && edited(drafts, lang, at("where"), where[lang]),
+    body: body[lang].map((paragraph, i) => edited(drafts, lang, bodyPath(source.id, i), paragraph)),
     tags: tags[lang],
   };
 }
 
-function build(lang: Lang): SiteContent {
-  const now = nowSource.map((e) => resolveEntry(e, lang));
-  const before = beforeSource.map((e) => resolveEntry(e, lang));
-  const awards = awardsSource.map((e) => resolveEntry(e, lang));
+function build(lang: Lang, drafts: Drafts): SiteContent {
+  const now = nowSource.map((e) => resolveEntry(e, lang, drafts));
+  const before = beforeSource.map((e) => resolveEntry(e, lang, drafts));
+  const awards = awardsSource.map((e) => resolveEntry(e, lang, drafts));
 
   return {
     profile: {
       ...profile,
-      location: profileText.location[lang],
-      lede: profileText.lede[lang],
-      intro: profileText.intro[lang],
+      location: edited(drafts, lang, "profile.location", profileText.location[lang]),
+      lede: edited(drafts, lang, "profile.lede", profileText.lede[lang]),
+      intro: edited(drafts, lang, "profile.intro", profileText.intro[lang]),
       updated: profileText.updated[lang],
     },
     now,
     before,
     awards,
     allEntries: [...now, ...before, ...awards],
-    tools: toolsText[lang],
-    school: schoolText[lang],
+    tools: edited(drafts, lang, "tools", toolsText[lang]),
+    school: edited(drafts, lang, "school", schoolText[lang]),
     sections: sectionSource.map((s) => ({ id: s.id, label: s.label[lang] })),
   };
 }
 
-// Resolved once per language and shared. The result is read on every render of
-// the chart and the palette index, and none of it ever changes.
-const resolved: Record<Lang, SiteContent> = { en: build("en"), ko: build("ko") };
+// Resolved once per language and per set of drafts, then shared. The result is
+// read on every render of the chart and the palette index, and it only changes
+// when edit mode writes a line. Keying the cache on the drafts object itself
+// means a stale set is collected along with the content built from it.
+const cache = new WeakMap<Drafts, Partial<Record<Lang, SiteContent>>>();
 
-export function getContent(lang: Lang): SiteContent {
-  return resolved[lang];
+export function getContent(lang: Lang, drafts: Drafts = NO_DRAFTS): SiteContent {
+  let byLang = cache.get(drafts);
+  if (!byLang) {
+    byLang = {};
+    cache.set(drafts, byLang);
+  }
+  return (byLang[lang] ??= build(lang, drafts));
 }
 
 export function useContent(): SiteContent {
-  return resolved[useLang()];
+  return getContent(useLang(), useDrafts());
 }
 
 /** Earliest month on record, used as the left edge of the concurrency chart. */

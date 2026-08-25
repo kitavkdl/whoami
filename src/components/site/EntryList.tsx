@@ -1,4 +1,6 @@
+import { Editable } from "@/components/site/Editable";
 import type { Entry } from "@/lib/content";
+import { bodyPath, entryPath } from "@/lib/edit";
 import { highlightProps, useHighlight } from "@/lib/highlight";
 
 function Tag({ children }: { children: string }) {
@@ -28,7 +30,13 @@ export function EntryList({ items }: { items: Entry[] }) {
             className="absolute bottom-1 left-0 top-1 w-px origin-top scale-y-0 bg-mark/60 transition-transform duration-300 ease-out group-hover:scale-y-100"
           />
 
-          <p className="tnum font-sans text-[13px] leading-6 text-soft sm:pt-[5px]">{entry.when}</p>
+          <Editable
+            as="p"
+            path={entryPath(entry.id, "when")}
+            className="tnum self-start font-sans text-[13px] leading-6 text-soft sm:pt-[5px]"
+          >
+            {entry.when}
+          </Editable>
 
           <div>
             <h3 className="text-[19px] font-medium leading-snug">
@@ -40,7 +48,7 @@ export function EntryList({ items }: { items: Entry[] }) {
                   data-print-url={entry.href.replace(/^https?:\/\//, "").replace(/\/$/, "")}
                   className="no-underline decoration-mark/40 hover:underline"
                 >
-                  {entry.title}
+                  <Editable path={entryPath(entry.id, "title")}>{entry.title}</Editable>
                   <span
                     aria-hidden
                     className="ml-[3px] inline-block text-[13px] text-soft/70 transition-transform duration-200 group-hover:translate-x-[2px]"
@@ -49,19 +57,30 @@ export function EntryList({ items }: { items: Entry[] }) {
                   </span>
                 </a>
               ) : (
-                entry.title
+                <Editable path={entryPath(entry.id, "title")}>{entry.title}</Editable>
               )}
-              {entry.where && <span className="font-normal text-soft"> · {entry.where}</span>}
+              {entry.where && (
+                <span className="font-normal text-soft">
+                  {" · "}
+                  <Editable path={entryPath(entry.id, "where")}>{entry.where}</Editable>
+                </span>
+              )}
             </h3>
 
             {entry.altName && (
-              <p className="mt-1 font-sans text-[13px] leading-6 text-soft">{entry.altName}</p>
+              <Editable
+                as="p"
+                path={entryPath(entry.id, "altName")}
+                className="mt-1 font-sans text-[13px] leading-6 text-soft"
+              >
+                {entry.altName}
+              </Editable>
             )}
 
             {entry.body.map((paragraph, k) => (
-              <p key={k} className="mt-3">
+              <Editable as="p" key={k} path={bodyPath(entry.id, k)} className="mt-3">
                 {paragraph}
-              </p>
+              </Editable>
             ))}
 
             {entry.tags.length > 0 && (
