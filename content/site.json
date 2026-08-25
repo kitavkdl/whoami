@@ -256,7 +256,7 @@
           "Hackathon hosted and run by Decompiler, held on 30 May 2026. I organized the event itself: outreach, renting the venue, and running the preparation end to end."
         ],
         "ko": [
-          "Decompiler가 주최·주관한 해커톤. 2026년 5월 30일 진행. 행사 자체 총괄; 컨택, 시설 대여, 준비 전 과정 및 진행"
+          "2025 해커톤 다음 학기로, Digital Transpormation을 주제로 Decompiler가 주최·주관한 해커톤. 지난 해커톤과 비슷한 포맷으로 2026년 5월 30일 진행. 행사 자체 총괄; 컨택, 시설 대여, 준비 전 과정 및 진행"
         ]
       },
       "note": {
@@ -367,7 +367,7 @@
           "Ideathon hosted and run by Decompiler, held on 15 November 2025. I was the organizer of the event itself — reaching the people and institutions who had to be involved, renting the venue, and running the preparation."
         ],
         "ko": [
-          "제목"
+          "기획 및 행사 총괄로 해커톤의 준비과정 및 진행, 교수님 및 연사자분 컨택, 심사위원 섭외, 학생 모집, 포스터 제작, 시설 대여, 식사 제공 업무를 통틀어 타임원 역할부여 및 총괄함"
         ]
       },
       "note": {
@@ -421,7 +421,7 @@
           "Ran several Odoo implementations at once — scope, schedule, and the constant negotiation between what a client wanted this month and what the team could actually ship. Less code than I expected. More useful than I expected."
         ],
         "ko": [
-          "제목"
+          "Odoo를 활용해 물류통관 업계에서 오프라인으로 이루어지고 있는 업무들을 타겟으로, Odoo를 메인으로 커스터마이징한 프로덕트를 개발하고 해당 내용을 바탕으로 제품설계 및 개발 역할을 진행함."
         ]
       },
       "note": {
@@ -478,7 +478,7 @@
         ],
         "ko": [
           "2025년 봄 학기 기술 자문 임원, 가을 학기 부회장, 2026년 봄 학기 회장. 세 학기 동안 진행",
-          "2026년 가을 학기에는 스토니브룩 본교에 Decompiler at SBU를 만들 예정"
+          "2026년 가을 학기 중 Decompiler at SBU를 만들 예정"
         ]
       },
       "note": {
@@ -532,7 +532,7 @@
           "Reservation site for school facilities, run for high schools. Nine months. Building it and keeping it running turned out to be two different jobs."
         ],
         "ko": [
-          "학교 시설을 예약하는 사이트를 만들어 고등학교를 대상으로 운영했다. 아홉 달 동안 매우 빡셌음.."
+          "학교 시설을 예약하는 사이트를 만들어 고등학교를 대상으로 운영했다."
         ]
       },
       "note": {
@@ -695,7 +695,8 @@
           "Odoo's PLO track, finished on the 11th. Also have viewer access to the Odoo Enterprise repository."
         ],
         "ko": [
-          "Odoo의 PLO 과정 11일에 수료; Odoo Enterprise 저장소에 viewer 권한"
+          "Odoo의 PLO 과정 11일에 수료;",
+          "Odoo Enterprise Repository Inner"
         ]
       },
       "note": {
@@ -717,10 +718,10 @@
   ],
   "tools": {
     "en": "TypeScript, React and Postgres most days, Supabase when I want to move fast. A couple of years of PHP before that. Odoo, and enough Python to keep it in line. Tailwind because I am faster in it.",
-    "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤. Tailwind 또한 속도(랑 AI가 좋아해서..)면에서 강점을 두고 고안합니다."
+    "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤; Tailwind 또한 속도(랑 AI가 좋아해서..)면에서 강점을 두고 고안합니다."
   },
   "school": {
     "en": "B.S. Computer Science, Stony Brook University. In progress.",
-    "ko": "스토니브룩 대학교 컴퓨터과학 학사; 재학 중"
+    "ko": "스토니브룩 대학교 컴퓨터과학 학사, 재학 중"
   }
 }
