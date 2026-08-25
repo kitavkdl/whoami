@@ -135,7 +135,6 @@ function Page() {
                       {profile.email}
                     </a>
                   )}
-                  {copy.contact.emailNote}
                 </ContactRow>
 
                 <ContactRow term={copy.contact.phone}>

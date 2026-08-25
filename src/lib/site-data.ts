@@ -32,11 +32,14 @@ export type SectionId =
 
 export type PhoneSource = { label: string; href: string; smsOnly?: boolean };
 
-/** The long-form page behind an entry. Written in the browser, like the rest. */
+/**
+ * The long-form page behind an entry. Kept in the file but not rendered: the
+ * route and the component that read it live on the archive/note-pages branch.
+ */
 export type NoteSource = { lede: L; body: L<string[]> };
 
 export type EntrySource = {
-  /** Stable slug: the anchor, the console filename, and the /notes URL. */
+  /** Stable slug: the anchor on the page and the console filename. */
   id: string;
   section: EntrySection;
   kind: EntryKind;

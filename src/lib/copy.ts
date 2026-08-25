@@ -122,16 +122,10 @@ export type Copy = {
     };
   };
 
-  /** The page behind each entry. */
-  notes: {
-    open: string;
-    back: string;
-    heading: string;
-    empty: string;
+  /** The paragraph controls edit mode puts under a block of prose. */
+  blocks: {
     addParagraph: string;
     remove: string;
-    hint: string;
-    alsoOn: string;
   };
 
   overlapCaption: string;
@@ -143,7 +137,6 @@ export type Copy = {
     phone: string;
     smsOnly: string;
     elsewhere: string;
-    emailNote: string;
     languages: string;
   };
 
@@ -343,23 +336,17 @@ const en: Copy = {
     },
   },
 
-  notes: {
-    open: "Read the notes",
-    back: "Back to the front page",
-    heading: "Notes",
-    empty: "Nothing written here yet.",
+  blocks: {
     addParagraph: "Add a paragraph",
     remove: "Delete",
-    hint: "Click a paragraph to change it. Enter for a new one, Esc to drop the change.",
-    alsoOn: "Also on the front page",
   },
 
   overlapCaption:
     "Everything above on one axis. Five ran at once in November 2025, and five again in March and May 2026. Two are still going. The dashed line is today.",
 
   consoleIntro: {
-    lead: "Everything above is also a filesystem. This reads it. It is not a recording of a terminal, it is a small one:",
-    tail: ", tab completion, and a history you can walk back through. Start with",
+    lead: "The console below reads this page as files. It takes",
+    tail: ", tab completion and command history. For the full list, type",
     end: ".",
   },
 
@@ -368,8 +355,7 @@ const en: Copy = {
     phone: "Phone",
     smsOnly: "text only",
     elsewhere: "Elsewhere",
-    emailNote: " is the reliable one.",
-    languages: "Korean or English, either is fine.",
+    languages: "Korean or English.",
   },
 
   footer: {
@@ -471,7 +457,7 @@ const en: Copy = {
     },
     banner: [
       "jiyul-ahn — console",
-      "Not a picture of a terminal. It reads the same file the page above does.",
+      "Reads the same files the page above does.",
       "help lists the commands · tab completes · ↑ recalls",
     ],
     helpFooter: "Ctrl+L clears · Ctrl+U kills the line · Ctrl+C cancels it",
@@ -644,24 +630,18 @@ const ko: Copy = {
     },
   },
 
-  notes: {
-    open: "기록 읽기",
-    back: "첫 페이지로",
-    heading: "기록",
-    empty: "아직 쓴 것이 없다.",
+  blocks: {
     addParagraph: "문단 추가",
     remove: "삭제",
-    hint: "문단을 누르면 고칠 수 있다. Enter로 새 문단, Esc로 취소.",
-    alsoOn: "첫 페이지에도 있는 내용",
   },
 
   overlapCaption:
     "위의 모든 것을 하나의 축에 올린 것. 2025년 11월에 다섯 개가 동시에 돌았고, 2026년 3월과 5월에도 다섯 개였다. 지금 돌아가는 건 두 개. 점선이 오늘.",
 
   consoleIntro: {
-    lead: "위에 있는 것들은 파일시스템이기도 하다. 이 콘솔은 그것을 읽는다. 터미널을 찍어 둔 그림이 아니라 작은 터미널이다:",
-    tail: ", 탭 완성, 그리고 되짚어 볼 수 있는 히스토리. 시작은",
-    end: " 부터.",
+    lead: "아래 콘솔은 이 페이지를 파일로 읽는다. 쓸 수 있는 건",
+    tail: ", 탭 완성, 명령 기록. 전체 목록은",
+    end: ".",
   },
 
   contact: {
@@ -669,8 +649,7 @@ const ko: Copy = {
     phone: "전화",
     smsOnly: "문자만",
     elsewhere: "그 밖에",
-    emailNote: " — 이쪽이 가장 확실하다.",
-    languages: "한국어든 영어든 괜찮다.",
+    languages: "한국어, 영어 모두 가능.",
   },
 
   footer: {
@@ -772,7 +751,7 @@ const ko: Copy = {
     },
     banner: [
       "jiyul-ahn — console",
-      "터미널을 찍어 둔 그림이 아니다. 위의 페이지와 같은 파일을 읽는다.",
+      "위 페이지와 같은 파일을 읽는다.",
       "help 로 명령 목록 · tab 으로 완성 · ↑ 로 히스토리",
     ],
     helpFooter: "Ctrl+L 지우기 · Ctrl+U 줄 지우기 · Ctrl+C 취소",

@@ -101,18 +101,10 @@ function entryFile(entry: Entry): VFile {
     return out;
   };
 
-  // The page behind the entry is part of the file, not a second one: `cat`
-  // should print everything this site knows about the entry, and `grep` should
-  // find a sentence wherever it was written.
-  const note =
-    entry.note.lede || entry.note.body.length
-      ? ["", "## notes", "", ...paragraphs([entry.note.lede, ...entry.note.body].filter(Boolean))]
-      : [];
-
   return {
     type: "file",
     name: `${entry.id}.md`,
-    content: [...head, ...paragraphs(entry.body), ...note].join("\n"),
+    content: [...head, ...paragraphs(entry.body)].join("\n"),
   };
 }
 
@@ -131,7 +123,7 @@ function buildRoot(lang: Lang, drafts: Drafts): VDir {
   const contactTxt = [
     `email   ${profile.email}`,
     // A separate key rather than a repeated one: the console reads as a file,
-    // and "sms" says what the note on the page says.
+    // and "sms" says what the line beside the number on the page says.
     ...profile.phones.map((p) => (p.smsOnly ? "sms" : "phone").padEnd(8) + p.label),
     `web     ${profile.site.href}`,
     "",

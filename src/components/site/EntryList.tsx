@@ -4,7 +4,6 @@ import type { Entry } from "@/lib/content";
 import { entryPath, joinTags } from "@/lib/site-data";
 import { useEditing } from "@/lib/edit";
 import { useCopy } from "@/lib/copy";
-import { notesHref, useLang } from "@/lib/i18n";
 import { highlightProps, useHighlight } from "@/lib/highlight";
 
 function Tag({ children }: { children: string }) {
@@ -50,7 +49,6 @@ export function EntryList({ items }: { items: Entry[] }) {
   const highlight = useHighlight();
   const editing = useEditing();
   const copy = useCopy();
-  const lang = useLang();
 
   return (
     <ul className="space-y-10">
@@ -79,26 +77,10 @@ export function EntryList({ items }: { items: Entry[] }) {
           <div>
             <h3 className="text-[19px] font-medium leading-snug">
               {/*
-                The title opens the page behind the entry rather than the
-                project's own site: that page is the one this site owns, and
-                the ↗ beside it is where the outside link went.
+                The title is the title. The ↗ beside it is the project's own
+                site, when there is one.
               */}
-              {editing ? (
-                <Editable path={entryPath(entry.id, "title")}>{entry.title}</Editable>
-              ) : (
-                <a
-                  href={notesHref(entry.id, lang)}
-                  className="no-underline decoration-mark/40 hover:underline"
-                >
-                  {entry.title}
-                  <span
-                    aria-hidden
-                    className="ml-[3px] inline-block text-[13px] text-soft/70 transition-transform duration-200 group-hover:translate-x-[2px]"
-                  >
-                    →
-                  </span>
-                </a>
-              )}
+              <Editable path={entryPath(entry.id, "title")}>{entry.title}</Editable>
 
               {entry.href && !editing && (
                 <a
@@ -141,17 +123,6 @@ export function EntryList({ items }: { items: Entry[] }) {
             />
 
             <Tags entry={entry} />
-
-            {!editing && (
-              <p className="mt-3 font-sans text-[12.5px]" data-print="hide">
-                <a
-                  href={notesHref(entry.id, lang)}
-                  className="text-soft/80 underline decoration-rule underline-offset-[3px] hover:text-mark"
-                >
-                  {copy.notes.open}
-                </a>
-              </p>
-            )}
           </div>
         </li>
       ))}

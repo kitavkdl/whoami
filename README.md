@@ -6,22 +6,32 @@ file, and an edit mode that writes back to this repository.
 ## Where the words live
 
 Everything the site says about the work is in **`content/site.json`** — both
-languages, the entries, and the long-form notes behind each entry. Nothing
-about the work is hard-coded in a component.
+languages and every entry. Nothing about the work is hard-coded in a
+component.
 
 `src/lib/copy.ts` holds the other kind of string: buttons, the console, the
 keyboard sheet. Interface, not content.
 
-Four surfaces read the content and must never disagree — the front page, the
-notes page behind each entry, the virtual filesystem behind the console, and
-the command palette. They all go through `src/lib/content.ts`, so adding an
-entry to the JSON adds it to all four.
+Three surfaces read the content and must never disagree — the front page, the
+virtual filesystem behind the console, and the command palette. They all go
+through `src/lib/content.ts`, so adding an entry to the JSON adds it to all
+three.
+
+### The page behind each entry
+
+There used to be one at `/notes/<id>`. It is off: the route
+(`src/routes/notes.$id.tsx`) and its component (`NotePage.tsx`) are not on
+`main`, so those URLs 404. The working code is kept on the
+**`archive/note-pages`** branch and can be brought back from there.
+
+The `note` field is still in `content/site.json` — nothing on `main` reads it,
+so it survives an edit-mode publish untouched and is there when the pages come
+back.
 
 ## Edit mode
 
-Unlock with the passcode (the masthead button, or the button on any notes
-page) and every line of prose becomes editable in place. Paragraphs can be
-added and deleted, not just rewritten.
+Unlock with the passcode (the masthead button) and every line of prose becomes
+editable in place. Paragraphs can be added and deleted, not just rewritten.
 
 Changes are **drafts**: they live in this browser only and no other reader
 sees them. The corner bar counts them.

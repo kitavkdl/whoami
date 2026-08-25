@@ -11,7 +11,7 @@ export function gotoSection(id: string) {
   const el = document.getElementById(id);
 
   // The sections are on the front page. Asked for one from somewhere else —
-  // a notes page, through the palette — go there rather than doing nothing.
+  // /study, through the palette — go there rather than doing nothing.
   if (!el) {
     const lang = langFromLocation(window.location.pathname, {
       lang: new URLSearchParams(window.location.search).get("lang") ?? undefined,

@@ -25,11 +25,11 @@
       "ko": "뉴욕 스토니브룩"
     },
     "lede": {
-      "en": "I build internal software. Most of it replaces a spreadsheet, a paper form, or a step only one person on the team knows how to do.",
+      "en": "I think of myself as someone whose strength is UX. My goal is to stand at the front line of a particular field. Most of the career I have had so far has been on the side of replacing a spreadsheet, a paper form, or a procedure only one person on the team knows.",
       "ko": "UX에 강점이 있는 사람이라고 스스로 생각합니다. 특정 분야의 최전선에 서보는 것이 목표입니다. 지금까지 한 커리어는 대부분 스프레드시트나 종이 서식, 아니면 팀에서 한 명만 아는 절차를 대체하는 쪽입니다."
     },
     "intro": {
-      "en": "Mostly for small organizations with nobody titled \"developer,\" so I end up doing the schema, the screens, and the deploy. Plus sitting next to whoever will actually use it and working out what their day looks like.",
+      "en": "I have mostly aimed at places with no pool of developers. I have done a lot of work realizing DX by handling all of it, from schema design through the screens and the deploy. That includes sitting next to the people who will actually use it and checking how their day's work runs.",
       "ko": "개발자 풀이 없는 곳들을 타겟으로 많이 두었습니다. 스키마 설계부터 화면 및 배포까지 전부 진행하므로써 DX를 실현하는 작업을 많이 진행했습니다. 실제로 쓸 사람 옆에 앉아 하루 업무가 어떻게 돌아가는지 확인하는 것도 포함."
     },
     "updated": {
@@ -111,7 +111,7 @@
         "ko": "SeekOnce"
       },
       "where": {
-        "en": "project lead → spun out, solo since",
+        "en": "Project Leader → Separated",
         "ko": "Project Leader -> Seperated"
       },
       "tags": {
@@ -130,9 +130,9 @@
       },
       "body": {
         "en": [
-          "Academic platform for SBU and SUNY Korea students. Sign-up is restricted to @stonybrook.edu addresses. 100 users in the first twenty days, currently on 3.7.1.",
-          "GPA visualization and simulation, curriculum paths, your timetable laid over your friends', anonymous course reviews, cafés near campus, and so on. First version updated by polling, later migrated to Supabase Realtime.",
-          "Started October 2025 as a joint Decompiler × LAMBDA club project. I did idea generation and ran it as project leader with a team of 12. Split off as an independent project in January 2026 and still running."
+          "Academic platform for SBU & SUNYK students. The service applies only to the @stonybrook.edu domain. 100 sign-ups in the first 20 days, currently on v.3.7.1.",
+          "Provides GPA visualization and simulation, curriculum paths, my timetable laid over a friend's timetable, anonymous course reviews, cafés near campus, and so on and so on; the first version refreshed by polling and was migrated to Supabase Realtime.",
+          "Started October 2025 as a joint Decompiler × LAMBDA club project, where I took on idea generation and project leader and started with a team of 12. Split off as an independent project in January 2026 and is still running now."
         ],
         "ko": [
           "SBU & SUNYK 학생들을 위한 학사 플랫폼. 서비스는 @stonybrook.edu 도메인으로만 적용됨. 첫 20일에 가입자 100명 달성, 현재 v.3.7.1 버전",
@@ -142,15 +142,15 @@
       },
       "note": {
         "lede": {
-          "en": "Twenty tables, one upload, and a lot of arguing with myself about how much to show a student at once.",
+          "en": "Twenty tables, one upload. What I thought about longest was how much to show a student on one screen.",
           "ko": "테이블 스무 개, 업로드 한 번. 학생한테 한 화면에 얼마나 보여줄지를 제일 오래 고민했음."
         },
         "body": {
           "en": [
-            "The whole thing hangs off one action: you upload a transcript, and everything after that is derived. GPA simulation, what a curriculum path costs you, which requirements are already closed out. About twenty tables in Postgres holding it up.",
-            "The first version polled. It worked while there were thirty people on it. Timetables are the part where two people are looking at the same thing at the same time, so polling showed its age fast — you would drag a block and your friend saw it half a minute later. Moving to Supabase Realtime took a weekend and removed a whole category of complaint.",
-            "Restricting sign-up to @stonybrook.edu was not a security decision. It keeps the course reviews attached to people who actually took the course, which is the only reason anonymous reviews are worth reading.",
-            "Running it as a 12-person club project and running it alone are different jobs. As PL most of my time went to splitting work into pieces that could be finished by someone I could not sit next to. Since January it has been closer to maintenance plus whatever I feel like adding, which is faster and lonelier."
+            "The whole thing hangs on one action. Upload a transcript once and everything after that is derived from it. GPA simulation, the load of each curriculum path, the requirements already filled. About twenty Postgres tables hold it up.",
+            "The first version was polling. With thirty users there was no problem. But a timetable is a screen where two people look at the same thing at the same time, so the limits of polling showed up fast. Move a block and it lands on your friend's screen about thirty seconds later. Moving to Supabase Realtime took one weekend, and that made a whole category of complaint disappear.",
+            "Blocking sign-up to @stonybrook.edu was not for security. It was to keep a course review attached to someone who actually took that course. An anonymous course review needs that one thing to be worth reading.",
+            "Running it as a 12-person club project and running it alone were different jobs. As PL, most of my time went into splitting the work into units someone not sitting next to me could finish. Since January it has been closer to maintenance plus adding what I want. Faster, but alone."
           ],
           "ko": [
             "전체가 동작 하나에 걸려 있음. 성적표를 한 번 올리면 그 뒤는 전부 거기서 파생됨. 학점 시뮬레이션, 커리큘럼 경로별 부담, 이미 채운 요건. Postgres 테이블 스무 개 정도가 이걸 받치고 있음.",
@@ -175,7 +175,7 @@
         "ko": "B2B 수출 인프라"
       },
       "where": {
-        "en": "solo, not launched",
+        "en": "CTO",
         "ko": "CTO"
       },
       "tags": {
@@ -192,7 +192,7 @@
       },
       "body": {
         "en": [
-          "Matching Korean sellers with overseas buyers, with customs and shipping paperwork handled inside the platform instead of over email or WhatsApp. Transactions in SQL, high-volume behavioral data in a document store. I work on it in the gaps."
+          "Building a system that matches domestic sellers with overseas buyers and automates customs and logistics. Customs and shipping documents are handled on the automation platform instead of over email or WhatsApp. Transactions in SQL, high-volume behavioral data in a document store;"
         ],
         "ko": [
           "국내 셀러와 해외 바이어 매칭 및 통관물류 자동화 시스템 개발. 통관과 선적 서류를 이메일 또는 WhatsApp이 아니라 자동화 플랫폼에서 처리함. 거래는 SQL, 양이 많은 행동 데이터는 도큐먼트 스토어;"
@@ -200,14 +200,14 @@
       },
       "note": {
         "lede": {
-          "en": "Unlaunched, on purpose, for now.",
+          "en": "Not launched yet. For now, on purpose.",
           "ko": "아직 안 띄웠음. 당분간은 의도적으로."
         },
         "body": {
           "en": [
-            "The interesting problem is not the matching. It is that a single shipment produces a dozen documents, each one owned by a different party, each one blocking the next step, and almost all of it currently moves as email attachments.",
-            "So the data model is split: the transaction itself is relational and boring on purpose, and the behavioral data — every view, every quote request, every document state change — goes to a document store where the volume does not hurt anything.",
-            "It has no launch date. It gets whatever hours are left over, which some months is zero."
+            "The hard part is not the matching. One shipment carries more than ten documents, each one owned by a different party, and if one is stuck the next does not go through — and right now almost all of that runs on email attachments.",
+            "So I split the data model. The transaction itself is relational, deliberately dull. Behavioral data — views, quote requests, document status changes — goes to a document store where the volume does not matter.",
+            "No launch date. Only in the time left over. Some months, zero hours."
           ],
           "ko": [
             "어려운 쪽은 매칭이 아님. 선적 한 건에 서류가 열 개 넘게 붙고, 각각 주체가 다르고, 하나가 막히면 다음이 안 넘어가는데, 지금은 그게 거의 다 이메일 첨부로 돌아간다는 것.",
@@ -217,7 +217,7 @@
         }
       },
       "altName": {
-        "en": "",
+        "en": "Matching & Legal",
         "ko": "Matching & Legal"
       }
     },
@@ -236,13 +236,13 @@
         "ko": "Hackathon the X 2026"
       },
       "where": {
-        "en": "lead organizer · hosted by Decompiler",
+        "en": "event lead · hosted and organized by Decompiler",
         "ko": "행사 총괄 · Decompiler 주최·주관"
       },
       "tags": {
         "en": [
-          "organizing",
-          "venue",
+          "event lead",
+          "venue rental",
           "outreach"
         ],
         "ko": [
@@ -253,7 +253,7 @@
       },
       "body": {
         "en": [
-          "Hackathon hosted and run by Decompiler, held on 30 May 2026. I organized the event itself: outreach, renting the venue, and running the preparation end to end."
+          "The semester after the 2025 hackathon: a hackathon hosted and organized by Decompiler on the theme of Digital Transformation. Held on 30 May 2026 in a format similar to the previous hackathon. I ran the event itself; outreach, venue rental, the whole preparation process, and running it on the day."
         ],
         "ko": [
           "2025 해커톤 다음 학기로, Digital Transpormation을 주제로 Decompiler가 주최·주관한 해커톤. 지난 해커톤과 비슷한 포맷으로 2026년 5월 30일 진행. 행사 자체 총괄; 컨택, 시설 대여, 준비 전 과정 및 진행"
@@ -261,13 +261,13 @@
       },
       "note": {
         "lede": {
-          "en": "The second of the two, six months after the first.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "Held on 30 May 2026, hosted by Decompiler. My part was the event rather than the program — the contacts, the venue, the schedule, and everything that had to be settled before the day.",
-            "Second time through the same list. The ideathon in November 2025 had been the same job."
+            "Subtitle",
+            "Subtitle"
           ],
           "ko": [
             "부제",
@@ -310,7 +310,7 @@
       },
       "body": {
         "en": [
-          "Offline tool for internal use. Under NDA, so that is as far as it goes."
+          "Development of an offline tool used internally; NDA"
         ],
         "ko": [
           "내부에서 쓰는 오프라인 툴 개발; NDA"
@@ -318,13 +318,12 @@
       },
       "note": {
         "lede": {
-          "en": "Four months, one NDA, and a hard requirement I had never had before: no network.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "I cannot describe what it does. What I can say is that \"offline\" turned out to be the whole design constraint rather than a deployment detail — no hosted database, no auth service, no calling anything, no assuming a second machine exists.",
-            "Most of what I reach for by default assumes a network. Taking that away removed the shortcuts and left the actual problem, which was a good four months."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -347,13 +346,13 @@
         "ko": "2025 Green Global Trade Ideathon"
       },
       "where": {
-        "en": "lead organizer · hosted by Decompiler",
+        "en": "event lead · hosted and organized by Decompiler",
         "ko": "행사 총괄 · Decompiler 주최·주관"
       },
       "tags": {
         "en": [
-          "organizing",
-          "venue",
+          "event lead",
+          "venue rental",
           "outreach"
         ],
         "ko": [
@@ -364,7 +363,7 @@
       },
       "body": {
         "en": [
-          "Ideathon hosted and run by Decompiler, held on 15 November 2025. I was the organizer of the event itself — reaching the people and institutions who had to be involved, renting the venue, and running the preparation."
+          "As planner and event lead, I assigned the team members their roles and oversaw all of it together: preparing and running the hackathon, contacting professors and speakers, recruiting judges, recruiting students, making posters, renting the venue, and catering."
         ],
         "ko": [
           "기획 및 행사 총괄로 해커톤의 준비과정 및 진행, 교수님 및 연사자분 컨택, 심사위원 섭외, 학생 모집, 포스터 제작, 시설 대여, 식사 제공 업무를 통틀어 타임원 역할부여 및 총괄함"
@@ -372,13 +371,12 @@
       },
       "note": {
         "lede": {
-          "en": "The earlier of the two.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "Held on 15 November 2025. Decompiler hosted and ran it; the organizing was mine.",
-            "That meant the parts of an event that are not the event: who had to be contacted, what the space cost and when it was free, and the order everything had to happen in beforehand."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -418,7 +416,7 @@
       },
       "body": {
         "en": [
-          "Ran several Odoo implementations at once — scope, schedule, and the constant negotiation between what a client wanted this month and what the team could actually ship. Less code than I expected. More useful than I expected."
+          "Targeting work that is done offline in the logistics and customs industry, I used Odoo to build a product customized on top of Odoo, and on that basis took the product design and development role."
         ],
         "ko": [
           "Odoo를 활용해 물류통관 업계에서 오프라인으로 이루어지고 있는 업무들을 타겟으로, Odoo를 메인으로 커스터마이징한 프로덕트를 개발하고 해당 내용을 바탕으로 제품설계 및 개발 역할을 진행함."
@@ -426,14 +424,12 @@
       },
       "note": {
         "lede": {
-          "en": "Six months of finding out that scoping is the engineering.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "Odoo covers most of what a mid-size company needs out of the box. The work is almost never \"build this feature\" — it is working out whether the client's request is a config change, a small module, or a demand that the product be something it is not. Getting that wrong in week one costs you month three.",
-            "Running several at the same time meant the failure mode was never technical. It was two clients both expecting the same week from the same two people.",
-            "I wrote less Python than I wanted to. I got much better at saying what something would cost before agreeing to it."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -473,8 +469,8 @@
       },
       "body": {
         "en": [
-          "Technical advisor in spring 2025, vice president that fall, president in spring 2026. Three semesters, and the job was different each time.",
-          "Founding a Stony Brook chapter — Decompiler at SBU — in fall 2026."
+          "Technical advisor officer in spring 2025, vice president in the fall semester, president in spring 2026. Ran for three semesters.",
+          "Planning to start Decompiler at SBU during the fall 2026 semester."
         ],
         "ko": [
           "2025년 봄 학기 기술 자문 임원, 가을 학기 부회장, 2026년 봄 학기 회장. 세 학기 동안 진행",
@@ -483,15 +479,12 @@
       },
       "note": {
         "lede": {
-          "en": "Three semesters, three different versions of the same job.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "As technical advisor I answered questions. That is the easy version — someone is stuck, you know the answer, you give it.",
-            "As vice president I mostly scheduled things and noticed who had gone quiet. As president the job was making sure somebody other than me could answer the questions, which is slower and much less satisfying in the moment.",
-            "SeekOnce came out of this club, which is the strongest argument I have for it existing.",
-            "The SBU chapter starts in fall 2026 and I am starting it from zero again."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -510,11 +503,11 @@
         "ko": "2024년 1월 ~ 9월"
       },
       "title": {
-        "en": "Facility booking",
+        "en": "Facility booking service",
         "ko": "시설 예약 서비스"
       },
       "where": {
-        "en": "for high schools, solo",
+        "en": "for high schools",
         "ko": "고등학교 대상"
       },
       "tags": {
@@ -529,7 +522,7 @@
       },
       "body": {
         "en": [
-          "Reservation site for school facilities, run for high schools. Nine months. Building it and keeping it running turned out to be two different jobs."
+          "Built a site for booking school facilities and ran it for high schools."
         ],
         "ko": [
           "학교 시설을 예약하는 사이트를 만들어 고등학교를 대상으로 운영했다."
@@ -537,14 +530,12 @@
       },
       "note": {
         "lede": {
-          "en": "Nine months, and about seven of them were operations.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "Booking looks like a solved problem until you meet double-booking, cancellations that arrive after the slot started, and a teacher who wants the gym every Tuesday forever.",
-            "The build was maybe two months. The rest was answering the phone, fixing the thing someone did that I had not imagined anyone doing, and learning that a system nobody maintains stops being a system.",
-            "First time I ran something other people depended on to get through a normal week."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -586,7 +577,7 @@
       },
       "body": {
         "en": [
-          "The student application process was on paper. Moved it to the web with PHP, HTML and JavaScript, drew the mobile and desktop layouts, deployed on Cafe24 including the server config."
+          "Noticing that the student application process was entirely offline, moved it onto the web with PHP, HTML and JavaScript, did the mobile and desktop layout work, and deployed on Cafe24 including the server configuration."
         ],
         "ko": [
           "학생 지원 절차가 모두 오프라인 형식인 데에 착안하여, PHP, HTML, JavaScript로 웹에 옮기고 모바일·데스크톱 레이아웃 작업, 서버 설정 포함해서 카페24에 배포"
@@ -594,14 +585,12 @@
       },
       "note": {
         "lede": {
-          "en": "My first paid work, and the first time I touched a server that other people were already using.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "Paper applications meant someone was retyping every form into a spreadsheet. That is the entire brief.",
-            "PHP on Cafe24 is not a stack anyone would pick today, and I do not regret the two years. Shared hosting teaches you where the edges are — what you can install, what you cannot, what happens at 9am when everybody submits at once.",
-            "Drawing the mobile layout mattered more than anything else I did. Almost every applicant filled the form on a phone."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -624,13 +613,13 @@
         "ko": "CODEGATE 2026 AI 스타트업 해커톤"
       },
       "where": {
-        "en": "1st place · ₩20,000,000",
+        "en": "1st place · ₩20,000,000 prize",
         "ko": "1위 · 상금 2,000만 원"
       },
       "tags": {
         "en": [
-          "product",
-          "pitch"
+          "planning",
+          "presentation"
         ],
         "ko": [
           "기획",
@@ -639,7 +628,7 @@
       },
       "body": {
         "en": [
-          "Planned the product and gave the final pitch: an AI platform for capturing know-how inside small manufacturers before the people holding it retire. First place overall."
+          "Planned the product and took the final presentation. Pitched an AI platform that passes on the know-how of small and mid-size manufacturing before the people holding it retire, and took first place overall."
         ],
         "ko": [
           "제품을 기획하고 최종 발표를 맡았다. 중소 제조업의 노하우를, 그것을 쥔 사람들이 은퇴하기 전에 물려주는 AI 플랫폼으로 피칭을 진행했고 최종 1위 달성"
@@ -647,14 +636,12 @@
       },
       "note": {
         "lede": {
-          "en": "The pitch was the product, for about 48 hours.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "The premise: in a lot of small Korean manufacturers, the person who knows why a machine is set the way it is has been there thirty years and is about to leave. Nothing is written down, and the reason nothing is written down is that writing it down is a second job.",
-            "So the product was about capture with as close to zero effort as possible, and the demo had to make that obvious in three minutes.",
-            "I did the planning and the final presentation. First out of every team."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -677,13 +664,13 @@
         "ko": "Odoo Project Leader Ownership"
       },
       "where": {
-        "en": "certification",
+        "en": "completed",
         "ko": "수료"
       },
       "tags": {
         "en": [
           "Odoo",
-          "project leadership"
+          "project leading"
         ],
         "ko": [
           "Odoo",
@@ -692,7 +679,8 @@
       },
       "body": {
         "en": [
-          "Odoo's PLO track, finished on the 11th. Also have viewer access to the Odoo Enterprise repository."
+          "Completed Odoo's PLO course on the 11th;",
+          "Odoo Enterprise Repository Inner"
         ],
         "ko": [
           "Odoo의 PLO 과정 11일에 수료;",
@@ -701,13 +689,12 @@
       },
       "note": {
         "lede": {
-          "en": "A certificate that matched work I was already doing.",
+          "en": "Title",
           "ko": "제목"
         },
         "body": {
           "en": [
-            "PLO is Odoo's track for the person who owns an implementation end to end rather than a single module — scoping, phasing, and the part where you tell a client no.",
-            "I took it while running implementations at DX Tech, so most of it read as a formalization of things I had already gotten wrong once."
+            "Subtitle"
           ],
           "ko": [
             "부제"
@@ -717,11 +704,11 @@
     }
   ],
   "tools": {
-    "en": "TypeScript, React and Postgres most days, Supabase when I want to move fast. A couple of years of PHP before that. Odoo, and enough Python to keep it in line. Tailwind because I am faster in it.",
+    "en": "Mostly TypeScript, React, Postgres. Supabase when I have to move fast. About two years of PHP before that; I also lean on Tailwind for speed (and because AI likes it..).",
     "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤; Tailwind 또한 속도(랑 AI가 좋아해서..)면에서 강점을 두고 고안합니다."
   },
   "school": {
-    "en": "B.S. Computer Science, Stony Brook University. In progress.",
+    "en": "B.S. Computer Science, Stony Brook University. Currently enrolled.",
     "ko": "스토니브룩 대학교 컴퓨터과학 학사, 재학 중"
   }
 }

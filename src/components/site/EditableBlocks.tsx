@@ -161,7 +161,7 @@ export function EditableBlocks({
             <button
               type="button"
               tabIndex={-1}
-              aria-label={`${copy.notes.remove} — ${copy.edit.parts.paragraph(i + 1)}`}
+              aria-label={`${copy.blocks.remove} — ${copy.edit.parts.paragraph(i + 1)}`}
               onMouseDown={(event) => {
                 // mousedown, not click: the blur that a click would fire first
                 // re-commits the paragraph this is about to remove.
@@ -184,7 +184,7 @@ export function EditableBlocks({
         }}
         className="mt-2 rounded-[3px] border border-dashed border-rule px-[9px] py-[3px] font-sans text-[11.5px] text-soft/70 transition-colors duration-200 hover:border-mark/50 hover:text-mark"
       >
-        + {copy.notes.addParagraph}
+        + {copy.blocks.addParagraph}
       </button>
     </div>
   );

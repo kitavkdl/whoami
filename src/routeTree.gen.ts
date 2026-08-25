@@ -9,15 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StudyRouteImport } from './routes/study'
-import { Route as KoRouteImport } from './routes/ko'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as NotesIdRouteImport } from './routes/notes.$id'
+import { Route as KoRouteImport } from './routes/ko'
+import { Route as StudyRouteImport } from './routes/study'
 import { Route as ApiPublishRouteImport } from './routes/api.publish'
 
-const StudyRoute = StudyRouteImport.update({
-  id: '/study',
-  path: '/study',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KoRoute = KoRouteImport.update({
@@ -25,14 +24,9 @@ const KoRoute = KoRouteImport.update({
   path: '/ko',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotesIdRoute = NotesIdRouteImport.update({
-  id: '/notes/$id',
-  path: '/notes/$id',
+const StudyRoute = StudyRouteImport.update({
+  id: '/study',
+  path: '/study',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublishRoute = ApiPublishRouteImport.update({
@@ -46,14 +40,12 @@ export interface FileRoutesByFullPath {
   '/ko': typeof KoRoute
   '/study': typeof StudyRoute
   '/api/publish': typeof ApiPublishRoute
-  '/notes/$id': typeof NotesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ko': typeof KoRoute
   '/study': typeof StudyRoute
   '/api/publish': typeof ApiPublishRoute
-  '/notes/$id': typeof NotesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,14 +53,13 @@ export interface FileRoutesById {
   '/ko': typeof KoRoute
   '/study': typeof StudyRoute
   '/api/publish': typeof ApiPublishRoute
-  '/notes/$id': typeof NotesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ko' | '/study' | '/api/publish' | '/notes/$id'
+  fullPaths: '/' | '/ko' | '/study' | '/api/publish'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ko' | '/study' | '/api/publish' | '/notes/$id'
-  id: '__root__' | '/' | '/ko' | '/study' | '/api/publish' | '/notes/$id'
+  to: '/' | '/ko' | '/study' | '/api/publish'
+  id: '__root__' | '/' | '/ko' | '/study' | '/api/publish'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,16 +67,15 @@ export interface RootRouteChildren {
   KoRoute: typeof KoRoute
   StudyRoute: typeof StudyRoute
   ApiPublishRoute: typeof ApiPublishRoute
-  NotesIdRoute: typeof NotesIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/study': {
-      id: '/study'
-      path: '/study'
-      fullPath: '/study'
-      preLoaderRoute: typeof StudyRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ko': {
@@ -95,18 +85,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notes/$id': {
-      id: '/notes/$id'
-      path: '/notes/$id'
-      fullPath: '/notes/$id'
-      preLoaderRoute: typeof NotesIdRouteImport
+    '/study': {
+      id: '/study'
+      path: '/study'
+      fullPath: '/study'
+      preLoaderRoute: typeof StudyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/publish': {
@@ -124,7 +107,6 @@ const rootRouteChildren: RootRouteChildren = {
   KoRoute: KoRoute,
   StudyRoute: StudyRoute,
   ApiPublishRoute: ApiPublishRoute,
-  NotesIdRoute: NotesIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

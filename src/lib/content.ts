@@ -6,10 +6,9 @@
  * folds the current drafts over the file, picks a language, and hands back the
  * flat shape the components expect.
  *
- * Four surfaces read from here and they must never disagree: the rendered
- * document, the notes page behind each entry, the virtual filesystem behind
- * the console, and the command palette index. Adding an entry to the JSON adds
- * it to all four.
+ * Three surfaces read from here and they must never disagree: the rendered
+ * document, the virtual filesystem behind the console, and the command palette
+ * index. Adding an entry to the JSON adds it to all three.
  */
 
 import { NO_DRAFTS, useDrafts } from "@/lib/edit";
@@ -146,12 +145,7 @@ export function useContent(): SiteContent {
   return getContent(useLang(), useDrafts());
 }
 
-/** One entry by id, for the page behind it. Undefined when the slug is wrong. */
-export function useEntry(id: string): Entry | undefined {
-  return useContent().allEntries.find((entry) => entry.id === id);
-}
-
-/** Every entry id, in the order they appear. Used to build the notes routes. */
+/** Every entry id, in the order they appear. */
 export const entryIds: string[] = siteData.entries.map((entry) => entry.id);
 
 /** Earliest month on record, used as the left edge of the concurrency chart. */

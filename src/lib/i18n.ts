@@ -22,17 +22,6 @@ export const HOME_PATH: L = { en: "/", ko: "/ko" };
 /** What goes in <html lang>, and in hreflang. */
 export const HTML_LANG: L = { en: "en", ko: "ko" };
 
-/**
- * The pages that exist once rather than twice carry the language in a search
- * param instead of in the path. There is one page per entry, not two, so the
- * notes live at /notes/<id> and the Korean reading of it at /notes/<id>?lang=ko.
- */
-export const NOTES_ROOT = "/notes";
-
-export function notesHref(id: string, lang: Lang): string {
-  return lang === "ko" ? `${NOTES_ROOT}/${id}?lang=ko` : `${NOTES_ROOT}/${id}`;
-}
-
 export function otherLang(lang: Lang): Lang {
   return lang === "en" ? "ko" : "en";
 }
@@ -45,7 +34,6 @@ export function otherLang(lang: Lang): Lang {
 export function langFromLocation(pathname: string, search?: Record<string, unknown>): Lang {
   if (pathname === HOME_PATH.ko || pathname.startsWith(`${HOME_PATH.ko}/`)) return "ko";
   if (pathname.startsWith("/study")) return search?.lang === "en" ? "en" : "ko";
-  if (pathname.startsWith(NOTES_ROOT)) return search?.lang === "ko" ? "ko" : "en";
   return "en";
 }
 
