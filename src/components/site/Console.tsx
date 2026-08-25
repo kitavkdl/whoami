@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { sectionIds, useContent } from "@/lib/content";
 import { useCopy } from "@/lib/copy";
 import { HOME_PATH, LANGS, useLang, type Lang } from "@/lib/i18n";
+import { useDrafts } from "@/lib/edit";
 import { formatPath, getRoot, lookup, renderTree, resolvePath, walk, type VDir } from "@/lib/vfs";
 import { gotoSection } from "@/lib/nav";
 import { readPref, readResolved, setThemePref, type ThemePref } from "@/lib/theme";
@@ -45,8 +46,10 @@ export function Console() {
   const { profile, sections } = useContent();
   const copy = useCopy();
   const lang = useLang();
+  const drafts = useDrafts();
   const navigate = useNavigate();
-  const root = getRoot(lang);
+  // Drafts in, so `cat` prints whatever edit mode has left on the page.
+  const root = getRoot(lang, drafts);
 
   const banner = useMemo<Line[]>(
     () => [

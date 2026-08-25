@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { ContentProtect } from "@/components/ContentProtect";
+import { Editable } from "@/components/site/Editable";
 import { Chrome } from "@/components/site/Chrome";
 import { Console } from "@/components/site/Console";
 import { EntryList } from "@/components/site/EntryList";
@@ -106,11 +107,15 @@ function Page() {
             </Section>
 
             <Section id="tools">
-              <p data-reveal>{tools}</p>
+              <p data-reveal>
+                <Editable path="tools">{tools}</Editable>
+              </p>
             </Section>
 
             <Section id="school">
-              <p data-reveal>{school}</p>
+              <p data-reveal>
+                <Editable path="school">{school}</Editable>
+              </p>
             </Section>
 
             <Section id="contact">

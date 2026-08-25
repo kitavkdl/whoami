@@ -38,6 +38,56 @@ export type Copy = {
 
   topBar: { search: string };
 
+  edit: {
+    /** The masthead button, in both of its states. */
+    button: string;
+    buttonOn: string;
+    gateTitle: string;
+    gateBody: string;
+    passcode: string;
+    unlock: string;
+    checking: string;
+    cancel: string;
+    wrong: string;
+    insecure: string;
+    unlocked: string;
+    lockedToast: string;
+    resumed: string;
+    paused: string;
+    saved: string;
+    barTitle: string;
+    hint: string;
+    pause: string;
+    resume: string;
+    lock: string;
+    history: string;
+    historyTitle: string;
+    historyLead: string;
+    historyEmpty: string;
+    close: string;
+    reset: string;
+    resetDone: string;
+    resetNothing: string;
+    clearLog: string;
+    clearLogDone: string;
+    local: string;
+    edits: (n: number) => string;
+    changed: (n: number) => string;
+    places: { profile: string; page: string };
+    parts: {
+      lede: string;
+      intro: string;
+      location: string;
+      title: string;
+      when: string;
+      where: string;
+      altName: string;
+      text: string;
+      reset: string;
+      paragraph: (n: number) => string;
+    };
+  };
+
   overlapCaption: string;
 
   consoleIntro: { lead: string; tail: string; end: string };
@@ -151,6 +201,57 @@ const en: Copy = {
   },
 
   topBar: { search: "search" },
+
+  edit: {
+    button: "Edit mode",
+    buttonOn: "Editing",
+    gateTitle: "Edit mode",
+    gateBody:
+      "The passcode turns the prose on this page into something you can type into. Checking it takes a second — that is the lock working.",
+    passcode: "Passcode",
+    unlock: "Unlock",
+    checking: "Checking…",
+    cancel: "Cancel",
+    wrong: "That is not the passcode.",
+    insecure: "Edit mode needs a secure connection (https).",
+    unlocked: "Edit mode on",
+    lockedToast: "Edit mode off",
+    resumed: "Editing on",
+    paused: "Editing paused",
+    saved: "Saved, and noted in the log",
+    barTitle: "Edit mode",
+    hint: "Click a line to change it. Click away to keep it, Esc to drop it.",
+    pause: "Pause",
+    resume: "Resume",
+    lock: "Lock",
+    history: "Log",
+    historyTitle: "Edit log",
+    historyLead:
+      "When, where, and which part. What the line said before, and what it says now, is not recorded.",
+    historyEmpty: "Nothing has been edited yet.",
+    close: "close",
+    reset: "Undo every edit",
+    resetDone: "Every edit undone",
+    resetNothing: "Nothing to undo",
+    clearLog: "Clear the log",
+    clearLogDone: "Log cleared",
+    local: "Kept in this browser only. Nothing is sent anywhere, and no other reader sees it.",
+    edits: (n) => (n === 1 ? "1 entry" : `${n} entries`),
+    changed: (n) => (n === 1 ? "1 line changed" : `${n} lines changed`),
+    places: { profile: "Masthead", page: "The whole page" },
+    parts: {
+      lede: "Lede",
+      intro: "Intro",
+      location: "Location",
+      title: "Title",
+      when: "Dates",
+      where: "Standfirst",
+      altName: "Other name",
+      text: "Body",
+      reset: "Everything put back",
+      paragraph: (n) => `Paragraph ${n}`,
+    },
+  },
 
   overlapCaption:
     "Everything above, on one axis. The overlaps are the honest part: four ran at once in late 2025, four again in the spring. Two are still going. The dashed line is today.",
@@ -354,6 +455,57 @@ const ko: Copy = {
   },
 
   topBar: { search: "검색" },
+
+  edit: {
+    button: "편집 모드",
+    buttonOn: "편집 중",
+    gateTitle: "편집 모드",
+    gateBody:
+      "비밀번호를 넣으면 이 페이지의 글이 고쳐 쓸 수 있는 상태가 된다. 확인에 1초쯤 걸리는 것이 정상이다.",
+    passcode: "비밀번호",
+    unlock: "확인",
+    checking: "확인 중…",
+    cancel: "취소",
+    wrong: "비밀번호가 다르다.",
+    insecure: "편집 모드는 https 연결에서만 열린다.",
+    unlocked: "편집 모드를 켰다",
+    lockedToast: "편집 모드를 잠갔다",
+    resumed: "편집을 다시 켰다",
+    paused: "편집을 멈췄다",
+    saved: "저장했고, 기록에 남겼다",
+    barTitle: "편집 모드",
+    hint: "고칠 줄을 누른다. 바깥을 누르면 저장되고, Esc 를 누르면 되돌아간다.",
+    pause: "멈춤",
+    resume: "다시 편집",
+    lock: "잠그기",
+    history: "기록",
+    historyTitle: "편집 기록",
+    historyLead:
+      "언제, 어디를, 어느 부분을 고쳤는지만 남는다. 그 줄이 무엇이었고 무엇이 되었는지는 남기지 않는다.",
+    historyEmpty: "아직 고친 것이 없다.",
+    close: "닫기",
+    reset: "고친 것 모두 되돌리기",
+    resetDone: "고친 것을 모두 되돌렸다",
+    resetNothing: "되돌릴 것이 없다",
+    clearLog: "기록 지우기",
+    clearLogDone: "기록을 지웠다",
+    local: "이 브라우저에만 남는다. 어디로도 보내지 않고, 다른 사람에게는 보이지 않는다.",
+    edits: (n) => `${n}건`,
+    changed: (n) => `고친 줄 ${n}개`,
+    places: { profile: "머리말", page: "페이지 전체" },
+    parts: {
+      lede: "첫 문장",
+      intro: "소개",
+      location: "지역",
+      title: "제목",
+      when: "기간",
+      where: "부제",
+      altName: "다른 이름",
+      text: "본문",
+      reset: "전부 되돌림",
+      paragraph: (n) => `${n}번째 문단`,
+    },
+  },
 
   overlapCaption:
     "위의 모든 것을 하나의 축에 올렸다. 겹치는 부분이 정직한 쪽이다. 2025년 늦가을에 네 개가 동시에 돌았고, 봄에 다시 네 개였다. 지금 돌아가는 건 두 개. 점선이 오늘이다.",
