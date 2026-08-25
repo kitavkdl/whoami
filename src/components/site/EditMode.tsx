@@ -5,6 +5,7 @@ import { useCopy, type Copy } from "@/lib/copy";
 import {
   clearLog,
   describePath,
+  InsecureContextError,
   lock,
   resetAll,
   toggleEditing,
@@ -121,11 +122,19 @@ function SmallButton({
   );
 }
 
-/** The passcode. Client-side and cosmetic, which lib/edit says out loud. */
+/**
+ * The passcode.
+ *
+ * The check is a key derivation rather than a comparison, so it takes about a
+ * second of the browser's time on purpose — long enough to say so while it
+ * runs, and long enough that guessing at it in bulk is not worth anyone's
+ * afternoon. See lib/edit.
+ */
 function Gate({ onClose }: { onClose: () => void }) {
   const copy = useCopy();
   const [value, setValue] = useState("");
-  const [wrong, setWrong] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<"" | "wrong" | "insecure">("");
 
   return (
     <Sheet title={copy.edit.gateTitle} onClose={onClose} width="max-w-[22rem]">
@@ -135,13 +144,24 @@ function Gate({ onClose }: { onClose: () => void }) {
         className="mt-4"
         onSubmit={(event) => {
           event.preventDefault();
-          if (unlock(value)) {
-            emit("toast", copy.edit.unlocked);
-            onClose();
-            return;
-          }
-          setWrong(true);
-          setValue("");
+          if (busy) return;
+          setBusy(true);
+          setError("");
+
+          void unlock(value)
+            .then((ok) => {
+              if (ok) {
+                emit("toast", copy.edit.unlocked);
+                onClose();
+                return;
+              }
+              setError("wrong");
+              setValue("");
+            })
+            .catch((cause: unknown) => {
+              setError(cause instanceof InsecureContextError ? "insecure" : "wrong");
+            })
+            .finally(() => setBusy(false));
         }}
       >
         <label
@@ -150,32 +170,39 @@ function Gate({ onClose }: { onClose: () => void }) {
         >
           {copy.edit.passcode}
         </label>
+        {/*
+          No inputMode hint and no autocomplete: the field says nothing about
+          what the passcode is made of, to the browser or to anyone reading
+          over the markup.
+        */}
         <input
           id="edit-passcode"
           data-autofocus
           type="password"
-          inputMode="numeric"
           autoComplete="off"
+          spellCheck={false}
+          disabled={busy}
           value={value}
           onChange={(event) => {
             setValue(event.target.value);
-            setWrong(false);
+            setError("");
           }}
-          aria-invalid={wrong || undefined}
-          className="mt-2 block w-full rounded-[3px] border border-rule bg-paper px-3 py-2 font-mono text-[15px] tracking-[0.3em] text-ink outline-none focus:border-mark"
-          style={wrong ? { animation: "gate-shake 320ms both" } : undefined}
+          aria-invalid={error === "wrong" || undefined}
+          className="mt-2 block w-full rounded-[3px] border border-rule bg-paper px-3 py-2 font-mono text-[15px] tracking-[0.3em] text-ink outline-none focus:border-mark disabled:opacity-60"
+          style={error === "wrong" ? { animation: "gate-shake 320ms both" } : undefined}
         />
 
         <p aria-live="polite" className="mt-2 min-h-[1.25rem] font-sans text-[12px] text-mark">
-          {wrong ? copy.edit.wrong : ""}
+          {error === "wrong" ? copy.edit.wrong : error === "insecure" ? copy.edit.insecure : ""}
         </p>
 
         <div className="mt-2 flex items-center gap-2">
           <button
             type="submit"
-            className="rounded-[3px] bg-ink px-[10px] py-[5px] font-sans text-[12.5px] text-paper transition-colors duration-200 hover:bg-mark"
+            disabled={busy}
+            className="rounded-[3px] bg-ink px-[10px] py-[5px] font-sans text-[12.5px] text-paper transition-colors duration-200 hover:bg-mark disabled:opacity-60"
           >
-            {copy.edit.unlock}
+            {busy ? copy.edit.checking : copy.edit.unlock}
           </button>
           <SmallButton onClick={onClose}>{copy.edit.cancel}</SmallButton>
         </div>

@@ -7,9 +7,10 @@
  * source content on the next load. Nothing is sent anywhere, and no other
  * reader ever sees a word of it.
  *
- * The passcode is in the bundle, so anyone determined enough will find it.
- * It is a latch, not a lock — it keeps a stranger from idly rewriting the
- * page over someone's shoulder, and it is not authentication.
+ * The passcode itself is not in this repository and not in the bundle — see
+ * the derivation below. It is still a latch rather than a lock: no check that
+ * runs in the reader's own browser can be authentication, because the reader
+ * owns the browser. What it can do is keep the passcode out of a public repo.
  *
  * The log is deliberately thin: when, where, and which part. What the line
  * said before, and what it says now, is not written down anywhere.
@@ -21,7 +22,36 @@ import type { SiteContent } from "@/lib/content";
 import type { Copy } from "@/lib/copy";
 import type { Lang } from "@/lib/i18n";
 
-export const PASSCODE = "1029";
+/**
+ * The passcode, as much of it as anything here is allowed to know.
+ *
+ * What is written below is a PBKDF2-SHA-256 derivation of it: a random salt,
+ * an iteration count, and the 256 bits that fall out. Checking a guess means
+ * running the same derivation and comparing the result. Going the other way —
+ * recovering the passcode from these three values — means running that
+ * derivation once per candidate, and at 1,200,000 iterations a candidate,
+ * that is the whole point of the number being this large.
+ *
+ * So the repository can be public. Nothing here, and nothing in the built
+ * bundle or the network tab, spells the passcode out; changing it means
+ * deriving a new pair rather than editing a string.
+ *
+ * To rotate it, run this with the new passcode and paste the two lines back:
+ *
+ *   node -e 'const{webcrypto:c}=require("node:crypto");(async()=>{const
+ *   s=c.getRandomValues(new Uint8Array(16)),k=await c.subtle.importKey("raw",
+ *   new TextEncoder().encode(process.argv[1]),"PBKDF2",false,["deriveBits"]),
+ *   b=await c.subtle.deriveBits({name:"PBKDF2",hash:"SHA-256",salt:s,
+ *   iterations:1200000},k,256),h=x=>[...new Uint8Array(x)].map(v=>
+ *   v.toString(16).padStart(2,"0")).join("");console.log(h(s.buffer),h(b))})()'
+ *   <new passcode>
+ */
+const PASSCODE_SALT = "05537d62a980bfa640c33ef24b2b4a45";
+const PASSCODE_HASH = "8aad01a96e3af7e8230e60f3322e4261938f7676f04a2b1d861c26f8ca437396";
+const PASSCODE_ITERATIONS = 1_200_000;
+
+/** Thrown when the browser will not do the derivation. See verifyPasscode. */
+export class InsecureContextError extends Error {}
 
 /** Session, not local: closing the tab locks it again. */
 const UNLOCK_KEY = "edit:unlocked";
@@ -219,9 +249,52 @@ export function clearLog(): void {
   set({ log: EMPTY.log });
 }
 
-export function unlock(passcode: string): boolean {
+function toHex(buffer: ArrayBuffer): string {
+  return Array.from(new Uint8Array(buffer), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function fromHex(text: string): Uint8Array<ArrayBuffer> {
+  const bytes = new Uint8Array(new ArrayBuffer(text.length / 2));
+  for (let i = 0; i < bytes.length; i++)
+    bytes[i] = Number.parseInt(text.slice(i * 2, i * 2 + 2), 16);
+  return bytes;
+}
+
+/**
+ * Runs the guess through the same derivation the stored bits came out of.
+ *
+ * crypto.subtle exists only in a secure context, so this works over https and
+ * on localhost and refuses to pretend otherwise anywhere else — a weaker
+ * fallback check would be a second, cheaper door into the same room.
+ */
+export async function verifyPasscode(passcode: string): Promise<boolean> {
+  const subtle = globalThis.crypto?.subtle;
+  if (!subtle) throw new InsecureContextError("crypto.subtle needs a secure context");
+
+  const key = await subtle.importKey(
+    "raw",
+    new TextEncoder().encode(passcode.trim()),
+    "PBKDF2",
+    false,
+    ["deriveBits"],
+  );
+  const bits = await subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      hash: "SHA-256",
+      salt: fromHex(PASSCODE_SALT),
+      iterations: PASSCODE_ITERATIONS,
+    },
+    key,
+    256,
+  );
+
+  return toHex(bits) === PASSCODE_HASH;
+}
+
+export async function unlock(passcode: string): Promise<boolean> {
   load();
-  if (passcode.trim() !== PASSCODE) return false;
+  if (!(await verifyPasscode(passcode))) return false;
   try {
     sessionStorage.setItem(UNLOCK_KEY, "1");
   } catch {

@@ -46,8 +46,10 @@ export type Copy = {
     gateBody: string;
     passcode: string;
     unlock: string;
+    checking: string;
     cancel: string;
     wrong: string;
+    insecure: string;
     unlocked: string;
     lockedToast: string;
     resumed: string;
@@ -204,11 +206,14 @@ const en: Copy = {
     button: "Edit mode",
     buttonOn: "Editing",
     gateTitle: "Edit mode",
-    gateBody: "The passcode turns the prose on this page into something you can type into.",
+    gateBody:
+      "The passcode turns the prose on this page into something you can type into. Checking it takes a second — that is the lock working.",
     passcode: "Passcode",
     unlock: "Unlock",
+    checking: "Checking…",
     cancel: "Cancel",
     wrong: "That is not the passcode.",
+    insecure: "Edit mode needs a secure connection (https).",
     unlocked: "Edit mode on",
     lockedToast: "Edit mode off",
     resumed: "Editing on",
@@ -455,11 +460,14 @@ const ko: Copy = {
     button: "편집 모드",
     buttonOn: "편집 중",
     gateTitle: "편집 모드",
-    gateBody: "비밀번호를 넣으면 이 페이지의 글이 고쳐 쓸 수 있는 상태가 된다.",
+    gateBody:
+      "비밀번호를 넣으면 이 페이지의 글이 고쳐 쓸 수 있는 상태가 된다. 확인에 1초쯤 걸리는 것이 정상이다.",
     passcode: "비밀번호",
     unlock: "확인",
+    checking: "확인 중…",
     cancel: "취소",
     wrong: "비밀번호가 다르다.",
+    insecure: "편집 모드는 https 연결에서만 열린다.",
     unlocked: "편집 모드를 켰다",
     lockedToast: "편집 모드를 잠갔다",
     resumed: "편집을 다시 켰다",
