@@ -26,11 +26,11 @@
     },
     "lede": {
       "en": "I build internal software. Most of it replaces a spreadsheet, a paper form, or a step only one person on the team knows how to do.",
-      "ko": "사내에서 쓰는 소프트웨어를 만듦. 대부분 스프레드시트나 종이 서식, 아니면 팀에서 한 명만 아는 절차를 대체하는 쪽."
+      "ko": "UX에 강점이 있는 사람이라고 스스로 생각합니다. 특정 분야의 최전선에 서보는 것이 목표입니다. 지금까지 한 커리어는 대부분 스프레드시트나 종이 서식, 아니면 팀에서 한 명만 아는 절차를 대체하는 쪽입니다."
     },
     "intro": {
       "en": "Mostly for small organizations with nobody titled \"developer,\" so I end up doing the schema, the screens, and the deploy. Plus sitting next to whoever will actually use it and working out what their day looks like.",
-      "ko": "개발자 직함을 가진 사람이 없는 작은 조직 일이 많았음. 그래서 스키마 설계부터 화면, 배포까지 전부 함. 실제로 쓸 사람 옆에 앉아 하루 업무가 어떻게 돌아가는지 확인하는 것도 포함."
+      "ko": "개발자 풀이 없는 곳들을 타겟으로 많이 두었습니다. 스키마 설계부터 화면 및 배포까지 전부 진행하므로써 DX를 실현하는 작업을 많이 진행했습니다. 실제로 쓸 사람 옆에 앉아 하루 업무가 어떻게 돌아가는지 확인하는 것도 포함."
     },
     "updated": {
       "en": "August 2026",
@@ -112,7 +112,7 @@
       },
       "where": {
         "en": "project lead → spun out, solo since",
-        "ko": "PL → 독립, 이후 단독 개발"
+        "ko": "Project Leader -> Seperated"
       },
       "tags": {
         "en": [
@@ -135,9 +135,9 @@
           "Started October 2025 as a joint Decompiler × LAMBDA club project. I did idea generation and ran it as project leader with a team of 12. Split off as an independent project in January 2026 and still running."
         ],
         "ko": [
-          "SBU & SUNYK 학생들을 위한 학사 플랫폼. 가입은 @stonybrook.edu 도메인으로만 됨. 첫 20일에 가입자 100명, 현재 3.7.1 버전.",
-          "학점 시각화 및 시뮬레이션, 커리큘럼 경로, 친구 시간표 위에 겹쳐 보는 내 시간표, 익명 강의평, 학교 근처 카페 등등 제공. 첫 버전은 폴링으로 갱신했고 이후 Supabase Realtime으로 migration함.",
-          "2025년 10월 Decompiler × LAMBDA 동아리 합동 프로젝트로 시작. 내가 idea generation 및 project leader를 맡아 12명 팀으로 굴렸음. 2026년 1월에 독립 프로젝트로 떨어져 나왔고 현재도 계속 진행 중."
+          "SBU & SUNYK 학생들을 위한 학사 플랫폼. 서비스는 @stonybrook.edu 도메인으로만 적용됨. 첫 20일에 가입자 100명 달성, 현재 v.3.7.1 버전",
+          "학점 시각화 및 시뮬레이션, 커리큘럼 경로, 친구 시간표 위에 겹쳐 보는 내 시간표, 익명 강의평, 그리고 학교 근처 카페 등등등등 제공; 첫 버전은 폴링으로 갱신했고 Supabase Realtime으로 migration함",
+          "2025년 10월, Decompiler × LAMBDA 동아리 합동 프로젝트로 시작했고 idea generation 및 project leader을 맡아 12명의 팀으로 시작함. 2026년 1월에 독립 프로젝트로 떨어져 나왔고 현재 또한 계속해서 진행중"
         ]
       },
       "note": {
@@ -176,7 +176,7 @@
       },
       "where": {
         "en": "solo, not launched",
-        "ko": "혼자서, 미공개"
+        "ko": "CTO"
       },
       "tags": {
         "en": [
@@ -195,7 +195,7 @@
           "Matching Korean sellers with overseas buyers, with customs and shipping paperwork handled inside the platform instead of over email or WhatsApp. Transactions in SQL, high-volume behavioral data in a document store. I work on it in the gaps."
         ],
         "ko": [
-          "국내 셀러와 해외 바이어 매칭, 통관·물류 자동화 시스템. 통관과 선적 서류를 이메일이나 WhatsApp이 아니라 플랫폼 안에서 처리함. 거래는 SQL, 양 많은 행동 데이터는 도큐먼트 스토어. 다른 일들 사이 빈 시간에 작업 중."
+          "국내 셀러와 해외 바이어 매칭 및 통관물류 자동화 시스템 개발. 통관과 선적 서류를 이메일 또는 WhatsApp이 아니라 자동화 플랫폼에서 처리함. 거래는 SQL, 양이 많은 행동 데이터는 도큐먼트 스토어;"
         ]
       },
       "note": {
@@ -215,6 +215,10 @@
             "출시일 없음. 남는 시간에만 함. 어떤 달은 0시간."
           ]
         }
+      },
+      "altName": {
+        "en": "",
+        "ko": "Matching & Legal"
       }
     },
     {
@@ -252,7 +256,7 @@
           "Hackathon hosted and run by Decompiler, held on 30 May 2026. I organized the event itself: outreach, renting the venue, and running the preparation end to end."
         ],
         "ko": [
-          "Decompiler가 주최·주관한 해커톤. 2026년 5월 30일 진행. 행사 자체를 내가 총괄함. 컨택, 시설 대여, 준비 전 과정."
+          "Decompiler가 주최·주관한 해커톤. 2026년 5월 30일 진행. 행사 자체 총괄; 컨택, 시설 대여, 준비 전 과정 및 진행"
         ]
       },
       "note": {
@@ -292,7 +296,7 @@
       },
       "where": {
         "en": "research intern, paid · Life Sciences Research Division",
-        "ko": "연구 인턴, 유급 · 생명과학연구부"
+        "ko": "연구 인턴, 유급 · 생명과학연구본부"
       },
       "tags": {
         "en": [
@@ -309,7 +313,7 @@
           "Offline tool for internal use. Under NDA, so that is as far as it goes."
         ],
         "ko": [
-          "내부용 오프라인 도구. NDA 걸려 있어서 여기까지만."
+          "내부에서 쓰는 오프라인 툴 개발; NDA"
         ]
       },
       "note": {
@@ -419,7 +423,7 @@
           "Ran several Odoo implementations at once — scope, schedule, and the constant negotiation between what a client wanted this month and what the team could actually ship. Less code than I expected. More useful than I expected."
         ],
         "ko": [
-          "Odoo 구축 프로젝트 여러 건 동시 진행. 범위, 일정, 그리고 이번 달에 고객이 원하는 것과 팀이 실제로 낼 수 있는 것 사이 조율이 일의 대부분. 코드는 생각보다 적게 썼고, 배운 건 생각보다 많았음."
+          "Odoo 구축 프로젝트 여러 건을 동시에 맡음. 범위와 일정, 그리고 이번 달에 고객이 원하는 것과 팀이 실제로 끝낼 수 있는 것 사이의 조율 및 개발 역할 진행"
         ]
       },
       "note": {
@@ -477,8 +481,8 @@
           "Founding a Stony Brook chapter — Decompiler at SBU — in fall 2026."
         ],
         "ko": [
-          "2025년 봄 학기 기술 자문, 가을 학기 부회장, 2026년 봄 학기 회장. 세 학기 동안 일의 모양이 매번 바뀜.",
-          "2026년 가을 학기에 스토니브룩 본교 챕터 Decompiler at SBU 설립 예정."
+          "2025년 봄 학기 기술 자문 임원, 가을 학기 부회장, 2026년 봄 학기 회장. 세 학기 동안 진행",
+          "2026년 가을 학기에는 스토니브룩 본교에 Decompiler at SBU를 만들 예정"
         ]
       },
       "note": {
@@ -518,7 +522,7 @@
       },
       "where": {
         "en": "for high schools, solo",
-        "ko": "고등학교 대상, 혼자서"
+        "ko": "고등학교 대상"
       },
       "tags": {
         "en": [
@@ -535,7 +539,7 @@
           "Reservation site for school facilities, run for high schools. Nine months. Building it and keeping it running turned out to be two different jobs."
         ],
         "ko": [
-          "학교 시설 예약 사이트. 고등학교 대상으로 만들고 운영함. 9개월. 만드는 일과 굴러가게 유지하는 일이 서로 다른 일이라는 걸 여기서 배움."
+          "학교 시설을 예약하는 사이트를 만들어 고등학교를 대상으로 운영했다. 아홉 달 동안 매우 빡셌음.."
         ]
       },
       "note": {
@@ -594,7 +598,7 @@
           "The student application process was on paper. Moved it to the web with PHP, HTML and JavaScript, drew the mobile and desktop layouts, deployed on Cafe24 including the server config."
         ],
         "ko": [
-          "학생 지원 절차가 종이로 돌아가고 있었음. PHP, HTML, JavaScript로 웹에 옮기고 모바일·데스크톱 레이아웃 작업, 서버 설정 포함해서 카페24에 배포함."
+          "학생 지원 절차가 모두 오프라인 형식인 데에 착안하여, PHP, HTML, JavaScript로 웹에 옮기고 모바일·데스크톱 레이아웃 작업, 서버 설정 포함해서 카페24에 배포"
         ]
       },
       "note": {
@@ -649,7 +653,7 @@
           "Planned the product and gave the final pitch: an AI platform for capturing know-how inside small manufacturers before the people holding it retire. First place overall."
         ],
         "ko": [
-          "제품 기획과 최종 발표 담당. 중소 제조업의 노하우를, 그걸 쥔 사람들이 은퇴하기 전에 남기는 AI 플랫폼. 전체 1위."
+          "제품을 기획하고 최종 발표를 맡았다. 중소 제조업의 노하우를, 그것을 쥔 사람들이 은퇴하기 전에 물려주는 AI 플랫폼으로 피칭을 진행했고 최종 1위 달성"
         ]
       },
       "note": {
@@ -704,7 +708,7 @@
           "Odoo's PLO track, finished on the 11th. Also have viewer access to the Odoo Enterprise repository."
         ],
         "ko": [
-          "Odoo PLO 과정, 11일 수료. Odoo Enterprise 저장소 viewer 권한 보유."
+          "Odoo의 PLO 과정 11일에 수료; Odoo Enterprise 저장소에 viewer 권한"
         ]
       },
       "note": {
@@ -727,10 +731,10 @@
   ],
   "tools": {
     "en": "TypeScript, React and Postgres most days, Supabase when I want to move fast. A couple of years of PHP before that. Odoo, and enough Python to keep it in line. Tailwind because I am faster in it.",
-    "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤. Odoo, 그리고 그걸 붙잡아 둘 만큼의 Python. Tailwind는 그게 더 빠르니까 씀."
+    "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤. Odoo, 그리고 그걸 붙잡아 둘 만큼의 Python. Tailwind 또한 속도면에서 강점을 두고 고안합니다."
   },
   "school": {
     "en": "B.S. Computer Science, Stony Brook University. In progress.",
-    "ko": "스토니브룩 대학교 컴퓨터과학 학사. 재학 중."
+    "ko": "스토니브룩 대학교 컴퓨터과학 학사; 재학 중"
   }
 }
