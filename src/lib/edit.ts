@@ -22,6 +22,8 @@ import { useSyncExternalStore } from "react";
 import {
   applyDraftsVerbose,
   draftKey,
+  pruneDrafts,
+  redundantDrafts,
   siteData,
   type Drafts,
   type SiteData,
@@ -88,8 +90,23 @@ export type LogEntry = {
   count?: number;
 };
 
-/** What the last successful publish did, so the bar can point at the commit. */
-export type Published = { at: number; count: number; sha: string; url: string };
+/**
+ * What the last successful publish did, so the bar can point at the commit.
+ *
+ * `sent` is the drafts as they went out. The commit exists the moment the
+ * server answers, but the bundle this browser is running was built before it,
+ * so the drafts have to stay on screen until a deploy catches up with them —
+ * clearing them on success would make the page revert to the old words a
+ * second after saying it had published the new ones. Keeping `sent` is how
+ * those drafts stop being counted as unpublished without being thrown away.
+ */
+export type Published = {
+  at: number;
+  count: number;
+  sha: string;
+  url: string;
+  sent: Drafts;
+};
 
 export type EditState = {
   unlocked: boolean;
@@ -170,7 +187,7 @@ function readLog(): readonly LogEntry[] {
 function readPublished(): Published | null {
   return readJson(PUBLISHED_KEY, EMPTY.published, (parsed) =>
     isRecord(parsed) && typeof parsed.at === "number" && typeof parsed.sha === "string"
-      ? (parsed as Published)
+      ? { ...(parsed as Published), sent: isRecord(parsed.sent) ? (parsed.sent as Drafts) : {} }
       : null,
   );
 }
@@ -190,13 +207,17 @@ function load(): void {
     /* private mode; locked is the safe answer */
   }
 
-  state = {
-    ...EMPTY,
-    unlocked,
-    drafts: readDrafts(),
-    log: readLog(),
-    published: readPublished(),
-  };
+  // Drafts the content file has since caught up with — the deploy after a
+  // publish landed, or the path stopped naming anything — are dropped here
+  // rather than kept forever as changes that are not changes.
+  const drafts = pruneDrafts(siteData, readDrafts());
+  const published = readPublished();
+
+  state = { ...EMPTY, unlocked, drafts, log: readLog(), published };
+
+  if (Object.keys(drafts).length !== Object.keys(readDrafts()).length) {
+    persist(drafts, state.log);
+  }
 }
 
 function persist(drafts: Drafts, log: readonly LogEntry[], published?: Published | null): void {
@@ -414,9 +435,22 @@ export type PublishResult =
   | { ok: true; count: number; sha: string; url: string }
   | { ok: false; reason: PublishFailure; detail?: string };
 
-/** The drafts that still name something, and what the file becomes with them. */
-export function pendingCount(drafts: Drafts): number {
-  return applyDraftsVerbose(siteData, drafts).applied.length;
+/**
+ * Drafts that are actually waiting to go out: ones that change something, and
+ * that are not already sitting in a commit this browser has not caught up with.
+ */
+export function pendingDrafts(drafts: Drafts, published: Published | null): Drafts {
+  const redundant = new Set(redundantDrafts(siteData, drafts));
+
+  return Object.fromEntries(
+    Object.entries(drafts).filter(
+      ([key, value]) => !redundant.has(key) && published?.sent[key] !== value,
+    ),
+  );
+}
+
+export function pendingCount(drafts: Drafts, published: Published | null): number {
+  return Object.keys(pendingDrafts(drafts, published)).length;
 }
 
 /** The content file as it would be committed right now. For the preview. */
@@ -445,7 +479,11 @@ export async function publish(message: string, passcode?: string): Promise<Publi
 
   const secret = (passcode ?? sessionPasscode ?? "").trim();
   if (!secret) return { ok: false, reason: "passcode" };
-  if (Object.keys(state.drafts).length === 0) return { ok: false, reason: "empty" };
+
+  // Only what is actually outstanding goes up: re-sending a draft the last
+  // publish already committed would produce a commit that changes nothing.
+  const outgoing = pendingDrafts(state.drafts, state.published);
+  if (Object.keys(outgoing).length === 0) return { ok: false, reason: "empty" };
 
   set({ publishing: true });
 
@@ -453,7 +491,7 @@ export async function publish(message: string, passcode?: string): Promise<Publi
     const response = await fetch("/api/publish", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ passcode: secret, drafts: state.drafts, message }),
+      body: JSON.stringify({ passcode: secret, drafts: outgoing, message }),
     });
 
     const payload: unknown = await response.json().catch(() => null);
@@ -483,13 +521,21 @@ export async function publish(message: string, passcode?: string): Promise<Publi
     const count = typeof body.count === "number" ? body.count : 0;
     const sha = typeof body.sha === "string" ? body.sha : "";
     const url = typeof body.url === "string" ? body.url : "";
-    const published: Published = { at: Date.now(), count, sha, url };
+    const published: Published = {
+      at: Date.now(),
+      count,
+      sha,
+      url,
+      sent: { ...state.published?.sent, ...outgoing },
+    };
 
-    // The drafts are the file now, so holding on to them would only mean the
-    // page keeps claiming there is something unpublished.
+    // The drafts stay. They are in the commit now, but the bundle running here
+    // was built before it, so dropping them would revert every line on screen
+    // until the deploy lands. `sent` is what stops them being counted twice;
+    // the next load prunes whichever of them the new content has caught up to.
     const log = [...state.log, record("en", "", "publish", count)].slice(-LOG_LIMIT);
-    persist(EMPTY.drafts, log, published);
-    set({ drafts: EMPTY.drafts, log, published, publishing: false });
+    persist(state.drafts, log, published);
+    set({ log, published, publishing: false });
 
     return { ok: true, count, sha, url };
   } catch (cause) {

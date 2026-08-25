@@ -324,6 +324,30 @@ export function applyDrafts(data: SiteData, drafts: Drafts): SiteData {
   return applyDraftsVerbose(data, drafts).data;
 }
 
+/**
+ * The drafts that no longer say anything the file does not already say.
+ *
+ * A draft becomes redundant the moment the content it was written against
+ * catches up with it — which is what a deploy after a publish does — and a
+ * draft that names nothing was redundant from the start. Either way it should
+ * stop being counted as an unpublished change, and stop being stored.
+ */
+export function redundantDrafts(data: SiteData, drafts: Drafts): string[] {
+  const base = serializeSiteData(data);
+
+  return Object.entries(drafts)
+    .filter(([key, value]) => serializeSiteData(applyDrafts(data, { [key]: value })) === base)
+    .map(([key]) => key);
+}
+
+/** The same set, removed. */
+export function pruneDrafts(data: SiteData, drafts: Drafts): Drafts {
+  const redundant = new Set(redundantDrafts(data, drafts));
+  if (redundant.size === 0) return drafts;
+
+  return Object.fromEntries(Object.entries(drafts).filter(([key]) => !redundant.has(key)));
+}
+
 /** The file as it should be written back: stable key order, trailing newline. */
 export function serializeSiteData(data: SiteData): string {
   return JSON.stringify(data, null, 2) + "\n";
