@@ -352,7 +352,7 @@ const en: Copy = {
   },
 
   overlapCaption:
-    "Everything above, on one axis. The overlaps are the honest part: four ran at once in late 2025, four again in the spring. Two are still going. The dashed line is today.",
+    "Everything above on one axis. Five ran at once in November 2025, and five again in March and May 2026. Two are still going. The dashed line is today.",
 
   consoleIntro: {
     lead: "Everything above is also a filesystem. This reads it. It is not a recording of a terminal, it is a small one:",
@@ -652,7 +652,7 @@ const ko: Copy = {
   },
 
   overlapCaption:
-    "위의 모든 것을 하나의 축에 올렸다. 겹치는 부분이 정직한 쪽이다. 2025년 늦가을에 네 개가 동시에 돌았고, 봄에 다시 네 개였다. 지금 돌아가는 건 두 개. 점선이 오늘이다.",
+    "위의 모든 것을 하나의 축에 올린 것. 2025년 11월에 다섯 개가 동시에 돌았고, 2026년 3월과 5월에도 다섯 개였다. 지금 돌아가는 건 두 개. 점선이 오늘.",
 
   consoleIntro: {
     lead: "위에 있는 것들은 파일시스템이기도 하다. 이 콘솔은 그것을 읽는다. 터미널을 찍어 둔 그림이 아니라 작은 터미널이다:",
