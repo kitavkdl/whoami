@@ -717,7 +717,7 @@
   ],
   "tools": {
     "en": "TypeScript, React and Postgres most days, Supabase when I want to move fast. A couple of years of PHP before that. Odoo, and enough Python to keep it in line. Tailwind because I am faster in it.",
-    "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤. Odoo, 그리고 그걸 붙잡아 둘 만큼의 Python. Tailwind 또한 속도면에서 강점을 두고 고안합니다."
+    "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤. Tailwind 또한 속도(랑 AI가 좋아해서..)면에서 강점을 두고 고안합니다."
   },
   "school": {
     "en": "B.S. Computer Science, Stony Brook University. In progress.",
