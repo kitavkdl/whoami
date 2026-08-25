@@ -87,6 +87,7 @@ export type Copy = {
     pending: (n: number) => string;
     viewCommit: string;
     lastPublished: string;
+    deploying: string;
     needPasscode: string;
     errors: {
       passcode: string;
@@ -305,6 +306,8 @@ const en: Copy = {
     pending: (n) => (n === 1 ? "1 unpublished change" : `${n} unpublished changes`),
     viewCommit: "See the commit",
     lastPublished: "Last published",
+    deploying:
+      "Committed. Your edits stay on screen here until the deploy finishes and the page is reloaded.",
     needPasscode: "Type the passcode again to publish.",
     errors: {
       passcode: "The server did not accept that passcode.",
@@ -606,6 +609,7 @@ const ko: Copy = {
     pending: (n) => `게시 안 한 변경 ${n}건`,
     viewCommit: "커밋 보기",
     lastPublished: "마지막 게시",
+    deploying: "커밋됨. 배포가 끝나고 새로고침할 때까지는 여기 화면에만 고친 글이 남는다.",
     needPasscode: "게시하려면 비밀번호를 다시 입력해야 한다.",
     errors: {
       passcode: "서버가 그 비밀번호를 받지 않았다.",

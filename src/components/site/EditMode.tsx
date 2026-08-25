@@ -228,9 +228,9 @@ function Gate({ onClose }: { onClose: () => void }) {
  */
 function PublishSheet({ onClose }: { onClose: () => void }) {
   const copy = useCopy();
-  const { drafts, publishing } = useEdit();
+  const { drafts, published, publishing } = useEdit();
 
-  const count = useMemo(() => pendingCount(drafts), [drafts]);
+  const count = useMemo(() => pendingCount(drafts, published), [drafts, published]);
   const [needsPasscode] = useState(() => !hasSessionPasscode());
   const [passcode, setPasscode] = useState("");
   const [message, setMessage] = useState("");
@@ -445,7 +445,7 @@ function Bar({ onHistory, onPublish }: { onHistory: () => void; onPublish: () =>
   const copy = useCopy();
   const lang = useLang();
   const { editing, drafts, published, publishing } = useEdit();
-  const changed = Object.keys(drafts).length;
+  const changed = useMemo(() => pendingCount(drafts, published), [drafts, published]);
 
   return (
     <div
@@ -514,6 +514,8 @@ function Bar({ onHistory, onPublish }: { onHistory: () => void; onPublish: () =>
 
       {published && (
         <p className="mt-3 border-t border-rule pt-2 font-sans text-[11.5px] leading-5 text-soft/70">
+          {copy.edit.deploying}
+          <br />
           {copy.edit.lastPublished} · {copy.edit.changed(published.count)}
           {published.url && (
             <>
