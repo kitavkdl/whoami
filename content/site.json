@@ -26,11 +26,11 @@
     },
     "lede": {
       "en": "I think of myself as someone whose strength is UX. My goal is to stand at the front line of a particular field. Most of the career I have had so far has been on the side of replacing a spreadsheet, a paper form, or a procedure only one person on the team knows.",
-      "ko": "UX에 강점이 있는 사람이라고 스스로 생각합니다. 특정 분야의 최전선에 서보는 것이 목표입니다. 대부분 스프레드시트나 종이 서식, 아니면 팀에서 한 명만 아는 절차를 대체하는 업무를 진행했습니다."
+      "ko": "UX에 강점이 있는 사람이라고 스스로 생각합니다. 특정 분야의 최전선에 서보는 것이 목표입니다. 스프레드시트나 오프라인으로 이루어지고 있는 종이 서식, 아니면 팀에서 한 명만 아는 절차를 대체하는 업무를 주로 진행했습니다."
     },
     "intro": {
       "en": "I have mostly aimed at places with no pool of developers. I have done a lot of work realizing DX by handling all of it, from schema design through the screens and the deploy. That includes sitting next to the people who will actually use it and checking how their day's work runs.",
-      "ko": "개발자 풀이 없는 곳들을 타겟으로 많이 두었습니다. 스키마 설계부터 화면 및 배포까지 전부 진행하므로써 DX를 실현하는 작업을 많이 진행했습니다. 실제로 쓸 사람 옆에 앉아 하루 업무가 어떻게 돌아가는지 확인하는 것도 포함."
+      "ko": "개발자 풀이 없는 곳들을 타겟으로 많이 두었습니다. 스키마 설계부터 화면 및 배포까지 전부 진행하므로써 DX를 실현하는 작업을 많이 진행했습니다. 실제로 쓸 사람 옆에 앉아 하루 업무가 어떻게 돌아가는지 확인하는 것도 포함"
     },
     "updated": {
       "en": "August 2026",
@@ -366,7 +366,7 @@
           "As planner and event lead, I assigned the team members their roles and oversaw all of it together: preparing and running the hackathon, contacting professors and speakers, recruiting judges, recruiting students, making posters, renting the venue, and catering."
         ],
         "ko": [
-          "기획 및 행사 총괄로 해커톤의 준비과정 및 진행, 교수님 및 연사자분 컨택, 심사위원 섭외, 학생 모집, 포스터 제작, 시설 대여, 식사 제공 업무를 통틀어 타임원 역할부여 및 총괄함"
+          "기획 및 행사 총괄로 해커톤의 준비과정 및 진행, 교수님 및 연사자분 컨택, 심사위원 섭외, 학생 모집, 포스터 제작, 시설 대여, 식사 제공 업무를 통틀어 타 임원 역할부여 및 총괄함"
         ]
       },
       "note": {
@@ -473,7 +473,7 @@
           "Planning to start Decompiler at SBU during the fall 2026 semester."
         ],
         "ko": [
-          "2025년 봄 학기 기술 자문 임원, 가을 학기 부회장, 2026년 봄 학기 회장. 세 학기 동안 진행",
+          "2025년 봄 학기 기술 자문 임원, 가을 학기 부회장, 2026년 봄 학기 회장직을 역임함.",
           "2026년 가을 학기 중 Decompiler at SBU를 만들 예정"
         ]
       },
