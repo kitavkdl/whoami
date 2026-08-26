@@ -492,7 +492,7 @@ const en: Copy = {
 
   notFound: {
     title: "Not here",
-    body: "That page doesn't exist, or it used to and doesn't anymore.",
+    body: "That page doesn't exist",
     back: "Back to the front page",
   },
   error: {
@@ -506,7 +506,7 @@ const en: Copy = {
     title: "Jiyul Ahn",
     description:
       "Jiyul Ahn · developer in Stony Brook, New York. SeekOnce, Odoo implementation projects, and a computer science degree at Stony Brook.",
-    ogDescription: "Developer in Stony Brook, New York. Currently building SeekOnce.",
+    ogDescription: "Developer in Stony Brook, New York.",
     studyBlurb: "A grade fortune-teller, written for no good reason.",
   },
 
@@ -524,7 +524,7 @@ const ko: Copy = {
     emailMe: "메일 보내기",
     copyAddress: "주소 복사",
     printResume: "이력서로 인쇄",
-    emailCopied: "이메일 주소를 복사했다",
+    emailCopied: "이메일 주소가 복사됨",
   },
 
   clock: {
@@ -636,29 +636,29 @@ const ko: Copy = {
   },
 
   overlapCaption:
-    "위의 모든 것을 하나의 축에 올린 것. 2025년 11월에 다섯 개가 동시에 돌았고, 2026년 3월과 5월에도 다섯 개였다. 지금 돌아가는 건 두 개. 점선이 오늘.",
+    "시간축 입니다. 점선은 현재 날짜기준 입니다.",
 
   consoleIntro: {
-    lead: "아래 콘솔은 이 페이지를 파일로 읽는다. 쓸 수 있는 건",
-    tail: ", 탭 완성, 명령 기록. 전체 목록은",
-    end: ".",
+    lead: "아래 콘솔을 체험해 보세요. 사용 가능 항목: ",
+    tail: "탭 완성, 명령 기록; 전체 목록은",
+    end: "",
   },
 
   contact: {
     email: "이메일",
     phone: "전화",
-    smsOnly: "문자만",
+    smsOnly: "문자만 가능합니다",
     elsewhere: "그 밖에",
-    languages: "한국어, 영어 모두 가능.",
+    languages: "Bilingual",
   },
 
   footer: {
     updatedBefore: "",
-    updatedAfter: " 갱신. 별 이유 없이 만든 ",
+    updatedAfter: " 갱신; ",
     studyLink: "오늘의 학점 운세",
-    after: "도 있다.",
+    after: "",
     built:
-      "TanStack Start와 Tailwind로 만들었다. 페이지와 콘솔과 커맨드 팔레트가 모두 하나의 콘텐츠 파일을 읽기 때문에, 셋이 서로 어긋날 수가 없다.",
+      "TanStack Start와 Tailwind로 제작함.",
   },
 
   palette: {
@@ -677,7 +677,7 @@ const ko: Copy = {
     neofetch: "neofetch 실행",
     neofetchHint: "콘솔에서",
     print: "이력서로 인쇄",
-    printHint: "종이에 맞춰 레이아웃이 바뀐다",
+    printHint: "종이에 맞춰 레이아웃이 자동변경됨.",
     shortcuts: "키보드 단축키",
     switchLanguage: "View in English",
     switchLanguageHint: "/",
@@ -751,7 +751,7 @@ const ko: Copy = {
     },
     banner: [
       "jiyul-ahn — console",
-      "위 페이지와 같은 파일을 읽는다.",
+      "위 페이지와 같은 파일 읽힘",
       "help 로 명령 목록 · tab 으로 완성 · ↑ 로 히스토리",
     ],
     helpFooter: "Ctrl+L 지우기 · Ctrl+U 줄 지우기 · Ctrl+C 취소",
@@ -775,7 +775,7 @@ const ko: Copy = {
     langPick: (list) => `lang: ${list} 중 하나`,
     themeSet: (value) => `테마를 ${value} 로`,
     gotoTry: (list) => `goto: ${list} 중 하나`,
-    resume: "이 페이지를 프린터로 넘긴다 — 종이에 맞춰 레이아웃이 바뀐다",
+    resume: "이 페이지를 프린트",
     uptime: (seconds) =>
       seconds < 60
         ? `이 페이지에서 ${seconds}초`
@@ -791,7 +791,7 @@ const ko: Copy = {
   },
   error: {
     title: "무언가 고장났다",
-    body: "이건 내 쪽 문제다. 새로고침하면 대개 해결된다.",
+    body: "새로고침하면 대개 해결됨",
     retry: "다시 시도",
     back: "첫 페이지로",
   },
@@ -799,9 +799,9 @@ const ko: Copy = {
   meta: {
     title: "안지율",
     description:
-      "안지율 · 뉴욕 스토니브룩의 개발자. SeekOnce, Odoo 구축 프로젝트, 그리고 스토니브룩 대학교 컴퓨터과학 전공.",
-    ogDescription: "뉴욕 스토니브룩의 개발자. 지금은 SeekOnce를 만든다.",
-    studyBlurb: "별 이유 없이 만든 학점 운세.",
+      "안지율 · 개발자",
+    ogDescription: "개발자",
+    studyBlurb: "학점 운세",
   },
 
   name: { primary: "안지율", secondary: "Jiyul Ahn" },
