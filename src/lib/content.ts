@@ -32,6 +32,9 @@ export type Phone = PhoneSource;
 /** The long-form page behind an entry, in one language. */
 export type Note = { lede: string; body: string[] };
 
+/** A photograph under an entry, in one language. */
+export type EntryImage = { src: string; alt: string; focus?: "top" };
+
 /** An entry once a language has been chosen. */
 export type Entry = {
   id: string;
@@ -43,6 +46,7 @@ export type Entry = {
   where?: string;
   body: string[];
   tags: string[];
+  images: EntryImage[];
   href?: string;
   start: string;
   end?: string;
@@ -99,6 +103,11 @@ function resolveEntry(source: EntrySource, lang: Lang): Entry {
     where: source.where?.[lang] || undefined,
     body: source.body[lang],
     tags: source.tags[lang],
+    images: (source.images ?? []).map((image) => ({
+      src: image.src,
+      alt: image.alt[lang],
+      focus: image.focus,
+    })),
     note: { lede: source.note.lede[lang], body: source.note.body[lang] },
   };
 }

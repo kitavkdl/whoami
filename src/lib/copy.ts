@@ -130,6 +130,9 @@ export type Copy = {
 
   overlapCaption: string;
 
+  /** Under a photograph opened full size. */
+  photoDismiss: string;
+
   consoleIntro: { lead: string; tail: string; end: string };
 
   contact: {
@@ -343,6 +346,8 @@ const en: Copy = {
 
   overlapCaption:
     "Everything above on one axis. Five ran at once in November 2025, and five again in March and May 2026. Two are still going. The dashed line is today.",
+
+  photoDismiss: "click or esc to close",
 
   consoleIntro: {
     lead: "The console below reads this page as files. It takes",
@@ -637,6 +642,8 @@ const ko: Copy = {
 
   overlapCaption:
     "시간축 입니다. 점선은 현재 날짜기준 입니다.",
+
+  photoDismiss: "클릭 또는 esc 로 닫기",
 
   consoleIntro: {
     lead: "아래 콘솔을 체험해 보세요. 사용 가능 항목: ",

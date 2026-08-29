@@ -259,6 +259,23 @@
           "2025 해커톤 다음 학기로, Digital Transpormation을 주제로 Decompiler가 주최·주관한 해커톤. 지난 해커톤과 비슷한 포맷으로 2026년 5월 30일 진행. 행사 자체 총괄; 컨택, 시설 대여, 준비 전 과정 및 진행"
         ]
       },
+      "images": [
+        {
+          "src": "/media/hackathon-x-2026-press.webp",
+          "alt": {
+            "en": "Hackathon the X 2026 in the press — Incheon Global Campus",
+            "ko": "해커톤 THE X 2026 보도 — 인천글로벌캠퍼스"
+          },
+          "focus": "top"
+        },
+        {
+          "src": "/media/hackathon-x-2026-quote.webp",
+          "alt": {
+            "en": "The organiser's comment, as it ran in the same article",
+            "ko": "같은 기사에 실린 주최 측 코멘트"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Title",
@@ -369,6 +386,15 @@
           "기획 및 행사 총괄로 해커톤의 준비과정 및 진행, 교수님 및 연사자분 컨택, 심사위원 섭외, 학생 모집, 포스터 제작, 시설 대여, 식사 제공 업무를 통틀어 타 임원 역할부여 및 총괄함"
         ]
       },
+      "images": [
+        {
+          "src": "/media/ggt-ideathon-2025.webp",
+          "alt": {
+            "en": "During the 2025 Green Global Trade Ideathon",
+            "ko": "2025 Green Global Trade 아이디어톤 진행 중"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Title",
@@ -422,6 +448,15 @@
           "Odoo를 활용해 물류통관 업계에서 오프라인으로 이루어지고 있는 업무들을 타겟으로, Odoo를 메인으로 커스터마이징한 프로덕트를 개발하고 해당 내용을 바탕으로 제품설계 및 개발 역할을 진행함."
         ]
       },
+      "images": [
+        {
+          "src": "/media/dx-tech-odoo.webp",
+          "alt": {
+            "en": "BUILD ERP, MAKE GLOBAL — the Odoo ERP programme, group photo",
+            "ko": "BUILD ERP, MAKE GLOBAL — Odoo 기반 ERP 프로그램 단체 사진"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Title",
@@ -477,6 +512,15 @@
           "2026년 가을 학기 중 Decompiler at SBU를 만들 예정"
         ]
       },
+      "images": [
+        {
+          "src": "/media/decompiler-forum.webp",
+          "alt": {
+            "en": "Decompiler forum — 2025 Startup Bootcamp, SUNY Korea",
+            "ko": "디컴파일러 포럼 — 2025 스타트업 부트캠프, 한국뉴욕주립대"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Title",
@@ -634,6 +678,15 @@
           "제품을 기획하고 최종 발표를 맡았다. 중소 제조업의 노하우를, 그것을 쥔 사람들이 은퇴하기 전에 물려주는 AI 플랫폼으로 피칭을 진행했고 최종 1위 달성"
         ]
       },
+      "images": [
+        {
+          "src": "/media/codegate-2026-first.webp",
+          "alt": {
+            "en": "First place at the CODEGATE 2026 AI Startup Hackathon",
+            "ko": "CODEGATE 2026 AI 스타트업 해커톤 1위 시상"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Title",
@@ -687,6 +740,135 @@
           "Odoo Enterprise Repository Inner"
         ]
       },
+      "note": {
+        "lede": {
+          "en": "Title",
+          "ko": "제목"
+        },
+        "body": {
+          "en": [
+            "Subtitle"
+          ],
+          "ko": [
+            "부제"
+          ]
+        }
+      }
+    },
+    {
+      "id": "incheon-startup-academy-2025",
+      "section": "awards",
+      "kind": "award",
+      "start": "2025-11",
+      "end": "2025-11",
+      "when": {
+        "en": "Nov 2025",
+        "ko": "2025년 11월"
+      },
+      "title": {
+        "en": "2nd Incheon University Startup Academy",
+        "ko": "제2회 인천 대학연합 창업 아카데미"
+      },
+      "where": {
+        "en": "Best Idea",
+        "ko": "우수 아이디어"
+      },
+      "tags": {
+        "en": [
+          "planning",
+          "presentation"
+        ],
+        "ko": [
+          "기획",
+          "발표"
+        ]
+      },
+      "body": {
+        "en": [
+          "Entered with SPIKE and was picked for the Best Idea award. The booth presentation was given in front of the mayor of Incheon at the time."
+        ],
+        "ko": [
+          "SPIKE로 참가해 우수 아이디어에 선정됨. 부스 발표는 당시 인천시장 앞에서 진행함"
+        ]
+      },
+      "images": [
+        {
+          "src": "/media/incheon-academy-award.webp",
+          "alt": {
+            "en": "The Best Idea award at the 2nd Incheon University Startup Academy",
+            "ko": "제2회 인천 대학연합 창업 아카데미 우수 아이디어 시상"
+          }
+        },
+        {
+          "src": "/media/spike-incheon-pitch.webp",
+          "alt": {
+            "en": "The SPIKE booth presentation, in front of the mayor of Incheon at the time",
+            "ko": "SPIKE 부스 발표 — 당시 인천시장 앞"
+          }
+        }
+      ],
+      "note": {
+        "lede": {
+          "en": "Title",
+          "ko": "제목"
+        },
+        "body": {
+          "en": [
+            "Subtitle"
+          ],
+          "ko": [
+            "부제"
+          ]
+        }
+      }
+    },
+    {
+      "id": "net-challenge-camp-2025",
+      "section": "awards",
+      "kind": "award",
+      "start": "2025-06",
+      "end": "2025-06",
+      "when": {
+        "en": "Jun 2025",
+        "ko": "2025년 6월"
+      },
+      "title": {
+        "en": "12th K-Digital Challenge NET Challenge Camp",
+        "ko": "제12회 K-디지털 챌린지 NET 챌린지캠프"
+      },
+      "where": {
+        "en": "selected as an outstanding team",
+        "ko": "우수팀 선정"
+      },
+      "tags": {
+        "en": [
+          "AI",
+          "network",
+          "planning"
+        ],
+        "ko": [
+          "AI",
+          "네트워크",
+          "기획"
+        ]
+      },
+      "body": {
+        "en": [
+          "Took part in the idea competition for AI and network applications, and the team was picked as an outstanding one."
+        ],
+        "ko": [
+          "AI·네트워크 응용 분야 아이디어 공모전에 참가해 우수팀으로 선정됨"
+        ]
+      },
+      "images": [
+        {
+          "src": "/media/net-challenge-camp.webp",
+          "alt": {
+            "en": "The 12th K-Digital Challenge NET Challenge Camp — the team",
+            "ko": "제12회 K-디지털 챌린지 NET 챌린지캠프 — 팀 사진"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Title",

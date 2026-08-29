@@ -38,6 +38,18 @@ export type PhoneSource = { label: string; href: string; smsOnly?: boolean };
  */
 export type NoteSource = { lede: L; body: L<string[]> };
 
+/**
+ * A photograph under an entry. The file itself sits in public/media, so a
+ * picture is swapped by replacing a file rather than by rebuilding anything.
+ */
+export type ImageSource = {
+  /** Path from the site root. */
+  src: string;
+  alt: L;
+  /** Where a thumbnail holds its crop. Centred unless a picture needs its head. */
+  focus?: "top";
+};
+
 export type EntrySource = {
   /** Stable slug: the anchor on the page and the console filename. */
   id: string;
@@ -54,6 +66,7 @@ export type EntrySource = {
   where?: L;
   tags: L<string[]>;
   body: L<string[]>;
+  images?: ImageSource[];
   note: NoteSource;
 };
 

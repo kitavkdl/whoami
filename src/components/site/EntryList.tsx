@@ -1,5 +1,6 @@
 import { Editable } from "@/components/site/Editable";
 import { EditableBlocks } from "@/components/site/EditableBlocks";
+import { EntryPhotos } from "@/components/site/EntryPhotos";
 import type { Entry } from "@/lib/content";
 import { entryPath, joinTags } from "@/lib/site-data";
 import { useEditing } from "@/lib/edit";
@@ -121,6 +122,8 @@ export function EntryList({ items }: { items: Entry[] }) {
               paragraphs={entry.body}
               itemClassName="mt-3"
             />
+
+            <EntryPhotos images={entry.images} />
 
             <Tags entry={entry} />
           </div>
