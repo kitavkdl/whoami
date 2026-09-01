@@ -21,7 +21,11 @@ function currentMonth(): string {
  * once we are running somewhere that has a clock worth trusting.
  */
 const fallbackNow =
-  Math.max(...getContent("en").allEntries.map((e) => monthIndex(e.end ?? e.start))) + 1;
+  Math.max(
+    ...getContent("en").allEntries.map((e) =>
+      monthIndex(e.planned?.end ?? e.planned?.start ?? e.end ?? e.start),
+    ),
+  ) + 1;
 
 const TONE: Record<Entry["kind"], string> = {
   product: "var(--mark)",
@@ -97,6 +101,13 @@ export function Overlap() {
           // tail instead.
           const anchorRight = left > 45;
 
+          // A planned continuation shares the row with the bar it continues:
+          // same axis, dotted, and open-ended plans run out to the right edge
+          // of the chart rather than stopping at today.
+          const planned = entry.planned;
+          const plannedFrom = planned ? monthIndex(planned.start) : 0;
+          const plannedTo = planned?.end ? monthIndex(planned.end) + 1 : span;
+
           return (
             <div
               key={entry.id}
@@ -137,6 +148,24 @@ export function Overlap() {
                     WebkitMaskImage: ongoing
                       ? "linear-gradient(to right, black 78%, transparent)"
                       : undefined,
+                  }}
+                />
+              )}
+
+              {planned && (
+                <span
+                  className="absolute top-[24px] block h-[7px] transition-[opacity,transform] duration-200 group-hover:scale-y-[1.5] group-data-[hot='0']:opacity-35"
+                  style={{
+                    left: `${pct(plannedFrom)}%`,
+                    width: `${Math.max(pct(plannedTo - plannedFrom), 1.2)}%`,
+                    background: `repeating-linear-gradient(to right, ${TONE[entry.kind]} 0 4px, transparent 4px 8px)`,
+                    transformOrigin: "center",
+                    maskImage: planned.end
+                      ? undefined
+                      : "linear-gradient(to right, black 78%, transparent)",
+                    WebkitMaskImage: planned.end
+                      ? undefined
+                      : "linear-gradient(to right, black 78%, transparent)",
                   }}
                 />
               )}

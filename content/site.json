@@ -162,66 +162,6 @@
       }
     },
     {
-      "id": "b2b-export",
-      "section": "now",
-      "kind": "product",
-      "start": "2025-02",
-      "when": {
-        "en": "Feb 2025 ~",
-        "ko": "2025년 2월 ~"
-      },
-      "title": {
-        "en": "B2B export infrastructure",
-        "ko": "B2B 수출 인프라"
-      },
-      "where": {
-        "en": "CTO",
-        "ko": "CTO"
-      },
-      "tags": {
-        "en": [
-          "SQL",
-          "document store",
-          "customs flow"
-        ],
-        "ko": [
-          "SQL",
-          "도큐먼트 스토어",
-          "통관 플로우"
-        ]
-      },
-      "body": {
-        "en": [
-          "Building a system that matches domestic sellers with overseas buyers and automates customs and logistics. Customs and shipping documents are handled on the automation platform instead of over email or WhatsApp. Transactions in SQL, high-volume behavioral data in a document store;"
-        ],
-        "ko": [
-          "국내 셀러와 해외 바이어 매칭 및 통관물류 자동화 시스템 개발. 통관과 선적 서류를 이메일 또는 WhatsApp이 아니라 자동화 플랫폼에서 처리함. 거래는 SQL, 양이 많은 행동 데이터는 도큐먼트 스토어;"
-        ]
-      },
-      "note": {
-        "lede": {
-          "en": "Not launched yet. For now, on purpose.",
-          "ko": "아직 안 띄웠음. 당분간은 의도적으로."
-        },
-        "body": {
-          "en": [
-            "The hard part is not the matching. One shipment carries more than ten documents, each one owned by a different party, and if one is stuck the next does not go through — and right now almost all of that runs on email attachments.",
-            "So I split the data model. The transaction itself is relational, deliberately dull. Behavioral data — views, quote requests, document status changes — goes to a document store where the volume does not matter.",
-            "No launch date. Only in the time left over. Some months, zero hours."
-          ],
-          "ko": [
-            "어려운 쪽은 매칭이 아님. 선적 한 건에 서류가 열 개 넘게 붙고, 각각 주체가 다르고, 하나가 막히면 다음이 안 넘어가는데, 지금은 그게 거의 다 이메일 첨부로 돌아간다는 것.",
-            "그래서 데이터 모델을 갈랐음. 거래 자체는 관계형으로, 일부러 심심하게. 조회·견적 요청·서류 상태 변경 같은 행동 데이터는 양이 많아도 상관없는 도큐먼트 스토어로.",
-            "출시일 없음. 남는 시간에만 함. 어떤 달은 0시간."
-          ]
-        }
-      },
-      "altName": {
-        "en": "Matching & Legal",
-        "ko": "Matching & Legal"
-      }
-    },
-    {
       "id": "hackathon-x-2026",
       "section": "before",
       "kind": "work",
@@ -473,11 +413,75 @@
       }
     },
     {
+      "id": "b2b-export",
+      "section": "before",
+      "kind": "product",
+      "start": "2025-02",
+      "end": "2026-06",
+      "when": {
+        "en": "Feb 2025 ~ Jun 2026",
+        "ko": "2025년 2월 ~ 2026년 6월"
+      },
+      "title": {
+        "en": "B2B export infrastructure",
+        "ko": "B2B 수출 인프라"
+      },
+      "where": {
+        "en": "CTO",
+        "ko": "CTO"
+      },
+      "tags": {
+        "en": [
+          "SQL",
+          "document store",
+          "customs flow"
+        ],
+        "ko": [
+          "SQL",
+          "도큐먼트 스토어",
+          "통관 플로우"
+        ]
+      },
+      "body": {
+        "en": [
+          "A system that matched domestic sellers with overseas buyers and automated customs and logistics. Customs and shipping documents were handled on the automation platform instead of over email or WhatsApp. Transactions in SQL, high-volume behavioral data in a document store;"
+        ],
+        "ko": [
+          "국내 셀러와 해외 바이어 매칭 및 통관물류 자동화 시스템 개발. 통관과 선적 서류를 이메일 또는 WhatsApp이 아니라 자동화 플랫폼에서 처리함. 거래는 SQL, 양이 많은 행동 데이터는 도큐먼트 스토어;"
+        ]
+      },
+      "note": {
+        "lede": {
+          "en": "Launched, ran, then migrated off.",
+          "ko": "띄웠고, 쓰였고, 다른 걸로 넘어갔음."
+        },
+        "body": {
+          "en": [
+            "The hard part was not the matching. One shipment carries more than ten documents, each one owned by a different party, and if one is stuck the next does not go through — and at the time almost all of that ran on email attachments.",
+            "So I split the data model. The transaction itself was relational, deliberately dull. Behavioral data — views, quote requests, document status changes — went to a document store where the volume does not matter.",
+            "It shipped inside that window and was used. In June 2026 the operation moved onto a different stack. Someone else did that migration; my part ended there."
+          ],
+          "ko": [
+            "어려운 쪽은 매칭이 아니었음. 선적 한 건에 서류가 열 개 넘게 붙고, 각각 주체가 다르고, 하나가 막히면 다음이 안 넘어가는데, 당시에는 그게 거의 다 이메일 첨부로 돌아갔다는 것.",
+            "그래서 데이터 모델을 갈랐음. 거래 자체는 관계형으로, 일부러 심심하게. 조회·견적 요청·서류 상태 변경 같은 행동 데이터는 양이 많아도 상관없는 도큐먼트 스토어로.",
+            "저 기간 안에 출시했고 실제로 쓰였음. 2026년 6월에 운영이 다른 스택으로 넘어갔음. 그 마이그레이션은 다른 사람이 했고, 내 몫은 거기까지."
+          ]
+        }
+      },
+      "altName": {
+        "en": "Matching & Legal",
+        "ko": "Matching & Legal"
+      }
+    },
+    {
       "id": "decompiler",
       "section": "before",
       "kind": "work",
       "start": "2025-01",
       "end": "2026-05",
+      "planned": {
+        "start": "2026-08"
+      },
       "when": {
         "en": "Jan 2025 ~ May 2026",
         "ko": "2025년 1월 ~ 2026년 5월"

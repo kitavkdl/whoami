@@ -59,6 +59,11 @@ export type EntrySource = {
   start: string;
   /** YYYY-MM, inclusive. Omitted means still running. */
   end?: string;
+  /**
+   * A continuation that has not happened yet. Drawn on the same row of the
+   * concurrency chart as the entry itself, dotted rather than solid.
+   */
+  planned?: { start: string; end?: string };
   href?: string;
   when: L;
   title: L;

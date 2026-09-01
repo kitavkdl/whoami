@@ -50,6 +50,7 @@ export type Entry = {
   href?: string;
   start: string;
   end?: string;
+  planned?: { start: string; end?: string };
   note: Note;
 };
 
@@ -96,6 +97,7 @@ function resolveEntry(source: EntrySource, lang: Lang): Entry {
     kind: source.kind,
     start: source.start,
     end: source.end,
+    planned: source.planned,
     href: source.href,
     when: source.when[lang],
     title: source.title[lang],

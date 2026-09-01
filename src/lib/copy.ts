@@ -345,7 +345,7 @@ const en: Copy = {
   },
 
   overlapCaption:
-    "Everything above on one axis. Five ran at once in November 2025, and five again in March and May 2026. Two are still going. The dashed line is today.",
+    "Everything above on one axis. Five ran at once in November 2025, and five again in March and May 2026. One is still going. The vertical dashed line is today; a dotted bar is planned, not started.",
 
   photoDismiss: "click or esc to close",
 
@@ -641,7 +641,7 @@ const ko: Copy = {
   },
 
   overlapCaption:
-    "시간축 입니다. 점선은 현재 날짜기준 입니다.",
+    "시간축 입니다. 세로 점선은 현재 날짜기준 입니다. 점선 막대는 아직 시작하지 않은 예정 일정 입니다.",
 
   photoDismiss: "클릭 또는 esc 로 닫기",
 
