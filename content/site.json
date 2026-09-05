@@ -508,8 +508,8 @@
       },
       "body": {
         "en": [
-          "Technical advisor officer in spring 2025, vice president in the fall semester, president in spring 2026. Ran for three semesters.",
-          "Planning to start Decompiler at SBU during the fall 2026 semester."
+          "Technical advisor officer in spring 2025, vice president in the fall semester, president in spring 2026.",
+          "I am also planning to start Decompiler at SBU during the fall 2026 semester."
         ],
         "ko": [
           "2025년 봄 학기 기술 자문 임원, 가을 학기 부회장, 2026년 봄 학기 회장직을 역임함.",
@@ -625,7 +625,7 @@
       },
       "body": {
         "en": [
-          "Noticing that the student application process was entirely offline, moved it onto the web with PHP, HTML and JavaScript, did the mobile and desktop layout work, and deployed on Cafe24 including the server configuration."
+          "Noticing that all student application procedures are offline, we moved the process to the web using PHP, HTML, and JavaScript, worked on mobile and desktop layouts, configured the server, and deployed it on Cafe24"
         ],
         "ko": [
           "학생 지원 절차가 모두 오프라인 형식인 데에 착안하여, PHP, HTML, JavaScript로 웹에 옮기고 모바일·데스크톱 레이아웃 작업, 서버 설정 포함해서 카페24에 배포"
@@ -661,7 +661,7 @@
         "ko": "CODEGATE 2026 AI 스타트업 해커톤"
       },
       "where": {
-        "en": "1st place · ₩20,000,000 prize",
+        "en": "1st place · $15k prize",
         "ko": "1위 · 상금 2,000만 원"
       },
       "tags": {
@@ -676,10 +676,10 @@
       },
       "body": {
         "en": [
-          "Planned the product and took the final presentation. Pitched an AI platform that passes on the know-how of small and mid-size manufacturing before the people holding it retire, and took first place overall."
+          "I was in charge of planning the product and making the final presentation. Specifically, after proposing ideas, I am responsible for creating basic drafts and PRDs and distributing tasks. We pitched an AI platform that delivers and shares the know-how of small and medium-sized manufacturers before people retire, and built a shared database, ultimately achieving first place"
         ],
         "ko": [
-          "제품을 기획하고 최종 발표를 맡았다. 중소 제조업의 노하우를, 그것을 쥔 사람들이 은퇴하기 전에 물려주는 AI 플랫폼으로 피칭을 진행했고 최종 1위 달성"
+          "제품을 기획하고 최종 발표를 맡았다. 구체적으로는 아이디어 제안 이후 기초 시안과 PRD를 작성하고 업무를 배분하는 역할을 맡음. 중소 제조업의 노하우를 가진 사람들이 은퇴하기 전에 전달하고 공유DB를 구축하는 AI 플랫폼으로 피칭을 진행했고, 최종 1위 달성"
         ]
       },
       "images": [
@@ -789,10 +789,10 @@
       },
       "body": {
         "en": [
-          "Entered with SPIKE and was picked for the Best Idea award. The booth presentation was given in front of the mayor of Incheon at the time."
+          "Participated as SPIKE and selected for an outstanding idea. I was selected as the presenter’s representative from all participants and was conducted as a PR in front of the then mayor of Incheon."
         ],
         "ko": [
-          "SPIKE로 참가해 우수 아이디어에 선정됨. 부스 발표는 당시 인천시장 앞에서 진행함"
+          "SPIKE로 참가해 우수 아이디어에 선정됨. 부스 발표는 참가자 전체에서 발표자 대표로 선정되어 당시 인천시장 앞에서 PR을 진행함."
         ]
       },
       "images": [
@@ -858,10 +858,10 @@
       },
       "body": {
         "en": [
-          "Took part in the idea competition for AI and network applications, and the team was picked as an outstanding one."
+          "Selected as an outstanding and future support team after participating in the AI and Network Applications Idea Contest"
         ],
         "ko": [
-          "AI·네트워크 응용 분야 아이디어 공모전에 참가해 우수팀으로 선정됨"
+          "AI·네트워크 응용 분야 아이디어 공모전에 참가해 우수 및 추후 지원팀으로 선정됨"
         ]
       },
       "images": [
@@ -890,7 +890,7 @@
     }
   ],
   "tools": {
-    "en": "Mostly TypeScript, React, Postgres. Supabase when I have to move fast. About two years of PHP before that; I also lean on Tailwind for speed (and because AI likes it..).",
+    "en": "Mostly TypeScript, React, Postgres. When I need to move quickly, Supabase is the one. Before that, I’d been using PHP for about two years; Tailwind is also designed with speed (and because AI likes it..) as a strength.",
     "ko": "대개 TypeScript, React, Postgres. 빨리 움직여야 할 때는 Supabase. 그전에 PHP로 2년쯤; Tailwind 또한 속도(랑 AI가 좋아해서..)면에서 강점을 두고 고안합니다."
   },
   "school": {
