@@ -25,11 +25,11 @@
       "ko": "뉴욕 스토니브룩"
     },
     "lede": {
-      "en": "I think of myself as someone whose strength is UX. My goal is to stand at the front line of a particular field. Most of the career I have had so far has been on the side of replacing a spreadsheet, a paper form, or a procedure only one person on the team knows.",
-      "ko": "UX에 강점이 있는 사람이라고 스스로 생각합니다. 특정 분야의 최전선에 서보는 것이 목표입니다. 스프레드시트나 오프라인으로 이루어지고 있는 종이 서식, 아니면 팀에서 한 명만 아는 절차를 대체하는 업무를 주로 진행했습니다."
+      "en": "I consider myself someone with a strong strength in UX. The goal is to stand at the forefront of a specific field. The areas I mainly developed were mostly spreadsheets, paper formatting, or tasks that replaced procedures known only to one person in the team.",
+      "ko": "UX에 강점이 있는 사람이라고 스스로 생각합니다. 특정 분야의 최전선에 서보는 것이 목표입니다. 주로 개발했던 분야는 대부분 스프레드시트나 종이 서식, 혹은 팀에서 한 명만 아는 절차를 대체하는 업무 등을 진행했습니다."
     },
     "intro": {
-      "en": "I have mostly aimed at places with no pool of developers. I have done a lot of work realizing DX by handling all of it, from schema design through the screens and the deploy. That includes sitting next to the people who will actually use it and checking how their day's work runs.",
+      "en": "I placed a lot of them targeting places without a pool of developers. I carried out a lot of work to realize DX by handling everything from schema design to screens and deployment. It also includes sitting next to the person who will actually use it and seeing how the day’s work unfolds;",
       "ko": "개발자 풀이 없는 곳들을 타겟으로 많이 두었습니다. 스키마 설계부터 화면 및 배포까지 전부 진행하므로써 DX를 실현하는 작업을 많이 진행했습니다. 실제로 쓸 사람 옆에 앉아 하루 업무가 어떻게 돌아가는지 확인하는 것도 포함"
     },
     "updated": {
@@ -130,9 +130,9 @@
       },
       "body": {
         "en": [
-          "Academic platform for SBU & SUNYK students. The service applies only to the @stonybrook.edu domain. 100 sign-ups in the first 20 days, currently on v.3.7.1.",
-          "Provides GPA visualization and simulation, curriculum paths, my timetable laid over a friend's timetable, anonymous course reviews, cafés near campus, and so on and so on; the first version refreshed by polling and was migrated to Supabase Realtime.",
-          "Started October 2025 as a joint Decompiler × LAMBDA club project, where I took on idea generation and project leader and started with a team of 12. Split off as an independent project in January 2026 and is still running now."
+          "A bachelor’s platform for SBU & SUNYK students. The service applies only to the @stonybrook.edu domain. Reached 100 subscribers on the first 20 days; currently version v.3.7.1",
+          "Provides credit visualization and simulation, curriculum pathways, my timetable overlaid on friends’ timetables, anonymous course reviews, and nearby cafes, among other things; the first version was refreshed with Falling and migrated to Supabase Realtime",
+          "In October 2025, we started as a joint project by the Decompiler × LAMBDA club, and after taking on idea generation and project leadership, we began with a team of 12 people. It broke off as an independent project in January 2026, and it is still ongoing now"
         ],
         "ko": [
           "SBU & SUNYK 학생들을 위한 학사 플랫폼. 서비스는 @stonybrook.edu 도메인으로만 적용됨. 첫 20일에 가입자 100명 달성, 현재 v.3.7.1 버전",
@@ -193,7 +193,7 @@
       },
       "body": {
         "en": [
-          "The semester after the 2025 hackathon: a hackathon hosted and organized by Decompiler on the theme of Digital Transformation. Held on 30 May 2026 in a format similar to the previous hackathon. I ran the event itself; outreach, venue rental, the whole preparation process, and running it on the day."
+          "The 2025 hackathon, held the following semester, was a hackathon hosted and organized by Decompiler on the theme of Digital Transformation. It will be held on May 30, 2026, in a format similar to last year’s hackathon. Overall event management; contact, facility rental, and the entire preparation and execution process;"
         ],
         "ko": [
           "2025 해커톤 다음 학기로, Digital Transpormation을 주제로 Decompiler가 주최·주관한 해커톤. 지난 해커톤과 비슷한 포맷으로 2026년 5월 30일 진행. 행사 자체 총괄; 컨택, 시설 대여, 준비 전 과정 및 진행"
@@ -270,7 +270,7 @@
           "Development of an offline tool used internally; NDA"
         ],
         "ko": [
-          "내부에서 쓰는 오프라인 툴 개발; NDA"
+          "Development of an offline tool for use internally, NDA;"
         ]
       },
       "note": {
@@ -320,7 +320,7 @@
       },
       "body": {
         "en": [
-          "As planner and event lead, I assigned the team members their roles and oversaw all of it together: preparing and running the hackathon, contacting professors and speakers, recruiting judges, recruiting students, making posters, renting the venue, and catering."
+          "As the overall planner and event coordinator, I was responsible for the entire preparation and execution of the hackathon, contacting professors and speakers, recruiting judges, recruiting students, creating posters, renting facilities, and providing meals, all while delegating and overseeing other executive roles"
         ],
         "ko": [
           "기획 및 행사 총괄로 해커톤의 준비과정 및 진행, 교수님 및 연사자분 컨택, 심사위원 섭외, 학생 모집, 포스터 제작, 시설 대여, 식사 제공 업무를 통틀어 타 임원 역할부여 및 총괄함"
@@ -382,7 +382,7 @@
       },
       "body": {
         "en": [
-          "Targeting work that is done offline in the logistics and customs industry, I used Odoo to build a product customized on top of Odoo, and on that basis took the product design and development role."
+          "Using Odoo, we targeted the offline tasks currently taking place in the logistics customs clearance industry, developed a product customized primarily with Odoo, and carried out product design and development based on that content."
         ],
         "ko": [
           "Odoo를 활용해 물류통관 업계에서 오프라인으로 이루어지고 있는 업무들을 타겟으로, Odoo를 메인으로 커스터마이징한 프로덕트를 개발하고 해당 내용을 바탕으로 제품설계 및 개발 역할을 진행함."
@@ -420,7 +420,7 @@
       "end": "2026-06",
       "when": {
         "en": "Feb 2025 ~ Jun 2026",
-        "ko": "2025년 2월 ~ 2026년 6월"
+        "ko": "2025년 2월 ~ 8월"
       },
       "title": {
         "en": "B2B export infrastructure",
@@ -444,7 +444,7 @@
       },
       "body": {
         "en": [
-          "A system that matched domestic sellers with overseas buyers and automated customs and logistics. Customs and shipping documents were handled on the automation platform instead of over email or WhatsApp. Transactions in SQL, high-volume behavioral data in a document store;"
+          "Development of a system for matching domestic sellers with overseas buyers and automating customs clearance logistics. Customs clearance and shipping documents are processed on an automated platform instead of by email or WhatsApp. Transactions are handled with SQL, and large volumes of behavioral data are processed through the document store."
         ],
         "ko": [
           "국내 셀러와 해외 바이어 매칭 및 통관물류 자동화 시스템 개발. 통관과 선적 서류를 이메일 또는 WhatsApp이 아니라 자동화 플랫폼에서 처리함. 거래는 SQL, 양이 많은 행동 데이터는 도큐먼트 스토어;"
