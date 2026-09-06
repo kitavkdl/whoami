@@ -255,10 +255,12 @@ html[lang="ko"] .chart-label {
 
    Where the browser has view transitions, the new palette is clipped to a
    circle growing out of whatever was pressed. The default cross-fade on both
-   snapshots is turned off so the wipe is the only thing moving; the leading
-   edge carries a brief opacity ramp so it reads as a sweep rather than a
-   cut-out. Where it does not, the tokens themselves ease for a moment —
-   see data-theme-swap, which lib/theme sets only for the length of the swap.
+   snapshots is turned off so the wipe is the only thing moving, and the two
+   are then driven on the same clock: the old page held flat underneath, the
+   new one swept in over it. The leading edge carries a brief opacity ramp so
+   it reads as a sweep rather than a cut-out. Where there are no view
+   transitions the tokens themselves ease for a moment — see data-theme-swap,
+   which lib/theme sets only for the length of the swap.
 --------------------------------------------------------------------------- */
 
 ::view-transition-old(root),
@@ -267,21 +269,46 @@ html[lang="ko"] .chart-label {
   mix-blend-mode: normal;
 }
 
+/*
+  The outgoing page is the backdrop the circle is cut out of, so it has to sit
+  still and stay opaque for exactly as long as the wipe runs. Leaving it with
+  no animation at all is not the same thing: with nothing keeping it alive the
+  snapshot stops being painted, everything the circle has not reached yet drops
+  to blank, and the swap reads as a circle over an empty page that fills in on
+  the last frame. A flat hold on opacity keeps it up.
+*/
 html[data-vt="theme"]::view-transition-old(root) {
   z-index: 1;
+  animation: theme-hold 560ms linear both;
+}
+
+@keyframes theme-hold {
+  from,
+  to {
+    opacity: 1;
+  }
 }
 
 html[data-vt="theme"]::view-transition-new(root) {
   z-index: 2;
-  animation: theme-wipe 500ms cubic-bezier(0.16, 0.84, 0.34, 1) both;
+  animation: theme-wipe 560ms linear both;
 }
 
+/*
+  The radius grows linearly, so the leading edge crosses the viewport at a
+  steady speed and stays visible the whole way. An eased curve looks wrong
+  here: because the circle has to reach the furthest corner, most of its arc
+  has already left the screen by the time an ease-out is three quarters done,
+  so the sweep appears to stall partway and the remainder simply appears.
+  lib/theme sizes --vt-r past that corner, which puts the last of the fill
+  slightly ahead of the clock rather than crawling into the final frame.
+*/
 @keyframes theme-wipe {
   from {
     clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 0%));
     opacity: 0.86;
   }
-  22% {
+  14% {
     opacity: 1;
   }
   to {

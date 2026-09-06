@@ -65,6 +65,19 @@ function commit(pref: ThemePref) {
 
 type Origin = { x: number; y: number };
 
+/**
+ * The area the wipe has to cover. clientWidth/clientHeight leave out a classic
+ * scrollbar, which innerWidth counts; taking the larger of the two keeps the
+ * circle from stopping a scrollbar's width short of the edge.
+ */
+function viewport() {
+  const doc = document.documentElement;
+  return {
+    w: Math.max(doc.clientWidth, window.innerWidth || 0),
+    h: Math.max(doc.clientHeight, window.innerHeight || 0),
+  };
+}
+
 function onScreen(el: HTMLElement): boolean {
   const box = el.getBoundingClientRect();
   if (box.width === 0 || box.height === 0) return false;
@@ -72,7 +85,7 @@ function onScreen(el: HTMLElement): boolean {
   // browser whether it is actually painted before growing a circle from it.
   if (typeof el.checkVisibility === "function" && !el.checkVisibility({ visibilityProperty: true }))
     return false;
-  return box.bottom > 0 && box.top < window.innerHeight;
+  return box.bottom > 0 && box.top < viewport().h;
 }
 
 /**
@@ -88,7 +101,7 @@ function anchorOrigin(): Origin {
     const box = target.getBoundingClientRect();
     return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
   }
-  return { x: window.innerWidth - 44, y: 44 };
+  return { x: viewport().w - 44, y: 44 };
 }
 
 export function originOf(el: Element): Origin {
@@ -136,10 +149,12 @@ export function setThemePref(pref: ThemePref, origin?: Origin) {
   }
 
   const { x, y } = origin ?? anchorOrigin();
-  const radius = Math.hypot(
-    Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y),
-  );
+  const { w, h } = viewport();
+  // Distance to the furthest corner, and then a little past it. The overshoot
+  // is what makes the sweep read as finished: the corner is covered a frame or
+  // two before the animation ends, instead of on its very last frame, where a
+  // rounding error or a dropped frame shows as a snap.
+  const radius = Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) * 1.06;
 
   root.style.setProperty("--vt-x", `${x}px`);
   root.style.setProperty("--vt-y", `${y}px`);
