@@ -11,11 +11,20 @@ will not silently change the resume.
 | `fonts.css` | Archivo and Source Serif 4, base64-embedded (Latin subset only) |
 | `build.mjs` | renders `resume.html` to the PDF |
 
-English only — no Hangul, no images, no scripts, no clock, no console. The PDF is fully
+English only — no Hangul, no scripts, no clock, no console. The ID photo is resized to
+300x386 and base64-embedded directly in `resume.html` (EXIF stripped), so the PDF is fully
 self-contained and renders identically anywhere.
 
 If you add Korean text you will also need a Korean face in `fonts.css`; without one it will
 render as blank boxes.
+
+Section order follows the usual CV convention for a current student: profile, education,
+skills, experience (employment), projects (self-directed), awards, leadership. Dates read
+`Oct 2025 - Present` rather than `2025.10`.
+
+A photo is standard on CVs in Korea, Japan and much of Europe. US employers usually expect
+one without a photo, and some applicant-tracking systems drop them -- if you apply in the
+US, delete the `<img class="photo">` line and rebuild.
 
 ## Editing
 
