@@ -11,8 +11,7 @@ will not silently change the resume.
 | `fonts.css` | Archivo and Source Serif 4, base64-embedded (Latin subset only) |
 | `build.mjs` | renders `resume.html` to the PDF |
 
-English only — no Hangul, no scripts, no clock, no console. The ID photo is resized to
-300x386 and base64-embedded directly in `resume.html` (EXIF stripped), so the PDF is fully
+English only — no photo, no Hangul, no scripts, no clock, no console. The PDF is fully
 self-contained and renders identically anywhere.
 
 If you add Korean text you will also need a Korean face in `fonts.css`; without one it will
@@ -22,9 +21,22 @@ Section order follows the usual CV convention for a current student: profile, ed
 skills, experience (employment), projects (self-directed), awards, leadership. Dates read
 `Oct 2025 - Present` rather than `2025.10`.
 
-A photo is standard on CVs in Korea, Japan and much of Europe. US employers usually expect
-one without a photo, and some applicant-tracking systems drop them -- if you apply in the
-US, delete the `<img class="photo">` line and rebuild.
+## On the photo
+
+There is deliberately no photo. US resumes omit them, and public universities -- including
+SBU, for on-campus jobs -- avoid pre-hire material that signals race, age or sex, so a photo
+reads as off-convention there and some applicant-tracking systems drop it.
+
+For a Korean or European application, where a photo is standard, add one back:
+
+```sh
+# produces a 300px-wide, EXIF-stripped data URI from the ID photo in src/assets
+node -e "..."   # see commit 43541da for the version that had it
+```
+
+Then drop an `<img class="photo" src="data:image/jpeg;base64,...">` at the end of
+`.masthead` and give it `width: 22mm; border: 0.5pt solid var(--rule)`. Budget about 5mm of
+extra header height and re-check the page count.
 
 ## Editing
 
