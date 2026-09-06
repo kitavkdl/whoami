@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jiyul Ahn — Resume</title>
+    <link rel="stylesheet" href="./fonts.css" />
+    <style>
+      /* ---------------------------------------------------------------
+         Jiyul Ahn — resume
+         Standalone print document. A4, two pages. English only, no images, no scripts.
+         Rebuild the PDF with: node resume/build.mjs
+         --------------------------------------------------------------- */
+
+      :root {
+        --ink: #16283d; /* navy-black, primary text */
+        --ink-2: #55677d; /* meta, secondary */
+        --rule: #d3dae3; /* hairlines and the spine */
+        --paper: #ffffff;
+        --seal: #a5342a; /* reserved for award placements only */
+
+        --rail: 26mm; /* date column */
+        --gap: 7mm; /* rail-to-spine and spine-to-text */
+      }
+
+      @page {
+        size: A4;
+        margin: 15mm 14mm 14mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: 'Archivo', system-ui, sans-serif;
+        font-size: 9pt;
+        line-height: 1.45;
+        text-rendering: geometricPrecision;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .sheet {
+        width: 182mm; /* A4 210mm less the 14mm side margins */
+        margin: 0 auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ---- masthead ------------------------------------------------ */
+
+      .masthead {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12mm;
+        padding-bottom: 4mm;
+        border-bottom: 0.5pt solid var(--rule);
+      }
+
+      .name {
+        margin: 0;
+        font-size: 22pt;
+        font-weight: 600;
+        letter-spacing: -0.018em;
+        line-height: 1.02;
+      }
+
+      .role {
+        margin: 2.2mm 0 0;
+        font-size: 9.4pt;
+        font-weight: 400;
+        color: var(--ink-2);
+        letter-spacing: 0.002em;
+      }
+
+      /* Contact items each get their own line, so there is no dot-joined
+         meta string and nothing collides at narrow widths. */
+      .reach {
+        margin: 0;
+        text-align: right;
+        font-size: 8.4pt;
+        line-height: 1.62;
+        color: var(--ink-2);
+        white-space: nowrap;
+      }
+
+      .reach .primary {
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      /* ---- lede ---------------------------------------------------- */
+
+      .lede {
+        margin: 4mm 0 0;
+        max-width: 152mm;
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 10.2pt;
+        line-height: 1.52;
+        color: var(--ink);
+      }
+
+      /* ---- the dated rail ------------------------------------------ */
+
+      .row {
+        display: grid;
+        grid-template-columns: var(--rail) 1fr;
+        break-inside: avoid;
+      }
+
+      .rail {
+        padding-right: var(--gap);
+        text-align: right;
+        font-size: 8pt;
+        font-weight: 500;
+        line-height: 1.35;
+        color: var(--ink-2);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Each row carries its own left border, so the spine stays
+         continuous down the page and resumes correctly after a break. */
+      .body {
+        padding-left: var(--gap);
+        padding-bottom: 3.8mm;
+        border-left: 0.5pt solid var(--rule);
+      }
+
+      /* ---- section heads ------------------------------------------- */
+
+      .row.sec {
+        break-after: avoid;
+      }
+
+      .row.sec .body {
+        display: flex;
+        align-items: center;
+        gap: 3.5mm;
+        padding-top: 4.6mm;
+        padding-bottom: 2.4mm;
+      }
+
+      .row.sec .lbl {
+        font-size: 8.6pt;
+        font-weight: 600;
+        color: var(--ink);
+        letter-spacing: 0.004em;
+        white-space: nowrap;
+      }
+
+      .row.sec .hr {
+        flex: 1;
+        border-top: 0.5pt solid var(--ink);
+        opacity: 0.3;
+      }
+
+      /* The first section sits right under the lede and needs less air. */
+      .row.sec.first .body {
+        padding-top: 3.4mm;
+      }
+
+      /* ---- entries -------------------------------------------------- */
+
+      .head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8mm;
+      }
+
+      .title {
+        margin: 0;
+        font-size: 10.4pt;
+        font-weight: 600;
+        letter-spacing: -0.004em;
+        line-height: 1.25;
+      }
+
+      .org {
+        flex: 0 1 auto;
+        text-align: right;
+        font-size: 8.5pt;
+        font-weight: 400;
+        color: var(--ink-2);
+        line-height: 1.35;
+      }
+
+      .org .seal {
+        color: var(--seal);
+        font-weight: 600;
+      }
+
+      .points {
+        margin: 1.6mm 0 0;
+        padding: 0;
+        list-style: none;
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 9.3pt;
+        line-height: 1.46;
+      }
+
+      .points li {
+        position: relative;
+        padding-left: 3.6mm;
+        margin-top: 1.1mm;
+      }
+
+      .points li:first-child {
+        margin-top: 0;
+      }
+
+      .points li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5em;
+        width: 1.5mm;
+        height: 0.5pt;
+        background: var(--ink-2);
+        opacity: 0.55;
+      }
+
+      .points cite {
+        font-style: italic;
+      }
+
+      /* Stack words are separated by space alone — no interpuncts. */
+      .stack {
+        margin: 2mm 0 0;
+        font-size: 7.9pt;
+        font-weight: 500;
+        letter-spacing: 0.012em;
+        color: var(--ink-2);
+      }
+
+      .stack span + span {
+        margin-left: 4.5mm;
+      }
+
+      /* ---- compact rows (education, tools) -------------------------- */
+
+      .plain {
+        margin: 0;
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 9.3pt;
+        line-height: 1.46;
+      }
+
+      .plain + .plain {
+        margin-top: 1.1mm;
+      }
+
+      .last .body {
+        padding-bottom: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sheet">
+      <header class="masthead">
+        <div>
+          <h1 class="name">Jiyul Ahn</h1>
+          <p class="role">Software engineer — internal tools and operations software</p>
+        </div>
+        <p class="reach">
+          <span class="primary">jiyul.ahn@stonybrook.edu</span><br />
+          <span>+1 631 406 0295</span><br />
+          <span>+82 10 8685 9042</span><br />
+          <span>seek-once.com</span><br />
+          <span>Stony Brook, New York</span>
+        </p>
+      </header>
+
+      <p class="lede">
+        I build software for teams that don't have a developer — usually replacing a spreadsheet, a
+        paper form, or a procedure only one person in the room knew. The work runs from schema design
+        through the screen to deployment, sitting next to whoever has to use it.
+      </p>
+
+      <!-- ============================ WORK ============================ -->
+
+      <div class="row sec first">
+        <div class="rail"></div>
+        <div class="body"><span class="lbl">Selected work</span><span class="hr"></span></div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.10 –<br />now</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">SeekOnce</h2>
+            <div class="org">Project lead, now running it independently</div>
+          </div>
+          <ul class="points">
+            <li>
+              Academic planning platform for Stony Brook and SUNY Korea students, with sign-up
+              limited to the @stonybrook.edu domain. Reached 100 subscribers in its first 20 days;
+              currently on v3.7.1.
+            </li>
+            <li>
+              One upload drives the whole product: a transcript feeds GPA simulation, curriculum
+              pathways, remaining requirements, anonymous course reviews, and a timetable that
+              overlays on friends'. About twenty Postgres tables hold it up.
+            </li>
+            <li>
+              Started as a twelve-person Decompiler × LAMBDA club project and went independent in
+              January 2026. Moving from polling to Supabase Realtime took a weekend and removed the
+              timetable's thirty-second lag between two people on the same screen.
+            </li>
+          </ul>
+          <p class="stack">
+            <span>TypeScript</span><span>React</span><span>Postgres</span><span>Supabase Realtime</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2026.03 –<br />2026.06</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">Korea Polar Research Institute</h2>
+            <div class="org">Research intern, paid — Life Sciences Research Division</div>
+          </div>
+          <ul class="points">
+            <li>Built an offline tool for internal use; under NDA.</li>
+            <li>
+              Credited afterwards as a co-author on the paper the work fed into,
+              <cite
+                >Directed Immobilization of an Engineered Ice-Binding Protein (ABP-eCoIBD1) on
+                Aluminum Surfaces for Anti-Icing Performance</cite
+              >
+              (supplementary material, in draft as of September 2026).
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.03 –<br />2026.03</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">B2B export infrastructure</h2>
+            <div class="org">Developer — one-year contract</div>
+          </div>
+          <ul class="points">
+            <li>
+              Matched domestic sellers with overseas buyers and moved customs and shipping paperwork
+              off email and WhatsApp onto an automated platform.
+            </li>
+            <li>
+              A shipment carries more than ten documents, each owned by a different party, and a stuck
+              one blocks the next. So I split the model: transactions stayed relational and deliberately
+              dull, while behavioural data went to a document store where volume doesn't matter.
+            </li>
+            <li>
+              Shipped inside the window and was used in production for the full contract, which ended
+              in March 2026 when the operation moved onto a different stack.
+            </li>
+          </ul>
+          <p class="stack">
+            <span>SQL</span><span>Document store</span><span>Customs and shipping flow</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.06 –<br />2025.11</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">DX Tech</h2>
+            <div class="org">Odoo project manager, Incheon — six-month contract</div>
+          </div>
+          <ul class="points">
+            <li>
+              Scoped the steps still running offline in logistics customs clearance, then designed and
+              built a customised Odoo product around them.
+            </li>
+          </ul>
+          <p class="stack"><span>Odoo</span><span>Python</span><span>Scoping</span></p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2023.04 –<br />2024.12</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">BADA</h2>
+            <div class="org">Developer, Cheonan</div>
+          </div>
+          <ul class="points">
+            <li>
+              Every student application ran on paper, so I moved the process to the web: PHP, HTML and
+              JavaScript, mobile and desktop layouts, server configuration, deployed on Cafe24.
+            </li>
+          </ul>
+          <p class="stack">
+            <span>PHP</span><span>JavaScript</span><span>Cafe24</span><span>Responsive layout</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2024.01 –<br />2024.09</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">Facility booking service</h2>
+            <div class="org">Solo project</div>
+          </div>
+          <ul class="points">
+            <li>Booking site for school facilities, built and then operated for the high schools using it.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================ AWARDS ============================ -->
+
+      <div class="row sec">
+        <div class="rail"></div>
+        <div class="body"><span class="lbl">Awards and certification</span><span class="hr"></span></div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2026.07</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">CODEGATE 2026 AI Startup Hackathon</h2>
+            <div class="org"><span class="seal">1st place</span> — $15,000 prize</div>
+          </div>
+          <ul class="points">
+            <li>
+              Led product planning and gave the final pitch: proposed the idea, wrote the PRD, split
+              the work across the team. We pitched a platform that captures what small manufacturers
+              know before the people holding it retire, and built the shared database behind it.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2026.03</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">Odoo Project Leader Ownership</h2>
+            <div class="org">Certification</div>
+          </div>
+          <ul class="points">
+            <li>Completed Odoo's PLO course, which carries access to the Odoo Enterprise inner repository.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.11</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">2nd Incheon University Startup Academy</h2>
+            <div class="org"><span class="seal">Best Idea</span></div>
+          </div>
+          <ul class="points">
+            <li>
+              Entered as SPIKE. Chosen out of all participants to present on behalf of the entrants,
+              in front of the mayor of Incheon at the time.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.06</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">12th K-Digital Challenge NET Challenge Camp</h2>
+            <div class="org"><span class="seal">Outstanding team</span></div>
+          </div>
+          <ul class="points">
+            <li>
+              Selected as an outstanding team, with follow-on support, in the AI and network
+              applications idea contest.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ==================== LEADERSHIP AND EVENTS ==================== -->
+
+      <div class="row sec">
+        <div class="rail"></div>
+        <div class="body"><span class="lbl">Leading and organising</span><span class="hr"></span></div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.01 –<br />2026.05</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">Decompiler</h2>
+            <div class="org">Student club, SUNY Korea</div>
+          </div>
+          <ul class="points">
+            <li>
+              Technical advisor in spring 2025, vice president that fall, president in spring 2026.
+              Starting a Decompiler chapter at Stony Brook in the fall 2026 semester.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2026.05</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">Hackathon the X 2026</h2>
+            <div class="org">Event lead — hosted and organised by Decompiler</div>
+          </div>
+          <ul class="points">
+            <li>
+              Ran the event end to end on 30 May 2026 on the theme of digital transformation: outreach,
+              venue and facility rental, and the whole preparation and execution process.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2026.05</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">UROP Showcase</h2>
+            <div class="org">Presenter — hosted by the Computer Science Department</div>
+          </div>
+          <ul class="points">
+            <li>
+              Presented at the Undergraduate Research Opportunities Program showcase on 26 May 2026.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.09 –<br />2025.12</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">AI literacy mentoring</h2>
+            <div class="org">Mentor, paid — programme commissioned by an office of education</div>
+          </div>
+          <ul class="points">
+            <li>
+              Taught AI literacy through the fall 2025 semester.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="rail">2025.11</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">2025 Green Digital Trade Ideathon</h2>
+            <div class="org">Event lead — hosted and organised by Decompiler</div>
+          </div>
+          <ul class="points">
+            <li>
+              Planned and coordinated the whole event — speakers, judges, student recruitment, posters,
+              facility rental and catering — while delegating and overseeing the other executive roles.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================ EDUCATION ============================ -->
+
+      <div class="row sec">
+        <div class="rail"></div>
+        <div class="body"><span class="lbl">Education</span><span class="hr"></span></div>
+      </div>
+
+      <div class="row">
+        <div class="rail">in progress</div>
+        <div class="body">
+          <div class="head">
+            <h2 class="title">Stony Brook University</h2>
+            <div class="org">B.S. Computer Science</div>
+          </div>
+          <ul class="points">
+            <li>
+              Currently enrolled. Studied at SUNY Korea, the university's Incheon campus, through
+              spring 2026.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================ TOOLS ============================ -->
+
+      <div class="row sec">
+        <div class="rail"></div>
+        <div class="body"><span class="lbl">Tools</span><span class="hr"></span></div>
+      </div>
+
+      <div class="row last">
+        <div class="rail">now</div>
+        <div class="body">
+          <p class="plain">
+            Mostly TypeScript, React and Postgres, with Supabase when something has to move quickly.
+            Two years of PHP before that. Tailwind for the same reason as Supabase — speed.
+          </p>
+          <p class="stack">
+            <span>TypeScript</span><span>JavaScript</span><span>React</span><span>Python</span
+            ><span>PHP</span><span>SQL</span><span>Postgres</span><span>Supabase</span
+            ><span>Tailwind</span><span>Odoo</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
