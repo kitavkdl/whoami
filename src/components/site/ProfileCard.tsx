@@ -1,4 +1,5 @@
 import photo from "@/assets/jiyul.png";
+import photoHover from "@/assets/jiyul-alt.webp";
 import { useContent } from "@/lib/content";
 import { useCopy } from "@/lib/copy";
 import { LocalClock } from "@/components/site/LocalClock";
@@ -58,13 +59,29 @@ export function ProfileCard() {
       </div>
 
       <div className="relative -mt-12 flex flex-col gap-4 px-4 sm:-mt-14 sm:flex-row sm:items-end sm:gap-5 sm:px-6">
-        <img
-          src={photo}
-          alt=""
-          width={827}
-          height={1063}
-          className="size-[5.5rem] shrink-0 rounded-[3px] border border-rule bg-paper object-cover object-top shadow-[0_8px_24px_-16px_rgba(0,0,0,0.55)] sm:size-[6.5rem]"
-        />
+        {/*
+          Two photographs in one frame: the second one comes up while the
+          cursor is on it and goes back down on the way out. It is dropped from
+          print, where the page is a resume and one face is enough.
+        */}
+        <div className="group/portrait relative size-[5.5rem] shrink-0 overflow-hidden rounded-[3px] border border-rule bg-paper shadow-[0_8px_24px_-16px_rgba(0,0,0,0.55)] sm:size-[6.5rem]">
+          <img
+            src={photo}
+            alt=""
+            width={827}
+            height={1063}
+            className="size-full object-cover object-top transition-opacity duration-300 group-hover/portrait:opacity-0"
+          />
+          <img
+            src={photoHover}
+            alt=""
+            aria-hidden
+            data-print="hide"
+            width={1080}
+            height={1440}
+            className="absolute inset-0 size-full object-cover object-center opacity-0 transition-opacity duration-300 group-hover/portrait:opacity-100"
+          />
+        </div>
 
         <div className="min-w-0 pb-1">
           <h1 className="text-[2.1rem] font-medium leading-none tracking-[-0.01em]">

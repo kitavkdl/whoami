@@ -140,6 +140,15 @@
           "2025년 10월, Decompiler × LAMBDA 동아리 합동 프로젝트로 시작했고 idea generation 및 project leader을 맡아 12명의 팀으로 시작함. 2026년 1월에 독립 프로젝트로 떨어져 나왔고 현재 또한 계속해서 진행중"
         ]
       },
+      "images": [
+        {
+          "src": "/media/seekonce-early-team.webp",
+          "alt": {
+            "en": "The SeekOnce team early on, in a study room at SUNY Korea",
+            "ko": "SeekOnce 초기 팀, 한국뉴욕주립대 스터디룸"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Twenty tables, one upload. What I thought about longest was how much to show a student on one screen.",
@@ -214,6 +223,13 @@
             "en": "The organiser's comment, as it ran in the same article",
             "ko": "같은 기사에 실린 주최 측 코멘트"
           }
+        },
+        {
+          "src": "/media/hackathon-x-2026-team.webp",
+          "alt": {
+            "en": "The staff after Hackathon the X 2026",
+            "ko": "해커톤 THE X 2026을 마친 뒤 운영진"
+          }
         }
       ],
       "note": {
@@ -228,6 +244,70 @@
           ],
           "ko": [
             "부제",
+            "부제"
+          ]
+        }
+      }
+    },
+    {
+      "id": "urop-showcase-2026",
+      "section": "before",
+      "kind": "work",
+      "start": "2026-05",
+      "end": "2026-05",
+      "when": {
+        "en": "May 2026",
+        "ko": "2026년 5월"
+      },
+      "title": {
+        "en": "UROP Showcase",
+        "ko": "UROP Showcase"
+      },
+      "altName": {
+        "en": "Undergraduate Research Opportunities Program",
+        "ko": "Undergraduate Research Opportunities Program · 학부생 연구 참여 프로그램"
+      },
+      "where": {
+        "en": "presenter · hosted by the CS Department",
+        "ko": "발표자 · 컴퓨터과학과 주최"
+      },
+      "tags": {
+        "en": [
+          "presenting",
+          "undergraduate research"
+        ],
+        "ko": [
+          "발표",
+          "학부 연구"
+        ]
+      },
+      "body": {
+        "en": [
+          "Presented at the UROP Showcase held by the Computer Science Department on 26 May 2026."
+        ],
+        "ko": [
+          "2026년 5월 26일 컴퓨터과학과에서 주최한 UROP Showcase에 발표자로 참여함."
+        ]
+      },
+      "images": [
+        {
+          "src": "/media/urop-showcase-2026.webp",
+          "alt": {
+            "en": "Presenting at the 2026 UROP Showcase — SUNY Korea",
+            "ko": "2026 UROP Showcase 발표 — 한국뉴욕주립대"
+          }
+        }
+      ],
+      "note": {
+        "lede": {
+          "en": "Title",
+          "ko": "제목"
+        },
+        "body": {
+          "en": [
+            "Subtitle"
+          ],
+          "ko": [
             "부제"
           ]
         }
@@ -258,19 +338,23 @@
       "tags": {
         "en": [
           "internal tooling",
-          "offline"
+          "offline",
+          "co-author"
         ],
         "ko": [
           "사내 도구",
-          "오프라인"
+          "오프라인",
+          "공저자"
         ]
       },
       "body": {
         "en": [
-          "Development of an offline tool used internally; NDA"
+          "Development of an offline tool used internally; NDA",
+          "Listed afterwards as a co-author on the paper the work fed into — \"Directed Immobilization of an Engineered Ice-Binding Protein (ABP-eCoIBD1) on Aluminum Surfaces for Anti-Icing Performance\", supplementary material. In draft as of September 2026."
         ],
         "ko": [
-          "Development of an offline tool for use internally, NDA;"
+          "Development of an offline tool for use internally, NDA;",
+          "인턴 종료 후 해당 연구 논문에 공저자로 등재됨 — 〈Directed Immobilization of an Engineered Ice-Binding Protein (ABP-eCoIBD1) on Aluminum Surfaces for Anti-Icing Performance〉, Supplementary Material. 2026년 9월 기준 Draft 상태."
         ]
       },
       "note": {
@@ -299,8 +383,8 @@
         "ko": "2025년 11월"
       },
       "title": {
-        "en": "2025 Green Global Trade Ideathon",
-        "ko": "2025 Green Global Trade Ideathon"
+        "en": "2025 Green Digital Trade Ideathon",
+        "ko": "2025 Green Digital Trade Ideathon"
       },
       "where": {
         "en": "event lead · hosted and organized by Decompiler",
@@ -330,11 +414,69 @@
         {
           "src": "/media/ggt-ideathon-2025.webp",
           "alt": {
-            "en": "During the 2025 Green Global Trade Ideathon",
-            "ko": "2025 Green Global Trade 아이디어톤 진행 중"
+            "en": "During the 2025 Green Digital Trade Ideathon",
+            "ko": "2025 Green Digital Trade 아이디어톤 진행 중"
+          }
+        },
+        {
+          "src": "/media/ggt-ideathon-2025-awards.webp",
+          "alt": {
+            "en": "The award ceremony at the end of the 2025 ideathon",
+            "ko": "2025 아이디어톤 시상식"
           }
         }
       ],
+      "note": {
+        "lede": {
+          "en": "Title",
+          "ko": "제목"
+        },
+        "body": {
+          "en": [
+            "Subtitle"
+          ],
+          "ko": [
+            "부제"
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai-literacy-mentor-2025",
+      "section": "before",
+      "kind": "work",
+      "start": "2025-09",
+      "end": "2025-12",
+      "when": {
+        "en": "Fall 2025",
+        "ko": "2025년 하반기"
+      },
+      "title": {
+        "en": "AI literacy mentoring",
+        "ko": "AI 사용교육 멘토"
+      },
+      "where": {
+        "en": "mentor, paid · programme commissioned by an office of education",
+        "ko": "멘토, 유급 · 교육청 발주 사업"
+      },
+      "tags": {
+        "en": [
+          "teaching",
+          "AI tools"
+        ],
+        "ko": [
+          "교육",
+          "AI 도구"
+        ]
+      },
+      "body": {
+        "en": [
+          "Worked through the fall 2025 semester as a paid mentor on an AI-literacy programme run under a commission from an office of education."
+        ],
+        "ko": [
+          "2025년 하반기, 교육청에서 발주받아 진행한 AI 사용교육 사업에 유급 멘토로 참여함."
+        ]
+      },
       "note": {
         "lede": {
           "en": "Title",
@@ -426,6 +568,10 @@
         "en": "B2B export infrastructure",
         "ko": "B2B 수출 인프라"
       },
+      "altName": {
+        "en": "Matching & Legal",
+        "ko": "Matching & Legal"
+      },
       "where": {
         "en": "developer",
         "ko": "개발 담당"
@@ -450,6 +596,23 @@
           "국내 셀러와 해외 바이어 매칭 및 통관물류 자동화 시스템 개발. 통관과 선적 서류를 이메일 또는 WhatsApp이 아니라 자동화 플랫폼에서 처리함. 거래는 SQL, 양이 많은 행동 데이터는 도큐먼트 스토어;"
         ]
       },
+      "images": [
+        {
+          "src": "/media/b2b-export-odoo-invoice.webp",
+          "alt": {
+            "en": "The Odoo partnership invoice for the year, with the counterparty and the payment details taken out",
+            "ko": "해당 연도 Odoo 파트너십 청구서 — 거래처·결제 정보는 지운 상태"
+          },
+          "focus": "top"
+        },
+        {
+          "src": "/media/b2b-export-documents.webp",
+          "alt": {
+            "en": "Quotations, contracts and price sheets of the kind that used to run on email attachments — blurred, since the paperwork is other people's",
+            "ko": "이메일 첨부로 돌아가던 견적서·계약서·단가표 — 거래처 서류라 읽히지 않게 흐림 처리함"
+          }
+        }
+      ],
       "note": {
         "lede": {
           "en": "Launched, ran, then migrated off.",
@@ -467,10 +630,6 @@
             "저 기간 안에 출시했고 실제로 쓰였음. 2026년 6월에 운영이 다른 스택으로 넘어갔음. 그 마이그레이션은 다른 사람이 했고, 내 몫은 거기까지."
           ]
         }
-      },
-      "altName": {
-        "en": "Matching & Legal",
-        "ko": "Matching & Legal"
       }
     },
     {
