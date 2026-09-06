@@ -88,7 +88,9 @@
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo",
     "Malgun Gothic", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "D2Coding",
+    "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -172,6 +174,26 @@
   [id] {
     scroll-margin-top: 6rem;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   The row labels on the concurrency chart.
+
+   None of the monospaced faces carry Hangul, so a Korean title falls past them
+   to the Korean faces at the end of the stack — the same ones the rest of the
+   page is set in, rather than whatever the browser keeps as its default
+   monospace. Those are proportional, and the letterspacing that opens Latin up
+   at this size only pushes syllable blocks apart, so the Korean page gets it
+   back and loses the half pixel the body text loses for the same reason.
+--------------------------------------------------------------------------- */
+
+.chart-label {
+  letter-spacing: 0.08em;
+}
+
+html[lang="ko"] .chart-label {
+  font-size: 10px;
+  letter-spacing: 0.01em;
 }
 
 /* Numerals that do not jitter while they tick. */

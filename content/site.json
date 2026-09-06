@@ -558,11 +558,11 @@
       "id": "b2b-export",
       "section": "before",
       "kind": "product",
-      "start": "2025-02",
-      "end": "2026-06",
+      "start": "2025-03",
+      "end": "2026-03",
       "when": {
-        "en": "Feb 2025 ~ Jun 2026",
-        "ko": "2025년 2월 ~ 8월"
+        "en": "Mar 2025 ~ Mar 2026",
+        "ko": "2025년 3월 ~ 2026년 3월"
       },
       "title": {
         "en": "B2B export infrastructure",
@@ -573,8 +573,8 @@
         "ko": "Matching & Legal"
       },
       "where": {
-        "en": "developer",
-        "ko": "개발 담당"
+        "en": "developer · 1-year contract",
+        "ko": "개발 담당 · 1년 계약"
       },
       "tags": {
         "en": [
@@ -622,12 +622,12 @@
           "en": [
             "The hard part was not the matching. One shipment carries more than ten documents, each one owned by a different party, and if one is stuck the next does not go through — and at the time almost all of that ran on email attachments.",
             "So I split the data model. The transaction itself was relational, deliberately dull. Behavioral data — views, quote requests, document status changes — went to a document store where the volume does not matter.",
-            "It shipped inside that window and was used. In June 2026 the operation moved onto a different stack. Someone else did that migration; my part ended there."
+            "It shipped inside that window and was used. The contract ran a year and ended in March 2026; the operation moved onto a different stack after that. Someone else did that migration; my part ended there."
           ],
           "ko": [
             "어려운 쪽은 매칭이 아니었음. 선적 한 건에 서류가 열 개 넘게 붙고, 각각 주체가 다르고, 하나가 막히면 다음이 안 넘어가는데, 당시에는 그게 거의 다 이메일 첨부로 돌아갔다는 것.",
             "그래서 데이터 모델을 갈랐음. 거래 자체는 관계형으로, 일부러 심심하게. 조회·견적 요청·서류 상태 변경 같은 행동 데이터는 양이 많아도 상관없는 도큐먼트 스토어로.",
-            "저 기간 안에 출시했고 실제로 쓰였음. 2026년 6월에 운영이 다른 스택으로 넘어갔음. 그 마이그레이션은 다른 사람이 했고, 내 몫은 거기까지."
+            "저 기간 안에 출시했고 실제로 쓰였음. 1년 계약이었고 2026년 3월에 끝났음. 운영은 그 뒤에 다른 스택으로 넘어갔고, 그 마이그레이션은 다른 사람이 했음. 내 몫은 거기까지."
           ]
         }
       }

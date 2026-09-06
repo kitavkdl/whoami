@@ -116,7 +116,7 @@ export function Overlap() {
               {...highlightProps(entry.id, highlight)}
             >
               <span
-                className="absolute top-0 whitespace-nowrap font-mono text-[10.5px] uppercase tracking-[0.08em] text-soft transition-colors duration-200 group-hover:text-ink group-data-[hot='0']:text-soft/40"
+                className="chart-label absolute top-0 whitespace-nowrap font-mono text-[10.5px] uppercase text-soft transition-colors duration-200 group-hover:text-ink group-data-[hot='0']:text-soft/40"
                 style={
                   anchorRight
                     ? { right: `${100 - left - width}%`, textAlign: "right" }
