@@ -100,7 +100,7 @@ export function KeyboardLayer() {
           break;
         case "t":
           event.preventDefault();
-          emit("theme:cycle", undefined);
+          emit("theme:cycle");
           break;
         case "p":
           event.preventDefault();

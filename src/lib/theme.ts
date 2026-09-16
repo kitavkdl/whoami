@@ -4,22 +4,19 @@
  * The resolved value lives on <html data-theme>, written by a blocking script
  * in the head before first paint, so there is no flash and no hydration gap.
  * This module keeps that attribute in sync afterwards and, where the browser
- * supports it, hands the swap to the View Transition API so the new palette
- * wipes out of whatever the reader just pressed.
+ * supports it, hands the swap to the View Transition API so the whole page
+ * drops out of frame and the new palette rises into the space it left.
  *
- * Every path into a swap animates. A change fired from the keyboard, the
- * palette or the console has no click to grow out of, so it borrows the
- * position of whichever toggle is on screen; a browser without view
- * transitions gets a short cross-fade on the tokens instead of a hard cut.
+ * Every path into a swap animates the same way — the motion is the page's, not
+ * the button's, so it does not matter whether the change came from a press, the
+ * keyboard, the palette or the console. A browser without view transitions gets
+ * a short cross-fade on the tokens instead of a hard cut.
  */
 
 export type ThemePref = "system" | "light" | "dark";
 export type Resolved = "light" | "dark";
 
 export const THEME_KEY = "theme";
-
-/** Marks a toggle button, so a swap fired from elsewhere can start from it. */
-export const THEME_ANCHOR = "data-theme-anchor";
 
 /** How long the token cross-fade runs where there is no view transition. */
 const FALLBACK_MS = 300;
@@ -63,62 +60,16 @@ function commit(pref: ThemePref) {
   listeners.forEach((fn) => fn(pref, resolved));
 }
 
-type Origin = { x: number; y: number };
-
-/**
- * The area the wipe has to cover. clientWidth/clientHeight leave out a classic
- * scrollbar, which innerWidth counts; taking the larger of the two keeps the
- * circle from stopping a scrollbar's width short of the edge.
- */
-function viewport() {
-  const doc = document.documentElement;
-  return {
-    w: Math.max(doc.clientWidth, window.innerWidth || 0),
-    h: Math.max(doc.clientHeight, window.innerHeight || 0),
-  };
-}
-
-function onScreen(el: HTMLElement): boolean {
-  const box = el.getBoundingClientRect();
-  if (box.width === 0 || box.height === 0) return false;
-  // A toggle in a top bar that has slid away is still laid out; ask the
-  // browser whether it is actually painted before growing a circle from it.
-  if (typeof el.checkVisibility === "function" && !el.checkVisibility({ visibilityProperty: true }))
-    return false;
-  return box.bottom > 0 && box.top < viewport().h;
-}
-
-/**
- * Where to grow the wipe from when the caller has no click to offer. The
- * on-screen toggle if there is one, the top-right corner otherwise — which is
- * where the toggle would be if the reader scrolled up.
- */
-function anchorOrigin(): Origin {
-  const anchors = Array.from(document.querySelectorAll<HTMLElement>(`[${THEME_ANCHOR}]`));
-  const target = anchors.find(onScreen);
-
-  if (target) {
-    const box = target.getBoundingClientRect();
-    return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
-  }
-  return { x: viewport().w - 44, y: 44 };
-}
-
-export function originOf(el: Element): Origin {
-  const box = el.getBoundingClientRect();
-  return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
-}
-
-/** Identifies the swap that currently owns the transition attributes. */
+/** Identifies the swap that currently owns the transition attribute. */
 let swapToken = 0;
 
 /**
  * Applies a preference. When the browser has view transitions and the reader
- * has not asked for reduced motion, the repaint is clipped to a circle growing
- * from `origin` — far enough to cover the furthest corner of the viewport.
- * Without an origin it grows from the nearest toggle instead of cutting.
+ * has not asked for reduced motion, the outgoing page slides down out of frame
+ * and the incoming one slides up into it — see the theme-drop/theme-rise pair
+ * in styles.css, which the data-vt attribute below switches on.
  */
-export function setThemePref(pref: ThemePref, origin?: Origin) {
+export function setThemePref(pref: ThemePref) {
   if (typeof document === "undefined") return;
 
   const root = document.documentElement;
@@ -136,7 +87,7 @@ export function setThemePref(pref: ThemePref, origin?: Origin) {
   ).startViewTransition;
 
   if (typeof startViewTransition !== "function") {
-    // No snapshot to wipe, so ease the tokens themselves for a moment. The
+    // No snapshot to slide, so ease the tokens themselves for a moment. The
     // attribute is removed afterwards; a permanent transition here would make
     // every hover on the page feel a beat late.
     const mine = ++swapToken;
@@ -148,17 +99,6 @@ export function setThemePref(pref: ThemePref, origin?: Origin) {
     return;
   }
 
-  const { x, y } = origin ?? anchorOrigin();
-  const { w, h } = viewport();
-  // Distance to the furthest corner, and then a little past it. The overshoot
-  // is what makes the sweep read as finished: the corner is covered a frame or
-  // two before the animation ends, instead of on its very last frame, where a
-  // rounding error or a dropped frame shows as a snap.
-  const radius = Math.hypot(Math.max(x, w - x), Math.max(y, h - y)) * 1.06;
-
-  root.style.setProperty("--vt-x", `${x}px`);
-  root.style.setProperty("--vt-y", `${y}px`);
-  root.style.setProperty("--vt-r", `${radius}px`);
   root.dataset.vt = "theme";
 
   const mine = ++swapToken;
@@ -170,12 +110,9 @@ export function setThemePref(pref: ThemePref, origin?: Origin) {
     .catch(() => undefined)
     .finally(() => {
       // A faster second press starts its own transition and takes ownership of
-      // these; clearing them here would strand it mid-wipe.
+      // this; clearing it here would strand that one mid-slide.
       if (swapToken !== mine) return;
       delete root.dataset.vt;
-      root.style.removeProperty("--vt-x");
-      root.style.removeProperty("--vt-y");
-      root.style.removeProperty("--vt-r");
     });
 }
 
@@ -192,9 +129,9 @@ export function nextPref(current: ThemePref): ThemePref {
  * transition the commit is deferred to the next frame, so a second caller in
  * the same tick would read the old value and start a competing transition.
  */
-export function cycleTheme(origin?: Origin): ThemePref {
+export function cycleTheme(): ThemePref {
   const next = nextPref(readPref());
-  setThemePref(next, origin);
+  setThemePref(next);
   return next;
 }
 

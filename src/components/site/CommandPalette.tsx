@@ -77,7 +77,7 @@ function buildIndex(content: SiteContent, copy: Copy, lang: Lang, goOtherLang: (
       keywords: "dark light mode colour color appearance 테마 다크 라이트",
       // Through the bus rather than straight to lib/theme, so the cycle and
       // the confirmation it prints stay owned by one component.
-      run: () => emit("theme:cycle", undefined),
+      run: () => emit("theme:cycle"),
     },
     {
       id: "action:lang",

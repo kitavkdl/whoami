@@ -12,7 +12,7 @@ export type BusEvents = {
   "shortcuts:toggle": void;
   "console:focus": void;
   "console:run": string;
-  "theme:cycle": { x: number; y: number } | undefined;
+  "theme:cycle": void;
   "edit:toggle": void;
   "edit:history": void;
   "edit:publish": void;

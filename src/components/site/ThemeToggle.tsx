@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  nextPref,
-  originOf,
-  readPref,
-  setThemePref,
-  subscribeTheme,
-  THEME_ANCHOR,
-  type ThemePref,
-} from "@/lib/theme";
+import { nextPref, readPref, setThemePref, subscribeTheme, type ThemePref } from "@/lib/theme";
 import { useCopy } from "@/lib/copy";
 
 function Glyph({ pref }: { pref: ThemePref }) {
@@ -55,8 +47,8 @@ function Glyph({ pref }: { pref: ThemePref }) {
 
 /**
  * Rotates system → light → dark. The swap itself is handed to the View
- * Transition API in lib/theme, which clips the repaint to a circle growing out
- * of this button, so the new palette arrives from where you pressed.
+ * Transition API in lib/theme, which drops the page out of frame and slides the
+ * new palette up in its place.
  *
  * This renders in two places at once — the masthead and the top bar — so it
  * owns no bus subscription; a cycle fired from the keyboard or the palette is
@@ -74,8 +66,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   return (
     <button
       type="button"
-      {...{ [THEME_ANCHOR]: "" }}
-      onClick={(event) => setThemePref(nextPref(pref), originOf(event.currentTarget))}
+      onClick={() => setThemePref(nextPref(pref))}
       title={`Theme · ${LABEL[pref]}`}
       aria-label={`Theme: ${LABEL[pref]}. Switch to ${LABEL[nextPref(pref)].toLowerCase()}.`}
       className={

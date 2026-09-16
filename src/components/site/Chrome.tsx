@@ -32,10 +32,7 @@ function Grain() {
  */
 function useThemeCommands() {
   const copy = useCopy();
-  useEffect(
-    () => on("theme:cycle", (origin) => emit("toast", copy.theme[cycleTheme(origin)])),
-    [copy],
-  );
+  useEffect(() => on("theme:cycle", () => emit("toast", copy.theme[cycleTheme()])), [copy]);
 }
 
 /** Everything that floats above the document rather than sitting in it. */
