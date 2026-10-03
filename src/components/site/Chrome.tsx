@@ -6,7 +6,7 @@ import { ShortcutSheet } from "@/components/site/ShortcutSheet";
 import { KeyboardLayer } from "@/components/site/KeyboardLayer";
 import { Toasts } from "@/components/site/Toasts";
 import { EditMode } from "@/components/site/EditMode";
-import { cycleTheme } from "@/lib/theme";
+import { toggleTheme } from "@/lib/theme";
 import { useCopy } from "@/lib/copy";
 import { emit, on } from "@/lib/bus";
 
@@ -24,15 +24,11 @@ function Grain() {
 /**
  * The one handler for theme:cycle, which the keyboard and the palette both
  * fire. It lives here rather than on the button because the button renders
- * twice; two subscriptions would start two view transitions per press.
- *
- * It also says where the rotation landed. The colours are their own feedback
- * for light against dark, but nothing on screen separates pinned dark from
- * system-dark, and a cycle fired from the keyboard has no press to watch.
+ * twice; two subscriptions would flip the theme twice per press.
  */
 function useThemeCommands() {
   const copy = useCopy();
-  useEffect(() => on("theme:cycle", () => emit("toast", copy.theme[cycleTheme()])), [copy]);
+  useEffect(() => on("theme:cycle", () => emit("toast", copy.theme[toggleTheme()])), [copy]);
 }
 
 /** Everything that floats above the document rather than sitting in it. */

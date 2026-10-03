@@ -16,7 +16,7 @@ export type Copy = {
   keysHint: string;
   language: string;
 
-  theme: { system: string; light: string; dark: string };
+  theme: { light: string; dark: string };
 
   masthead: { emailMe: string; copyAddress: string; printResume: string; emailCopied: string };
 
@@ -200,7 +200,7 @@ export type Copy = {
     opening: (target: string) => string;
     openUnknown: (target: string, list: string) => string;
     copied: (email: string) => string;
-    themeIs: (pref: string, resolved: string) => string;
+    themeIs: (value: string) => string;
     themePick: (list: string) => string;
     langPick: (list: string) => string;
     themeSet: (value: string) => string;
@@ -224,7 +224,7 @@ const en: Copy = {
   keysHint: "Press ? for keys",
   language: "Language",
 
-  theme: { system: "Following the system", light: "Light", dark: "Dark" },
+  theme: { light: "Light", dark: "Dark" },
 
   masthead: {
     emailMe: "Email me",
@@ -381,7 +381,7 @@ const en: Copy = {
     open: "↵ open",
     results: (n) => `${n} results`,
     theme: "Switch theme",
-    themeHint: "system · light · dark",
+    themeHint: "light · dark",
     copyEmail: "Copy email address",
     toConsole: "Jump to the console",
     toConsoleHint: "and start typing",
@@ -406,7 +406,7 @@ const en: Copy = {
           [["⌘", "K"], "Open the command palette"],
           [["/"], "Same thing, one key"],
           [["?"], "This sheet"],
-          [["t"], "Cycle the theme"],
+          [["t"], "Toggle light / dark"],
           [["p"], "Print as a resume"],
           [["Esc"], "Close whatever is open"],
         ],
@@ -451,7 +451,7 @@ const en: Copy = {
       date: "the time in Stony Brook",
       open: "open a link — site, study, email",
       email: "copy the address to your clipboard",
-      theme: "light, dark, or system",
+      theme: "light or dark",
       lang: "en or ko",
       goto: "scroll the page to a section",
       neofetch: "the obligatory one",
@@ -481,7 +481,7 @@ const en: Copy = {
     opening: (target) => `opening ${target}`,
     openUnknown: (target, list) => `open: nothing called ${target}. try: ${list}`,
     copied: (email) => `copied ${email}`,
-    themeIs: (pref, resolved) => `theme is ${pref} (currently ${resolved})`,
+    themeIs: (value) => `theme is ${value}`,
     themePick: (list) => `theme: pick one of ${list}`,
     langPick: (list) => `lang: pick one of ${list}`,
     themeSet: (value) => `theme set to ${value}`,
@@ -523,7 +523,7 @@ const ko: Copy = {
   keysHint: "? 를 누르면 단축키",
   language: "언어",
 
-  theme: { system: "시스템 설정을 따름", light: "라이트", dark: "다크" },
+  theme: { light: "라이트", dark: "다크" },
 
   masthead: {
     emailMe: "메일 보내기",
@@ -677,7 +677,7 @@ const ko: Copy = {
     open: "↵ 열기",
     results: (n) => `${n}개`,
     theme: "테마 바꾸기",
-    themeHint: "시스템 · 라이트 · 다크",
+    themeHint: "라이트 · 다크",
     copyEmail: "이메일 주소 복사",
     toConsole: "콘솔로 이동",
     toConsoleHint: "가서 바로 입력",
@@ -702,7 +702,7 @@ const ko: Copy = {
           [["⌘", "K"], "커맨드 팔레트 열기"],
           [["/"], "같은 것, 한 글자로"],
           [["?"], "이 창"],
-          [["t"], "테마 순환"],
+          [["t"], "라이트 / 다크 전환"],
           [["p"], "이력서로 인쇄"],
           [["Esc"], "열려 있는 것 닫기"],
         ],
@@ -747,7 +747,7 @@ const ko: Copy = {
       date: "스토니브룩의 시각",
       open: "링크 열기 — site, study, email",
       email: "주소를 클립보드로",
-      theme: "light, dark, system",
+      theme: "light 또는 dark",
       lang: "en 또는 ko",
       goto: "섹션으로 스크롤",
       neofetch: "그 흔한 것",
@@ -777,7 +777,7 @@ const ko: Copy = {
     opening: (target) => `${target} 여는 중`,
     openUnknown: (target, list) => `open: ${target} 라는 건 없다. 가능한 것: ${list}`,
     copied: (email) => `${email} 복사함`,
-    themeIs: (pref, resolved) => `테마는 ${pref} (지금은 ${resolved})`,
+    themeIs: (value) => `테마는 ${value}`,
     themePick: (list) => `theme: ${list} 중 하나`,
     langPick: (list) => `lang: ${list} 중 하나`,
     themeSet: (value) => `테마를 ${value} 로`,

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { nextPref, readPref, setThemePref, subscribeTheme, type ThemePref } from "@/lib/theme";
+import { readTheme, subscribeTheme, toggleTheme, type Theme } from "@/lib/theme";
 import { useCopy } from "@/lib/copy";
 
-function Glyph({ pref }: { pref: ThemePref }) {
-  if (pref === "light") {
+function Glyph({ theme }: { theme: Theme }) {
+  if (theme === "light") {
     return (
       <svg viewBox="0 0 16 16" className="size-[15px]" fill="none" aria-hidden>
         <circle cx="8" cy="8" r="3.1" stroke="currentColor" strokeWidth="1.2" />
@@ -24,60 +24,49 @@ function Glyph({ pref }: { pref: ThemePref }) {
     );
   }
 
-  if (pref === "dark") {
-    return (
-      <svg viewBox="0 0 16 16" className="size-[15px]" fill="none" aria-hidden>
-        <path
-          d="M13 9.6A5.6 5.6 0 0 1 6.4 3a5.6 5.6 0 1 0 6.6 6.6Z"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
-
   return (
     <svg viewBox="0 0 16 16" className="size-[15px]" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="5.2" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M8 2.8a5.2 5.2 0 0 1 0 10.4Z" fill="currentColor" />
+      <path
+        d="M13 9.6A5.6 5.6 0 0 1 6.4 3a5.6 5.6 0 1 0 6.6 6.6Z"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 /**
- * Rotates system → light → dark. The swap itself is handed to the View
- * Transition API in lib/theme, which drops the page out of frame and slides the
- * new palette up in its place.
+ * Flips light ↔ dark, instantly. The first visit follows the system (set by
+ * the boot script in the head); a press pins the choice.
  *
  * This renders in two places at once — the masthead and the top bar — so it
- * owns no bus subscription; a cycle fired from the keyboard or the palette is
+ * owns no bus subscription; a toggle fired from the keyboard or the palette is
  * handled once, in Chrome.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const LABEL = useCopy().theme;
-  const [pref, setPref] = useState<ThemePref>("system");
+  const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
-    setPref(readPref());
-    return subscribeTheme((next) => setPref(next));
+    setThemeState(readTheme());
+    return subscribeTheme(setThemeState);
   }, []);
+
+  const other: Theme = theme === "dark" ? "light" : "dark";
 
   return (
     <button
       type="button"
-      onClick={() => setThemePref(nextPref(pref))}
-      title={`Theme · ${LABEL[pref]}`}
-      aria-label={`Theme: ${LABEL[pref]}. Switch to ${LABEL[nextPref(pref)].toLowerCase()}.`}
+      onClick={() => toggleTheme()}
+      title={`Theme · ${LABEL[theme]}`}
+      aria-label={`Theme: ${LABEL[theme]}. Switch to ${LABEL[other].toLowerCase()}.`}
       className={
-        "inline-flex size-8 items-center justify-center rounded-[3px] border border-rule text-soft transition-colors hover:border-mark/50 hover:text-mark " +
+        "inline-flex size-8 items-center justify-center rounded-[3px] border border-rule text-soft hover:border-mark/50 hover:text-mark " +
         className
       }
     >
-      {/* Keyed so React remounts on every change and the entry animation runs. */}
-      <span key={pref} className="glyph-swap inline-flex">
-        <Glyph pref={pref} />
-      </span>
+      <Glyph theme={theme} />
     </button>
   );
 }

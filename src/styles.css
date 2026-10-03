@@ -250,103 +250,12 @@ html[lang="ko"] .chart-label {
   will-change: auto;
 }
 
-/* ---------------------------------------------------------------------------
-   Theme switch.
-
-   Where the browser has view transitions, the whole page leaves in one piece:
-   every word and panel drops out of the bottom of the frame, and the new
-   palette rises into the space a beat later. The default cross-fade on both
-   snapshots is turned off so the slide is the only thing moving. Where there
-   are no view transitions the tokens themselves ease for a moment — see
-   data-theme-swap, which lib/theme sets only for the length of the swap.
---------------------------------------------------------------------------- */
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-/*
-  What shows between the two beats. The snapshots sit above this, and by the
-  time it is uncovered the tokens have already been committed, so the gap the
-  departing page leaves behind is the destination background rather than the
-  browser's own canvas colour.
-*/
-html[data-vt="theme"]::view-transition {
-  background-color: var(--paper);
-}
-
-/*
-  The outgoing page keeps the higher z-index: the two overlap for a moment at
-  the bottom edge, and a departing page sliding out from under the arriving one
-  reads as a mistake, where one leaving over the top of it reads as intended.
-  It accelerates away — an ease-in — so the exit feels dropped rather than
-  lowered, and overshoots 101% so no rounding error leaves a hairline of the
-  old palette pinned to the bottom of the viewport.
-*/
-html[data-vt="theme"]::view-transition-old(root) {
-  z-index: 2;
-  animation: theme-drop 240ms cubic-bezier(0.5, 0, 0.9, 0.35) both;
-}
-
-@keyframes theme-drop {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(101%);
-  }
-}
-
-/*
-  The new palette starts 10ms before the old page is fully gone, so the two
-  beats are joined rather than separated by a held blank frame, and settles on
-  an ease-out over a longer run than the exit — the page is arriving, so it
-  decelerates into place instead of slamming.
-*/
-html[data-vt="theme"]::view-transition-new(root) {
-  z-index: 1;
-  animation: theme-rise 330ms cubic-bezier(0.16, 0.86, 0.3, 1) 230ms both;
-}
-
-@keyframes theme-rise {
-  from {
-    transform: translateY(101%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-/* The toggle glyph turns over as the palette does. */
-@keyframes glyph-in {
-  from {
-    opacity: 0;
-    transform: rotate(-70deg) scale(0.72);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.glyph-swap {
-  animation: glyph-in 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-
-html[data-theme-swap="1"],
-html[data-theme-swap="1"] body,
-html[data-theme-swap="1"] :where(body *) {
-  transition:
-    background-color 300ms ease,
-    border-color 300ms ease,
-    color 300ms ease,
-    fill 300ms ease,
-    stroke 300ms ease,
-    text-decoration-color 300ms ease,
-    box-shadow 300ms ease !important;
-  transition-delay: 0ms !important;
+/* Theme swaps cut over instantly; lib/theme sets this for a single frame. */
+html[data-theme-swap],
+html[data-theme-swap] *,
+html[data-theme-swap] *::before,
+html[data-theme-swap] *::after {
+  transition: none !important;
 }
 
 /* --------------------------------------------------------------------------- */
