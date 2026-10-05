@@ -6,7 +6,7 @@ import { HOME_PATH, LANGS, useLang, type Lang } from "@/lib/i18n";
 import { useDrafts } from "@/lib/edit";
 import { formatPath, getRoot, lookup, renderTree, resolvePath, walk, type VDir } from "@/lib/vfs";
 import { gotoSection } from "@/lib/nav";
-import { readPref, readResolved, setThemePref, type ThemePref } from "@/lib/theme";
+import { readTheme, setTheme, type Theme } from "@/lib/theme";
 import { emit, on } from "@/lib/bus";
 import { fuzzyMatch } from "@/lib/fuzzy";
 
@@ -15,7 +15,7 @@ type Line = { id: number; tone: Tone; text: string };
 
 const PATH_COMMANDS = new Set(["ls", "cd", "cat"]);
 const OPEN_TARGETS = ["site", "study", "email"];
-const THEME_VALUES: ThemePref[] = ["light", "dark", "system"];
+const THEME_VALUES: Theme[] = ["light", "dark"];
 
 const TONE_CLASS: Record<Tone, string> = {
   in: "text-term-fg",
@@ -263,14 +263,14 @@ export function Console() {
 
         case "theme": {
           if (!arg) {
-            out(copy.console.themeIs(readPref(), readResolved()), "out");
+            out(copy.console.themeIs(readTheme()), "out");
             break;
           }
-          if (!THEME_VALUES.includes(arg as ThemePref)) {
+          if (!THEME_VALUES.includes(arg as Theme)) {
             out(copy.console.themePick(THEME_VALUES.join(", ")), "err");
             break;
           }
-          setThemePref(arg as ThemePref);
+          setTheme(arg as Theme);
           out(copy.console.themeSet(arg), "ok");
           break;
         }
@@ -312,7 +312,7 @@ export function Console() {
             ["uptime", uptime],
             ["display", `${window.innerWidth}×${window.innerHeight} @${window.devicePixelRatio}x`],
             ["threads", `${navigator.hardwareConcurrency ?? "?"}`],
-            ["theme", `${readResolved()} (${readPref()})`],
+            ["theme", readTheme()],
             ["lang", lang],
             ["stack", "TanStack Start · React 19 · Tailwind 4"],
             ["console", "hand-written, no terminal library"],
